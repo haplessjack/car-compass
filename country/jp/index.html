@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cars in Japan — Car Compass</title>
+  <meta name="description" content="Find cars for sale in Japan." />
+  <link rel="stylesheet" href="../../css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+
+    <section class="section">
+      <div class="container">
+        <div class="eyebrow">Asia</div>
+        <h1>🇯🇵 Cars for sale in Japan</h1>
+        <p class="lead">Regional marketplaces for Japan, plus global classic/auction sites when relevant.</p>
+        <form class="search-panel" id="search-form">
+          <input type="hidden" name="country" value="jp" />
+          <div class="form-grid">
+            <div class="field">
+              <label for="make">Make</label>
+              <input id="make" name="make" type="text" autocomplete="off" />
+              <div class="suggest" id="make-suggest"></div>
+            </div>
+            <div class="field">
+              <label for="model">Model</label>
+              <input id="model" name="model" type="text" autocomplete="off" />
+              <div class="suggest" id="model-suggest"></div>
+            </div>
+            <div class="field">
+              <label for="yearFrom">Year from</label>
+              <select id="yearFrom" name="yearFrom" data-placeholder="Any"></select>
+            </div>
+            <div class="field">
+              <label for="yearTo">Year to</label>
+              <select id="yearTo" name="yearTo" data-placeholder="Any"></select>
+            </div>
+            <div class="field">
+              <label>Region</label>
+              <input type="text" value="Japan" disabled />
+            </div>
+          </div>
+          <div class="search-actions">
+            <button class="btn btn-primary" type="submit">Search Japan</button>
+          </div>
+        </form>
+        <div id="results" style="margin-top:1.5rem"></div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="../../js/config.js"></script>
+  <script src="../../js/sources.js"></script>
+  <script src="../../js/site.js"></script>
+  <script src="../../js/vpic.js"></script>
+
+  <script>
+    SiteApp.renderChrome('sources');
+    SiteApp.injectSeo({
+      title: 'Cars in Japan — ' + SiteApp.cfg.siteName,
+      description: 'Locate cars for sale in Japan.',
+      path: 'country/jp/index.html'
+    });
+    const form = document.getElementById('search-form');
+    SiteApp.yearsOptions(form.yearFrom);
+    SiteApp.yearsOptions(form.yearTo);
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      SiteApp.goSearch({
+        make: form.make.value.trim(),
+        model: form.model.value.trim(),
+        yearFrom: form.yearFrom.value,
+        yearTo: form.yearTo.value,
+        country: 'jp'
+      });
+    });
+    SiteVPIC.bindAutocomplete(form.make, document.getElementById('make-suggest'), { mode: 'make' });
+    SiteVPIC.bindAutocomplete(form.model, document.getElementById('model-suggest'), { mode: 'model', makeInput: form.make });
+    SiteApp.renderResultGroups(document.getElementById('results'), {
+      make: '', model: '', yearFrom: '', yearTo: '', country: 'jp'
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About — Car Compass</title>
+  <meta name="description" content="About Car Compass worldwide car search." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+
+    <section class="section">
+      <div class="container prose">
+        <div class="eyebrow">About</div>
+        <h1><span class="js-site-name">Car Compass</span></h1>
+        <p>Car Compass helps you <strong>locate cars for sale worldwide</strong> — from everyday commuters to classics and exotics — by building deep links into real marketplaces, auctions and classifieds.</p>
+        <h2>What this site does</h2>
+        <ul>
+          <li>Search by make, model, year range and country/region</li>
+          <li>Open the matching search on Autotrader, Cars.com, CarGurus, eBay Motors, Bring a Trailer, Cars &amp; Bids, Hemmings, ClassicCars.com, AutoTrader UK, PistonHeads, mobile.de, AutoScout24, Leboncoin, CarSensor, Goo-net Exchange, BE FORWARD, Carsales, AutoTrader.ca, Dubizzle, Classic Driver, Elferspot, Collecting Cars and DuPont Registry</li>
+          <li>Autocomplete makes/models and decode VINs with the live NHTSA vPIC API (client-side, CORS enabled)</li>
+        </ul>
+        <h2>What this site does not do</h2>
+        <ul>
+          <li>It does not invent, scrape, host or cache vehicle listings or prices</li>
+          <li>It does not run server functions (GitHub Pages is static only)</li>
+          <li>It is not affiliated with the marketplaces it links to</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/config.js"></script>
+  <script src="js/sources.js"></script>
+  <script src="js/site.js"></script>
+  <script src="js/vpic.js"></script>
+
+  <script>
+    SiteApp.renderChrome('about');
+    SiteApp.injectSeo({
+      title: 'About — ' + SiteApp.cfg.siteName,
+      description: 'How Car Compass finds cars for sale worldwide without hosting listings.',
+      path: 'about.html'
+    });
+  </script>
+
+</body>
+</html>

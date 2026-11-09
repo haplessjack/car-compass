@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Search results — Car Compass</title>
+  <meta name="description" content="Deep links to car marketplaces worldwide." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="eyebrow">Search results</div>
+            <h2 id="results-title">Marketplace deep links</h2>
+            <p>Open each source to see live inventory. Nothing here is cached or priced by us.</p>
+          </div>
+          <a class="btn btn-ghost btn-sm" href="index.html">New search</a>
+        </div>
+        <form class="search-panel" id="search-form" style="margin-bottom:1.5rem">
+          <div class="form-grid">
+            <div class="field">
+              <label for="make">Make</label>
+              <input id="make" name="make" type="text" autocomplete="off" />
+              <div class="suggest" id="make-suggest"></div>
+            </div>
+            <div class="field">
+              <label for="model">Model</label>
+              <input id="model" name="model" type="text" autocomplete="off" />
+              <div class="suggest" id="model-suggest"></div>
+            </div>
+            <div class="field">
+              <label for="yearFrom">Year from</label>
+              <select id="yearFrom" name="yearFrom" data-placeholder="Any"></select>
+            </div>
+            <div class="field">
+              <label for="yearTo">Year to</label>
+              <select id="yearTo" name="yearTo" data-placeholder="Any"></select>
+            </div>
+            <div class="field">
+              <label for="country">Region</label>
+              <select id="country" name="country">
+                <option value="worldwide">Worldwide</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+                <option value="uk">United Kingdom</option>
+                <option value="de">Germany / EU focus</option>
+                <option value="fr">France</option>
+                <option value="jp">Japan</option>
+                <option value="au">Australia</option>
+                <option value="ae">UAE</option>
+              </select>
+            </div>
+          </div>
+          <div class="search-actions">
+            <button class="btn btn-primary" type="submit">Update results</button>
+          </div>
+        </form>
+        <div id="results"></div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/config.js"></script>
+  <script src="js/sources.js"></script>
+  <script src="js/site.js"></script>
+  <script src="js/vpic.js"></script>
+
+  <script>
+    SiteApp.renderChrome('home');
+    const params = SiteApp.readQuery();
+    const label = [params.make, params.model].filter(Boolean).join(' ') || 'All cars';
+    SiteApp.injectSeo({
+      title: 'Results: ' + label + ' — ' + SiteApp.cfg.siteName,
+      description: 'Marketplace deep links for ' + label,
+      path: 'results.html'
+    });
+    document.getElementById('results-title').textContent = label + ' — deep links';
+    const form = document.getElementById('search-form');
+    SiteApp.bindSearchForm(form);
+    SiteVPIC.bindAutocomplete(form.make, document.getElementById('make-suggest'), { mode: 'make' });
+    SiteVPIC.bindAutocomplete(form.model, document.getElementById('model-suggest'), { mode: 'model', makeInput: form.make });
+    SiteApp.renderResultGroups(document.getElementById('results'), params);
+  </script>
+
+</body>
+</html>

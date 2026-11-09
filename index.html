@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Car Compass — Locate cars for sale worldwide</title>
+  <meta name="description" content="Find cars for sale worldwide with deep links to Autotrader, Cars.com, mobile.de, BE FORWARD and more." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">Global car search</div>
+        <h1>Locate cars for sale <em>anywhere</em></h1>
+        <p class="lead js-tagline">Search by make, model, year and region — then jump straight into verified marketplace deep links across the US, UK, Europe, Japan, Australia, Canada and the UAE.</p>
+        <form class="search-panel" id="search-form" action="results.html" method="get">
+          <div class="form-grid">
+            <div class="field">
+              <label for="make">Make</label>
+              <input id="make" name="make" type="text" placeholder="e.g. Porsche" autocomplete="off" />
+              <div class="suggest" id="make-suggest" role="listbox"></div>
+            </div>
+            <div class="field">
+              <label for="model">Model</label>
+              <input id="model" name="model" type="text" placeholder="e.g. 911" autocomplete="off" />
+              <div class="suggest" id="model-suggest" role="listbox"></div>
+            </div>
+            <div class="field">
+              <label for="yearFrom">Year from</label>
+              <select id="yearFrom" name="yearFrom" data-placeholder="Any"></select>
+            </div>
+            <div class="field">
+              <label for="yearTo">Year to</label>
+              <select id="yearTo" name="yearTo" data-placeholder="Any"></select>
+            </div>
+            <div class="field">
+              <label for="country">Region</label>
+              <select id="country" name="country">
+                <option value="worldwide">Worldwide</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+                <option value="uk">United Kingdom</option>
+                <option value="de">Germany / EU focus</option>
+                <option value="fr">France</option>
+                <option value="jp">Japan</option>
+                <option value="au">Australia</option>
+                <option value="ae">UAE</option>
+              </select>
+            </div>
+          </div>
+          <div class="search-actions">
+            <button class="btn btn-primary" type="submit">Find cars</button>
+            <a class="btn btn-ghost" href="vin.html">Decode a VIN</a>
+            <span class="hint">Autocomplete uses the free NHTSA vPIC API in your browser.</span>
+          </div>
+        </form>
+        <div class="search-actions" style="margin-top:1rem">
+          <button type="button" class="chip" data-demo="porsche-911">Porsche 911 · 1990–1998 · Worldwide</button>
+          <button type="button" class="chip" data-demo="toyota-land-cruiser">Toyota Land Cruiser · Japan</button>
+          <button type="button" class="chip" data-demo="ferrari">Ferrari · Worldwide</button>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>Browse popular makes</h2>
+            <p>Everyday cars through exotics — each page links into regional marketplaces.</p>
+          </div>
+        </div>
+        <div class="grid">
+          <a class="card" href="cars/toyota/index.html">
+            <div class="badge">Make</div>
+            <h3>Toyota</h3>
+            <p>Camry, Corolla, RAV4</p>
+          </a>
+          <a class="card" href="cars/honda/index.html">
+            <div class="badge">Make</div>
+            <h3>Honda</h3>
+            <p>Civic, Accord, CR-V</p>
+          </a>
+          <a class="card" href="cars/ford/index.html">
+            <div class="badge">Make</div>
+            <h3>Ford</h3>
+            <p>Mustang, F-150, Bronco</p>
+          </a>
+          <a class="card" href="cars/chevrolet/index.html">
+            <div class="badge">Make</div>
+            <h3>Chevrolet</h3>
+            <p>Corvette, Camaro, Silverado</p>
+          </a>
+          <a class="card" href="cars/bmw/index.html">
+            <div class="badge">Make</div>
+            <h3>BMW</h3>
+            <p>3 Series, 5 Series, M3</p>
+          </a>
+          <a class="card" href="cars/mercedes-benz/index.html">
+            <div class="badge">Make</div>
+            <h3>Mercedes-Benz</h3>
+            <p>C-Class, E-Class, S-Class</p>
+          </a>
+          <a class="card" href="cars/audi/index.html">
+            <div class="badge">Make</div>
+            <h3>Audi</h3>
+            <p>A4, A6, Q5</p>
+          </a>
+          <a class="card" href="cars/volkswagen/index.html">
+            <div class="badge">Make</div>
+            <h3>Volkswagen</h3>
+            <p>Golf, Jetta, Passat</p>
+          </a>
+          <a class="card" href="cars/porsche/index.html">
+            <div class="badge">Make</div>
+            <h3>Porsche</h3>
+            <p>911, Cayenne, Macan</p>
+          </a>
+          <a class="card" href="cars/ferrari/index.html">
+            <div class="badge">Make</div>
+            <h3>Ferrari</h3>
+            <p>488, F8, Roma</p>
+          </a>
+          <a class="card" href="cars/lamborghini/index.html">
+            <div class="badge">Make</div>
+            <h3>Lamborghini</h3>
+            <p>Huracan, Urus, Aventador</p>
+          </a>
+          <a class="card" href="cars/nissan/index.html">
+            <div class="badge">Make</div>
+            <h3>Nissan</h3>
+            <p>GT-R, 370Z, Altima</p>
+          </a>
+          <a class="card" href="cars/mazda/index.html">
+            <div class="badge">Make</div>
+            <h3>Mazda</h3>
+            <p>MX-5, Mazda3, CX-5</p>
+          </a>
+          <a class="card" href="cars/hyundai/index.html">
+            <div class="badge">Make</div>
+            <h3>Hyundai</h3>
+            <p>Elantra, Tucson, Santa Fe</p>
+          </a>
+          <a class="card" href="cars/kia/index.html">
+            <div class="badge">Make</div>
+            <h3>Kia</h3>
+            <p>Telluride, Sportage, EV6</p>
+          </a>
+          <a class="card" href="cars/jeep/index.html">
+            <div class="badge">Make</div>
+            <h3>Jeep</h3>
+            <p>Wrangler, Grand Cherokee, Gladiator</p>
+          </a>
+          <a class="card" href="cars/tesla/index.html">
+            <div class="badge">Make</div>
+            <h3>Tesla</h3>
+            <p>Model 3, Model Y, Model S</p>
+          </a>
+          <a class="card" href="cars/lexus/index.html">
+            <div class="badge">Make</div>
+            <h3>Lexus</h3>
+            <p>RX, ES, IS</p>
+          </a>
+          <a class="card" href="cars/subaru/index.html">
+            <div class="badge">Make</div>
+            <h3>Subaru</h3>
+            <p>WRX, Outback, Forester</p>
+          </a>
+          <a class="card" href="cars/land-rover/index.html">
+            <div class="badge">Make</div>
+            <h3>Land Rover</h3>
+            <p>Range Rover, Defender, Discovery</p>
+          </a>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>Browse by country</h2>
+            <p>Main markets with local classifieds and auctions.</p>
+          </div>
+          <a href="sources.html">Full source directory →</a>
+        </div>
+        <div class="grid">
+          <a class="card" href="country/us/index.html">
+            <div class="badge">North America</div>
+            <h3>🇺🇸 United States</h3>
+            <p>Open regional marketplaces</p>
+          </a>
+          <a class="card" href="country/ca/index.html">
+            <div class="badge">North America</div>
+            <h3>🇨🇦 Canada</h3>
+            <p>Open regional marketplaces</p>
+          </a>
+          <a class="card" href="country/uk/index.html">
+            <div class="badge">Europe</div>
+            <h3>🇬🇧 United Kingdom</h3>
+            <p>Open regional marketplaces</p>
+          </a>
+          <a class="card" href="country/de/index.html">
+            <div class="badge">Europe</div>
+            <h3>🇩🇪 Germany</h3>
+            <p>Open regional marketplaces</p>
+          </a>
+          <a class="card" href="country/fr/index.html">
+            <div class="badge">Europe</div>
+            <h3>🇫🇷 France</h3>
+            <p>Open regional marketplaces</p>
+          </a>
+          <a class="card" href="country/jp/index.html">
+            <div class="badge">Asia</div>
+            <h3>🇯🇵 Japan</h3>
+            <p>Open regional marketplaces</p>
+          </a>
+          <a class="card" href="country/au/index.html">
+            <div class="badge">Oceania</div>
+            <h3>🇦🇺 Australia</h3>
+            <p>Open regional marketplaces</p>
+          </a>
+          <a class="card" href="country/ae/index.html">
+            <div class="badge">Middle East</div>
+            <h3>🇦🇪 United Arab Emirates</h3>
+            <p>Open regional marketplaces</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/config.js"></script>
+  <script src="js/sources.js"></script>
+  <script src="js/site.js"></script>
+  <script src="js/vpic.js"></script>
+
+  <script>
+    SiteApp.renderChrome('home');
+    SiteApp.injectSeo({
+      title: SiteApp.cfg.siteName + ' — Locate cars for sale worldwide',
+      description: SiteApp.cfg.tagline,
+      path: 'index.html',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: SiteApp.cfg.siteName,
+        url: SiteApp.cfg.baseUrl,
+        description: SiteApp.cfg.tagline,
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: SiteApp.cfg.baseUrl + 'results.html?make={make}&model={model}&yearFrom={yearFrom}&yearTo={yearTo}&country={country}',
+          'query-input': 'required name=make name=model name=yearFrom name=yearTo name=country'
+        }
+      }
+    });
+    const form = document.getElementById('search-form');
+    SiteApp.bindSearchForm(form);
+    SiteVPIC.bindAutocomplete(form.make, document.getElementById('make-suggest'), { mode: 'make' });
+    SiteVPIC.bindAutocomplete(form.model, document.getElementById('model-suggest'), { mode: 'model', makeInput: form.make });
+    document.querySelectorAll('[data-demo]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.demo;
+        if (id === 'porsche-911') SiteApp.goSearch({ make:'Porsche', model:'911', yearFrom:'1990', yearTo:'1998', country:'worldwide' });
+        if (id === 'toyota-land-cruiser') SiteApp.goSearch({ make:'Toyota', model:'Land Cruiser', yearFrom:'', yearTo:'', country:'jp' });
+        if (id === 'ferrari') SiteApp.goSearch({ make:'Ferrari', model:'', yearFrom:'', yearTo:'', country:'worldwide' });
+      });
+    });
+  </script>
+
+</body>
+</html>

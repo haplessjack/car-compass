@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sources — Car Compass</title>
+  <meta name="description" content="Worldwide car listing sources by region." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+
+    <section class="section">
+      <div class="container">
+        <div class="eyebrow">Directory</div>
+        <h1>Listing sources by region</h1>
+        <p class="lead">These are the marketplaces, auctions and classifieds Car Compass deep-links into. Verification notes come from server-side checks; “Browser link” means bots were blocked but the standard public URL format is still used.</p>
+        <div class="filters" id="region-filters"></div>
+        <div id="source-directory"></div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/config.js"></script>
+  <script src="js/sources.js"></script>
+  <script src="js/site.js"></script>
+  <script src="js/vpic.js"></script>
+
+  <script>
+    SiteApp.renderChrome('sources');
+    SiteApp.injectSeo({
+      title: 'Sources — ' + SiteApp.cfg.siteName,
+      description: 'Car marketplaces and auctions by region used for worldwide car search.',
+      path: 'sources.html'
+    });
+    const all = SITE_SOURCES.SOURCES;
+    const groups = SITE_SOURCES.groupByRegion(all.map(s => ({
+      ...s, note: s.note, verify: s.verify, url: s.home
+    })));
+    const dir = document.getElementById('source-directory');
+    function paint(filter) {
+      const g = filter === 'all' ? groups : groups.filter(x => x.region === filter);
+      dir.innerHTML = g.map(block => `
+        <div class="region-block" data-region="${SiteApp.escapeHtml(block.region)}">
+          <h2>${SiteApp.escapeHtml(block.region)}</h2>
+          <div class="source-list">
+            ${block.items.map(it => `
+              <article class="source-item">
+                <div>
+                  <h3>${SiteApp.escapeHtml(it.name)}</h3>
+                  <p>${SiteApp.escapeHtml(it.note || '')}</p>
+                  <div>${(it.kinds||[]).map(k => `<span class="tag">${SiteApp.escapeHtml(k)}</span>`).join('')}</div>
+                </div>
+                <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+                  <span class="status-pill ${SiteApp.statusClass(it.verify)}">${SiteApp.statusLabel(it.verify)}</span>
+                  <a class="btn btn-ghost btn-sm" href="${it.home}" target="_blank" rel="noopener noreferrer">Homepage</a>
+                </div>
+              </article>`).join('')}
+          </div>
+        </div>`).join('');
+    }
+    const filters = document.getElementById('region-filters');
+    const regions = ['all'].concat(groups.map(g => g.region));
+    filters.innerHTML = regions.map((r,i) => `<button type="button" class="chip" data-r="${SiteApp.escapeHtml(r)}" ${i===0?'style="border-color:var(--border-strong);color:var(--text)"':''}>${r === 'all' ? 'All regions' : SiteApp.escapeHtml(r)}</button>`).join('');
+    filters.addEventListener('click', e => {
+      const btn = e.target.closest('[data-r]');
+      if (!btn) return;
+      filters.querySelectorAll('.chip').forEach(c => c.style.borderColor = '');
+      btn.style.borderColor = 'var(--border-strong)';
+      btn.style.color = 'var(--text)';
+      paint(btn.dataset.r);
+    });
+    paint('all');
+  </script>
+
+</body>
+</html>

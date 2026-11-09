@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VIN decoder — Car Compass</title>
+  <meta name="description" content="Decode VINs with the free NHTSA vPIC API." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+
+    <section class="section">
+      <div class="container">
+        <div class="eyebrow">NHTSA vPIC</div>
+        <h1>Free VIN decoder</h1>
+        <p class="lead">Decode a 17-character VIN with the official US NHTSA vPIC API, entirely in your browser. No key required.</p>
+        <form class="search-panel" id="vin-form">
+          <div class="field">
+            <label for="vin">VIN</label>
+            <input id="vin" name="vin" maxlength="17" placeholder="e.g. 1FTFW1E57MFA12345" autocomplete="off" spellcheck="false" style="text-transform:uppercase;letter-spacing:0.06em" />
+          </div>
+          <div class="search-actions">
+            <button class="btn btn-primary" type="submit">Decode VIN</button>
+            <button class="btn btn-ghost" type="button" id="sample-vin">Try sample VIN</button>
+            <span class="hint" id="vin-status">Live API: vpic.nhtsa.dot.gov</span>
+          </div>
+        </form>
+        <div class="vin-result" id="vin-result">
+          <h2 style="margin-top:0">Decoded vehicle</h2>
+          <dl class="vin-grid" id="vin-grid"></dl>
+          <div class="search-actions" style="margin-top:1rem">
+            <button class="btn btn-primary" type="button" id="search-from-vin">Search this car worldwide</button>
+          </div>
+        </div>
+        <div class="notice" style="margin-top:1.5rem">
+          <strong>Privacy:</strong> the VIN is sent only to NHTSA’s public API from your browser. Car Compass does not store VINs.
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/config.js"></script>
+  <script src="js/sources.js"></script>
+  <script src="js/site.js"></script>
+  <script src="js/vpic.js"></script>
+
+  <script>
+    SiteApp.renderChrome('vin');
+    SiteApp.injectSeo({
+      title: 'VIN decoder — ' + SiteApp.cfg.siteName,
+      description: 'Free browser VIN decoder using the NHTSA vPIC API.',
+      path: 'vin.html'
+    });
+    const form = document.getElementById('vin-form');
+    const result = document.getElementById('vin-result');
+    const grid = document.getElementById('vin-grid');
+    const status = document.getElementById('vin-status');
+    let last = null;
+    const fields = [
+      ['Make','Make'],['Model','Model'],['ModelYear','Model year'],['BodyClass','Body'],
+      ['DriveType','Drive'],['FuelTypePrimary','Fuel'],['PlantCountry','Plant country'],
+      ['VehicleType','Vehicle type'],['Doors','Doors'],['ErrorText','Status']
+    ];
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = 'Decoding…';
+      result.classList.remove('open');
+      try {
+        const data = await SiteVPIC.decodeVin(form.vin.value);
+        last = data.row;
+        grid.innerHTML = fields.map(([k,label]) => `
+          <div><dt>${SiteApp.escapeHtml(label)}</dt><dd>${SiteApp.escapeHtml(last[k] || '—')}</dd></div>
+        `).join('');
+        result.classList.add('open');
+        status.textContent = 'Decoded via NHTSA vPIC';
+      } catch (err) {
+        status.textContent = err.message;
+      }
+    });
+    document.getElementById('sample-vin').addEventListener('click', () => {
+      form.vin.value = '1FTFW1E57MFA12345';
+      form.requestSubmit();
+    });
+    document.getElementById('search-from-vin').addEventListener('click', () => {
+      if (!last) return;
+      SiteApp.goSearch({
+        make: last.Make || '',
+        model: last.Model || '',
+        yearFrom: last.ModelYear || '',
+        yearTo: last.ModelYear || '',
+        country: 'worldwide'
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lamborghini cars for sale — Car Compass</title>
+  <meta name="description" content="Find Lamborghini cars worldwide." />
+  <link rel="stylesheet" href="../../css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <div class="eyebrow">Make</div>
+        <h1>Lamborghini cars for sale</h1>
+        <p class="lead">Jump into worldwide marketplace searches for Lamborghini. Pick a popular model or run a custom year/region search.</p>
+        <div class="search-actions" style="margin-bottom:1.25rem">
+          <button type="button" class="chip" data-model="Huracan">Huracan</button>
+          <button type="button" class="chip" data-model="Urus">Urus</button>
+          <button type="button" class="chip" data-model="Aventador">Aventador</button>
+          <button type="button" class="chip" data-model="Revuelto">Revuelto</button>
+          <button type="button" class="chip" data-model="Gallardo">Gallardo</button>
+        </div>
+        <form class="search-panel" id="search-form">
+          <input type="hidden" name="make" id="make" value="Lamborghini" />
+          <div class="form-grid">
+            <div class="field" style="grid-column: span 2">
+              <label for="model">Model</label>
+              <input id="model" name="model" type="text" placeholder="Any Lamborghini model" autocomplete="off" />
+              <div class="suggest" id="model-suggest"></div>
+            </div>
+            <div class="field">
+              <label for="yearFrom">Year from</label>
+              <select id="yearFrom" name="yearFrom" data-placeholder="Any"></select>
+            </div>
+            <div class="field">
+              <label for="yearTo">Year to</label>
+              <select id="yearTo" name="yearTo" data-placeholder="Any"></select>
+            </div>
+            <div class="field">
+              <label for="country">Region</label>
+              <select id="country" name="country">
+                <option value="worldwide">Worldwide</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+                <option value="uk">United Kingdom</option>
+                <option value="de">Germany / EU focus</option>
+                <option value="fr">France</option>
+                <option value="jp">Japan</option>
+                <option value="au">Australia</option>
+                <option value="ae">UAE</option>
+              </select>
+            </div>
+          </div>
+          <div class="search-actions">
+            <button class="btn btn-primary" type="submit">Find Lamborghini cars</button>
+          </div>
+        </form>
+        <div id="results" style="margin-top:1.5rem"></div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="../../js/config.js"></script>
+  <script src="../../js/sources.js"></script>
+  <script src="../../js/site.js"></script>
+  <script src="../../js/vpic.js"></script>
+
+  <script>
+    SiteApp.renderChrome('home');
+    SiteApp.injectSeo({
+      title: 'Lamborghini cars for sale — ' + SiteApp.cfg.siteName,
+      description: 'Locate Lamborghini cars for sale worldwide via marketplace deep links.',
+      path: 'cars/lamborghini/index.html'
+    });
+    const form = document.getElementById('search-form');
+    SiteApp.yearsOptions(form.yearFrom);
+    SiteApp.yearsOptions(form.yearTo);
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      SiteApp.goSearch({
+        make: form.make.value.trim(),
+        model: form.model.value.trim(),
+        yearFrom: form.yearFrom.value,
+        yearTo: form.yearTo.value,
+        country: form.country.value
+      });
+    });
+    SiteVPIC.bindAutocomplete(form.model, document.getElementById('model-suggest'), {
+      mode: 'model', makeInput: form.make
+    });
+    document.querySelectorAll('[data-model]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        form.model.value = btn.dataset.model;
+        SiteApp.renderResultGroups(document.getElementById('results'), {
+          make: form.make.value,
+          model: btn.dataset.model,
+          yearFrom: '', yearTo: '', country: 'worldwide'
+        });
+      });
+    });
+    SiteApp.renderResultGroups(document.getElementById('results'), {
+      make: form.make.value, model: '', yearFrom: '', yearTo: '', country: 'worldwide'
+    });
+  </script>
+</body>
+</html>

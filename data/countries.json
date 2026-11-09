@@ -1,0 +1,10 @@
+[
+  {"slug":"us","name":"United States","region":"North America","flag":"🇺🇸"},
+  {"slug":"ca","name":"Canada","region":"North America","flag":"🇨🇦"},
+  {"slug":"uk","name":"United Kingdom","region":"Europe","flag":"🇬🇧"},
+  {"slug":"de","name":"Germany","region":"Europe","flag":"🇩🇪"},
+  {"slug":"fr","name":"France","region":"Europe","flag":"🇫🇷"},
+  {"slug":"jp","name":"Japan","region":"Asia","flag":"🇯🇵"},
+  {"slug":"au","name":"Australia","region":"Oceania","flag":"🇦🇺"},
+  {"slug":"ae","name":"United Arab Emirates","region":"Middle East","flag":"🇦🇪"}
+]

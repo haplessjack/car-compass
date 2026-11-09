@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Not found — Car Compass</title>
+  <meta name="description" content="Page not found" />
+  <link rel="stylesheet" href="/car-compass/css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+
+    <section class="section">
+      <div class="container" style="text-align:center;padding:3rem 0">
+        <div class="eyebrow">404</div>
+        <h1>Page not found</h1>
+        <p class="lead" style="margin-inline:auto">That URL is not part of this site.</p>
+        <a class="btn btn-primary" href="/car-compass/index.html">Back to search</a>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="/car-compass/js/config.js"></script>
+  <script src="/car-compass/js/sources.js"></script>
+  <script src="/car-compass/js/site.js"></script>
+  <script src="/car-compass/js/vpic.js"></script>
+
+  <script>
+    SiteApp.renderChrome('home');
+    SiteApp.injectSeo({ title: 'Not found — ' + SiteApp.cfg.siteName, description: 'Page not found', path: '404.html' });
+  </script>
+
+</body>
+</html>

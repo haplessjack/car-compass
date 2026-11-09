@@ -1,0 +1,22 @@
+[
+  {"slug":"toyota","name":"Toyota","popular":["Camry","Corolla","RAV4","Land Cruiser","Supra"]},
+  {"slug":"honda","name":"Honda","popular":["Civic","Accord","CR-V","NSX","Pilot"]},
+  {"slug":"ford","name":"Ford","popular":["Mustang","F-150","Bronco","GT","Focus"]},
+  {"slug":"chevrolet","name":"Chevrolet","popular":["Corvette","Camaro","Silverado","Tahoe","Suburban"]},
+  {"slug":"bmw","name":"BMW","popular":["3 Series","5 Series","M3","X5","i8"]},
+  {"slug":"mercedes-benz","name":"Mercedes-Benz","popular":["C-Class","E-Class","S-Class","G-Class","AMG GT"]},
+  {"slug":"audi","name":"Audi","popular":["A4","A6","Q5","R8","RS6"]},
+  {"slug":"volkswagen","name":"Volkswagen","popular":["Golf","Jetta","Passat","Tiguan","ID.4"]},
+  {"slug":"porsche","name":"Porsche","popular":["911","Cayenne","Macan","Taycan","Boxster"]},
+  {"slug":"ferrari","name":"Ferrari","popular":["488","F8","Roma","SF90","296"]},
+  {"slug":"lamborghini","name":"Lamborghini","popular":["Huracan","Urus","Aventador","Revuelto","Gallardo"]},
+  {"slug":"nissan","name":"Nissan","popular":["GT-R","370Z","Altima","Rogue","Pathfinder"]},
+  {"slug":"mazda","name":"Mazda","popular":["MX-5","Mazda3","CX-5","RX-7","CX-90"]},
+  {"slug":"hyundai","name":"Hyundai","popular":["Elantra","Tucson","Santa Fe","Ioniq 5","Genesis Coupe"]},
+  {"slug":"kia","name":"Kia","popular":["Telluride","Sportage","EV6","Stinger","Sorento"]},
+  {"slug":"jeep","name":"Jeep","popular":["Wrangler","Grand Cherokee","Gladiator","Cherokee","Compass"]},
+  {"slug":"tesla","name":"Tesla","popular":["Model 3","Model Y","Model S","Model X","Cybertruck"]},
+  {"slug":"lexus","name":"Lexus","popular":["RX","ES","IS","LX","LC"]},
+  {"slug":"subaru","name":"Subaru","popular":["WRX","Outback","Forester","BRZ","Impreza"]},
+  {"slug":"land-rover","name":"Land Rover","popular":["Range Rover","Defender","Discovery","Evoque","Sport"]}
+]
