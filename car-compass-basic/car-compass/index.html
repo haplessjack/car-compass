@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Car Compass — Locate cars for sale worldwide</title>
+  <meta name="description" content="Find cars for sale worldwide with deep links to Autotrader, Cars.com, mobile.de, BE FORWARD and more." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow">Global car search</div>
+        <h1>Locate cars for sale <em>anywhere</em></h1>
+        <p class="lead js-tagline">Search by make, model, year and region — then jump straight into verified marketplace deep links across the US, UK, Europe, Japan, Australia, Canada and the UAE.</p>
+        <form class="search-panel" id="search-form" action="results.html" method="get">
+          <div class="form-grid">
+            <div class="field">
+              <label for="make">Make</label>
+              <input id="make" name="make" type="text" placeholder="e.g. Porsche" autocomplete="off" />
+              <div class="suggest" id="make-suggest" role="listbox"></div>
+            </div>
+            <div class="field">
+              <label for="model">Model</label>
+              <input id="model" name="model" type="text" placeholder="e.g. 911" autocomplete="off" />
+              <div class="suggest" id="model-suggest" role="listbox"></div>
+            </div>
+            <div class="field">
+              <label for="yearFrom">Year from</label>
+              <select id="yearFrom" name="yearFrom" data-placeholder="Any"></select>
+            </div>
+            <div class="field">
+              <label for="yearTo">Year to</label>
+              <select id="yearTo" name="yearTo" data-placeholder="Any"></select>
+            </div>
+            <div class="field">
+              <label for="country">Region</label>
+              <select id="country" name="country">
+                <option value="worldwide">Worldwide</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+                <option value="uk">United Kingdom</option>
+                <option value="de">Germany / EU focus</option>
+                <option value="fr">France</option>
+                <option value="jp">Japan</option>
+                <option value="au">Australia</option>
+                <option value="ae">UAE</option>
+              </select>
+            </div>
+          </div>
+          <div class="search-actions">
+            <button class="btn btn-primary" type="submit">Find cars</button>
+            <a class="btn btn-ghost" href="vin.html">Decode a VIN</a>
+            <span class="hint">Autocomplete uses the free NHTSA vPIC API in your browser.</span>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/config.js"></script>
+  <script src="js/site.js"></script>
+  <script>
+    SiteApp.renderChrome('home');
+    SiteApp.bindSearchForm(document.getElementById('search-form'));
+  </script>
+</body>
+</html>
