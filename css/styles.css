@@ -228,6 +228,8 @@ a:hover { color: var(--accent); }
 .status-pill.onsite { color: var(--text-muted); border-color: rgba(154,149,136,0.45); }
 .status-pill.google { color: #8fb3e0; border-color: rgba(143,179,224,0.45); }
 .forum-hint { margin: 0 0 0.85rem; max-width: 70ch; }
+.stock-hint { margin: -0.5rem 0 1rem; max-width: 80ch; display: block; }
+.year-hint { display: block; margin-top: 0.3rem; font-size: 0.78rem; color: var(--text-dim); font-style: italic; }
 
 .notice {
   border: 1px solid rgba(212,175,55,0.25);

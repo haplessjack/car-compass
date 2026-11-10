@@ -193,3 +193,94 @@ Google site-search links are not verified listings; forum domains were checked a
 | Turbobricks | volvo | google_site (Forum search via Google) | `https://www.google.com/search?q=site%3Aturbobricks.com+%22for+sale%22+volvo` |
 
 Dropped after testing: AutoScout24 Switzerland (filtered URL format could not be confirmed; Cloudflare), Dubizzle Saudi Arabia (security wall, format unconfirmed), Motors.co.uk (now redirects to Cazoo), ClassicCarsForSale.co.uk search (404), che168 keyword links (not applied; kept as Search on site).
+
+# Precision audit (box headless Chrome + curl, 2026-11-10)
+
+Test searches, each run against every marketplace that builds a filtered link: Porsche 911, Toyota Supra, Ferrari (make only), Porsche 911 2015–2020, Toyota Land Cruiser, Land Rover Defender, Mercedes-Benz (make only). We read the page text of each result to check the listings matched the make, model and year, not just that the page was non-empty. Text dumps and the TSV results are kept outside the repo.
+
+## Root causes found
+- **Year ranges were added to the search text** ("2015..2020 Porsche 911"). Sites don't understand this syntax: BaT and BE FORWARD returned 404 or "No results", CarSensor found no match, and Cars & Bids and mobile.de returned unrelated subsets. Search text is now make + model only. Years go into each site's own year filter where one was verified.
+- **Bare keyword searches across all categories.** Marktplaats and 2dehands matched lawn mowers for "Ferrari" and 12,917 mixed ads for "Porsche 911". They now use the cars category: `/l/auto-s/{make}/q/{model}/` (589 Porsche 911s, 141 Ferraris).
+- **Multi-word names.** Each site spells them its own way, and a wrong form silently drops the filter or errors:
+  - Cars.com: `mercedes_benz`, `toyota-land_cruiser`
+  - Goo-net Exchange: `LAND_CRUISER`
+  - DuPont: `used-land_rover-defender-for-sale`
+  - Bilbasen: `land_rover`, `land_cruiser`, `mercedes`
+  - AutoTempest: `landrover`, `landcruiser`, `mercedesbenz`
+  - TCV: `land%20cruiser`
+  - JamesEdition: `land_rover`, `mercedes`
+  - SBT: `mercedes`
+  - Carzone and Drive AU: `landcruiser`
+- **Model pages that map to one generation.** Standvirtual `/porsche/911` showed only "911 Série F" (10 ads). It now uses `/carros/{make}/q-{model}` (303 ads).
+- **Make-only pages.** DuPont `/autos/results/ferrari/any/any_year` showed "No cars found". It now uses `/used-{make}-for-sale` (1,826 Ferraris).
+- **Strict model lists.** Autotrader UK `model=Defender` returns 0 results because the site splits it into Defender 90/110/130. For that model the link uses `keywords=` instead (4,292 Defenders).
+
+## Year filters verified (link now carries the range)
+
+| Site | Parameter |
+|---|---|
+| AutoScout24 (all 8 sites) | `fregfrom`/`fregto` |
+| AutoTrader.ca | `modelyearfrom`/`modelyearto` (847 → 167) |
+| Cars & Bids | `start_year`/`end_year` (32/32 in range) |
+| mobile.de | `fr=2015:2020` |
+| CarMax | `year=2015-2020` |
+| Edmunds | `year=2015-2020` (outside fetch: all listings 2015–2020) |
+| Trade Me | `year_min`/`year_max` (19 results, 21/23) |
+| Dubizzle | `year__gte`/`year__lte` (98 ads, 50/58) |
+| Otomoto, Autovit | `search[filter_float_year:from/to]` |
+| Standvirtual | `search[filter_float_first_registration_year:from/to]` (42/42) |
+| willhaben | `YEAR_MODEL_FROM`/`YEAR_MODEL_TO` |
+| Kleinanzeigen | `+autos.ez_i:2015%2C2020` (65/77) |
+| FINN, Blocket | `year_from`/`year_to` (52/56, 54/54) |
+| AutoTrader ZA | `year=2015-to-2020` (36/36) |
+| Subito | `ys`/`ye` (164 results, 45/52) |
+| Mercado Libre MX/AR/CL | path segment `/2015-2020/` (MX 52 autos, 98/99); Colombia uses the same format but blocks automated checks |
+| TCV | `fid`/`jid` |
+| DoneDeal | `year_from`/`year_to` (33 → 3) |
+
+These were already working: Autotrader US, Cars.com, ClassicCars, Autotrader UK and AutoTempest.
+
+**Tried and rejected** (ignored or broke results):
+- Bilbasen `yearfrom` (0 cars)
+- Carzone `minYear`
+- PistonHeads `yearFrom`
+- Hemmings
+- Carvana `year`
+- CarSensor `YMIN`
+- Kijiji `carYear`
+- Sauto
+- SBT
+- Mudah
+- Gumtree UK
+- JamesEdition
+- classic.com (500)
+
+When the user sets years, the other links show "Year range not applied by this link — set it on the site."
+
+## Label changes
+- **Broad Arrow → Search on site.** Its search ignored the URL keyword and showed unrelated cars.
+- **Elferspot is shown only for Porsche searches**, or when no make is given. It is a Porsche-only site.
+- **Edmunds: Browser link → Verified link.** An outside fetch confirmed the make/model/year filters; the box itself gets a 403.
+
+## Legitimate empty results (not bugs)
+- DoneDeal: 0 Supras
+- OLX Brasil: 0 Supras
+- Mercado Libre Chile: Supra
+- Autohero: no Porsche 911, Ferrari or Defender
+- DuPont: no Land Cruiser or Defender in stock
+- Carvana: doesn't sell Ferrari (its page 404s)
+- Artcurial: no Supra lots
+
+## Remaining limitations
+- **Some sites fall back to the whole make (or the whole country) when a model is out of stock or named differently:**
+  - Carvana (Supra, Defender)
+  - Carzone (Supra)
+  - CarWale (Supra)
+  - CarDekho (Supra, and Land Cruiser, which it only knows as "Land Cruiser 300")
+  - Cars.co.za (maps Land Cruiser and Defender to a single variant)
+  - Bilbasen (lists only Defender 90/110, not "Defender")
+- **Wallapop showed "Nada por aquí" for every search from the box**, with or without a location. It stays a Deep link, unconfirmed.
+- **Blocked from the box and the outside fetcher:** eBay (4 sites), TrueCar, Carsales, Autotrader AU, Gumtree AU, Leboncoin, La Centrale, Milanuncios, OLX India, One2car, Carsome, Classic Driver, Webmotors, Jiji KE, Mercado Libre CO and Goo-net JP. These keep the standard public URL format.
+- **Rate-limited intermittently from the box:** Autotrader US ("page unavailable"), Cars.com, CarMax, mobile.de and Kleinanzeigen. Each was confirmed working in at least one test run.
+- **Sauto shows a Seznam consent page first** in a fresh browser. curl confirmed filtered counts (187 Porsche 911s, 3 Supras, 102 Ferraris).
+- **Make pages on TCV and Goo-net Exchange** (e.g. Ferrari) are make landing pages listing that make's models and counts.

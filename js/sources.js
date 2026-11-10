@@ -15,9 +15,28 @@
     if (b) return b + " ";
     return "";
   }
-  function keyword(make, model, yFrom, yTo) {
-    return (qYear(yFrom, yTo) + [make, model].filter(Boolean).join(" ")).trim();
+  // Search text is make + model only. Year syntax like "2015..2020" inside a
+  // keyword box is not understood by these sites and caused "no results"
+  // (BaT 404, BE FORWARD 404, CarSensor 0件). Years go in real year filters.
+  function keyword(make, model) {
+    return [make, model].map(x => String(x || "").trim()).filter(Boolean).join(" ");
   }
+  // Ordered, validated year range. Either bound may be blank.
+  function yr(p) {
+    const ok = v => { const n = parseInt(v, 10); return n >= 1900 && n <= 2100 ? n : 0; };
+    let a = ok(p.yearFrom), b = ok(p.yearTo);
+    if (a && b && a > b) { const t = a; a = b; b = t; }
+    return { from: a ? String(a) : "", to: b ? String(b) : "", any: !!(a || b) };
+  }
+  // Append non-empty query params to a URL.
+  function withQs(url, obj) {
+    const qs = new URLSearchParams();
+    Object.keys(obj).forEach(k => { if (obj[k] !== "" && obj[k] != null) qs.set(k, obj[k]); });
+    const q = qs.toString();
+    return q ? url + (url.indexOf("?") === -1 ? "?" : "&") + q : url;
+  }
+  // slug with underscores instead of hyphens inside a name (cars.com, Goo-net, JamesEdition)
+  function uslug(s) { return slug(s).replace(/-/g, "_"); }
 
   const SOURCES = [
     {
@@ -35,8 +54,9 @@
         let url = `https://www.autotrader.com/cars-for-sale/${make}`;
         if (model) url += `/${model}`;
         const qs = new URLSearchParams();
-        if (p.yearFrom) qs.set("startYear", p.yearFrom);
-        if (p.yearTo) qs.set("endYear", p.yearTo);
+        const y = yr(p);
+        if (y.from) qs.set("startYear", y.from);
+        if (y.to) qs.set("endYear", y.to);
         // 0 = nationwide. Do not send marketExtension without a zip;
         // that pairing can yield a "no vehicles found" page for some users.
         qs.set("searchRadius", "0");
@@ -54,15 +74,18 @@
       verify: "verified",
       note: "National US marketplace",
       build(p) {
-        const make = slug(p.make);
-        const model = slug(p.model);
+        // cars.com ids use underscores inside names: mercedes_benz, toyota-land_cruiser.
+        // Hyphenated ids silently drop the filter (verified 2026-11-10).
+        const make = uslug(p.make);
+        const model = uslug(p.model);
         const params = new URLSearchParams();
         params.set("stock_type", "all");
         params.set("maximum_distance", "all");
         if (make) params.append("makes[]", make);
         if (make && model) params.append("models[]", `${make}-${model}`);
-        if (p.yearFrom) params.set("year_min", p.yearFrom);
-        if (p.yearTo) params.set("year_max", p.yearTo);
+        const y = yr(p);
+        if (y.from) params.set("year_min", y.from);
+        if (y.to) params.set("year_max", y.to);
         return "https://www.cars.com/shopping/results/?" + params.toString();
       }
     },
@@ -89,7 +112,7 @@
       verify: "verified",
       note: "Cars & Trucks category search",
       build(p) {
-        const nkw = keyword(p.make, p.model, p.yearFrom, p.yearTo) || "car";
+        const nkw = keyword(p.make, p.model) || "car";
         // Current public search form (legacy /sch/Cars-Trucks/6001/i.html returns an error page).
         return `https://www.ebay.com/sch/i.html?_nkw=${enc(nkw)}&_sacat=6001`;
       }
@@ -104,7 +127,7 @@
       verify: "verified",
       note: "Enthusiast auction; search resolves to make/model hubs when possible",
       build(p) {
-        const s = keyword(p.make, p.model, p.yearFrom, p.yearTo);
+        const s = keyword(p.make, p.model);
         return s ? `https://bringatrailer.com/search/?s=${enc(s)}` : "https://bringatrailer.com/";
       }
     },
@@ -118,8 +141,9 @@
       verify: "verified",
       note: "Modern enthusiast auctions",
       build(p) {
-        const s = keyword(p.make, p.model, p.yearFrom, p.yearTo);
-        return s ? `https://carsandbids.com/search?q=${enc(s)}` : "https://carsandbids.com/";
+        const s = keyword(p.make, p.model), y = yr(p);
+        if (!s && !y.any) return "https://carsandbids.com/";
+        return withQs("https://carsandbids.com/search", { q: s, start_year: y.from, end_year: y.to });
       }
     },
     {
@@ -149,8 +173,9 @@
       note: "Collector car marketplace",
       build(p) {
         const make = slug(p.make), model = slug(p.model);
-        const yf = p.yearFrom || "1900";
-        const yt = p.yearTo || new Date().getFullYear();
+        const y = yr(p);
+        const yf = y.from || "1900";
+        const yt = y.to || new Date().getFullYear();
         if (make && model) return `https://classiccars.com/listings/find/${yf}-${yt}/${make}/${model}`;
         if (make) return `https://classiccars.com/listings/find/${yf}-${yt}/${make}`;
         return `https://classiccars.com/listings/find/${yf}-${yt}`;
@@ -169,9 +194,13 @@
         const params = new URLSearchParams();
         params.set("advertising-location", "at_cars");
         if (p.make) params.set("make", p.make);
-        if (p.model) params.set("model", p.model);
-        if (p.yearFrom) params.set("year-from", p.yearFrom);
-        if (p.yearTo) params.set("year-to", p.yearTo);
+        // Autotrader UK needs its exact model name; Defender is split into
+        // "Defender 90/110/130", so model=Defender shows 0 results. Use keywords there.
+        const splitModels = { defender: 1 };
+        if (p.model) params.set(splitModels[slug(p.model)] ? "keywords" : "model", p.model);
+        const y = yr(p);
+        if (y.from) params.set("year-from", y.from);
+        if (y.to) params.set("year-to", y.to);
         // The UK site shows "0 results" until a postcode is provided.
         // Default London postcode + 1500-mile radius = nationwide results.
         params.set("postcode", "SW1A1AA");
@@ -192,7 +221,8 @@
         const params = new URLSearchParams();
         // Current UI ignores Category/Make/Model query params and redirects to
         // an unfiltered search. The keywords= parameter does filter.
-        const s = keyword(p.make, p.model, p.yearFrom, p.yearTo);
+        // No working year parameter (yearFrom/yearTo are ignored), so years are set on the site.
+        const s = keyword(p.make, p.model);
         if (s) params.set("keywords", s);
         return "https://www.pistonheads.com/buy/search?" + params.toString();
       }
@@ -207,8 +237,11 @@
       verify: "verified",
       note: "Germany’s largest marketplace; keyword search",
       build(p) {
-        const q = keyword(p.make, p.model, p.yearFrom, p.yearTo) || "auto";
-        return "https://suchen.mobile.de/fahrzeuge/search.html?dam=false&isSearchRequest=true&ref=quickSearch&s=Car&sb=rel&vc=Car&q=" + enc(q);
+        const q = keyword(p.make, p.model) || "auto", y = yr(p);
+        let url = "https://suchen.mobile.de/fahrzeuge/search.html?dam=false&isSearchRequest=true&ref=quickSearch&s=Car&sb=rel&vc=Car&q=" + enc(q);
+        // fr=FROM:TO is mobile.de's first-registration filter (either side may be blank).
+        if (y.any) url += "&fr=" + enc(y.from + ":" + y.to);
+        return url;
       }
     },
     {
@@ -226,8 +259,9 @@
         if (make) url += "/" + make;
         if (model) url += "/" + model;
         const params = new URLSearchParams();
-        if (p.yearFrom) params.set("fregfrom", p.yearFrom);
-        if (p.yearTo) params.set("fregto", p.yearTo);
+        const y = yr(p);
+        if (y.from) params.set("fregfrom", y.from);
+        if (y.to) params.set("fregto", y.to);
         const q = params.toString();
         return q ? url + "?" + q : url;
       }
@@ -242,7 +276,7 @@
       verify: "bot_blocked",
       note: "France classifieds (category 2 = vehicles). The URL format is standard; automated checks hit a 403/captcha, so this stays a browser link.",
       build(p) {
-        const text = keyword(p.make, p.model, p.yearFrom, p.yearTo) || "voiture";
+        const text = keyword(p.make, p.model) || "voiture";
         return "https://www.leboncoin.fr/recherche?category=2&text=" + enc(text) + "&owner_type=all";
       }
     },
@@ -256,7 +290,7 @@
       verify: "verified",
       note: "Major Japanese used-car portal (free-word search)",
       build(p) {
-        const kw = keyword(p.make, p.model, p.yearFrom, p.yearTo);
+        const kw = keyword(p.make, p.model);
         // /usedcar/search.php?keyword= does not apply the filter (shows the
         // unfiltered national list). The freeword path does.
         return kw
@@ -274,8 +308,10 @@
       verify: "verified",
       note: "English-facing Goo-net (make/model path)",
       build(p) {
-        const make = slug(p.make).toUpperCase();
-        const model = slug(p.model).toUpperCase();
+        // Goo-net uses underscores inside names (LAND_ROVER, LAND_CRUISER, MERCEDES_BENZ);
+        // hyphens return a 500 or the unfiltered make page.
+        const make = uslug(p.make).toUpperCase();
+        const model = uslug(p.model).toUpperCase();
         // /search/?keyword= returns a 404. Public listings use /usedcars/MAKE/MODEL/.
         if (make && model) return `https://www.goo-net-exchange.com/usedcars/${make}/${model}/`;
         if (make) return `https://www.goo-net-exchange.com/usedcars/${make}/`;
@@ -292,7 +328,7 @@
       verify: "verified",
       note: "Japan export stock (keyword stocklist)",
       build(p) {
-        const kw = keyword(p.make, p.model, p.yearFrom, p.yearTo);
+        const kw = keyword(p.make, p.model);
         return kw
           ? "https://www.beforward.jp/stocklist/keyword=" + enc(kw)
           : "https://www.beforward.jp/stocklist/";
@@ -324,10 +360,11 @@
       verify: "verified",
       note: "Canadian marketplace",
       build(p) {
-        const make = slug(p.make), model = slug(p.model);
-        if (make && model) return `https://www.autotrader.ca/cars/${make}/${model}/`;
-        if (make) return `https://www.autotrader.ca/cars/${make}/`;
-        return "https://www.autotrader.ca/cars/";
+        const make = slug(p.make), model = slug(p.model), y = yr(p);
+        let url = "https://www.autotrader.ca/cars/";
+        if (make) url += make + "/" + (model ? model + "/" : "");
+        // modelyearfrom/modelyearto filter (847 → 167 results for 911 2015–2020).
+        return withQs(url, { modelyearfrom: y.from, modelyearto: y.to });
       }
     },
     {
@@ -340,10 +377,10 @@
       verify: "verified",
       note: "UAE motors classifieds",
       build(p) {
-        const make = slug(p.make), model = slug(p.model);
-        if (make && model) return `https://uae.dubizzle.com/motors/used-cars/${make}/${model}/`;
-        if (make) return `https://uae.dubizzle.com/motors/used-cars/${make}/`;
-        return "https://uae.dubizzle.com/motors/used-cars/";
+        const make = slug(p.make), model = slug(p.model), y = yr(p);
+        let url = "https://uae.dubizzle.com/motors/used-cars/";
+        if (make) url += make + "/" + (model ? model + "/" : "");
+        return withQs(url, { year__gte: y.from, year__lte: y.to });
       }
     },
     {
@@ -369,10 +406,11 @@
       regions: ["worldwide", "de", "eu", "us"],
       kinds: ["classic"],
       home: "https://www.elferspot.com/",
-      verify: "deeplink",
-      note: "Porsche-focused classic marketplace. Search uses the cs= parameter (spaces as +).",
+      verify: "verified",
+      onlyMakes: ["porsche"],
+      note: "Porsche-only marketplace (shown for Porsche searches). Keyword search.",
       build(p) {
-        const s = keyword(p.make, p.model, "", "");
+        const s = keyword(p.make, p.model);
         if (!s) return "https://www.elferspot.com/en/search/";
         const qs = new URLSearchParams();
         qs.set("cs", s);
@@ -401,11 +439,15 @@
       kinds: ["classic", "exotic"],
       home: "https://www.dupontregistry.com/",
       verify: "verified",
-      note: "Luxury and exotic inventory",
+      note: "Luxury and exotic dealer inventory (make/model page)",
       build(p) {
-        const make = slug(p.make), model = slug(p.model);
-        if (make && model) return `https://www.dupontregistry.com/autos/results/${make}/${model}/any_year`;
-        if (make) return `https://www.dupontregistry.com/autos/results/${make}/any/any_year`;
+        // The old /autos/results/MAKE/any/any_year form showed "No cars found" for
+        // make-only searches; the site's own canonical pages filter correctly.
+        // Multi-word names use underscores (land_rover, mercedes_benz, land_cruiser);
+        // with hyphens the site reads only the first word ("Used Land for Sale").
+        const make = uslug(p.make), model = uslug(p.model);
+        if (make && model) return `https://www.dupontregistry.com/used-${make}-${model}-for-sale`;
+        if (make) return `https://www.dupontregistry.com/used-${make}-for-sale`;
         return "https://www.dupontregistry.com/autos/";
       }
     }
@@ -429,6 +471,41 @@
     return prefix + (usePlus ? plus(t) : enc(t)) + (suffix || "");
   }
 
+  // AutoScout24 country sites: make/model path + first-registration years.
+  function as24(p, base) {
+    const y = yr(p);
+    return withQs(pathMM(p, base, "", base), { fregfrom: y.from, fregto: y.to });
+  }
+  // Mercado Libre: /make/model/ plus a /FROM-TO/ year segment (verified MX, AR, CL).
+  function mlPath(p, host) {
+    const make = slug(p.make), model = slug(p.model), y = yr(p);
+    let url = host + "/";
+    if (make) url += make + "/" + (model ? model + "/" : "");
+    if (y.any) url += (y.from || "1950") + "-" + (y.to || String(new Date().getFullYear() + 1)) + "/";
+    return url;
+  }
+  // Marktplaats / 2dehands: stay inside the cars category. A bare keyword
+  // search covers every category ("ferrari" matched lawn mowers; "porsche 911"
+  // returned 12,917 ads incl. parts and toys vs 589 cars).
+  function mpPath(p, host) {
+    const make = slug(p.make), model = String(p.model || "").trim().toLowerCase();
+    if (!make) return host + "/l/auto-s/";
+    return host + "/l/auto-s/" + make + "/" + (model ? "q/" + plus(model) + "/" : "");
+  }
+  // OLX-group sites (Otomoto, Autovit): production-year filter.
+  function olxYears(p, url) {
+    const y = yr(p);
+    return withQs(url, { "search[filter_float_year:from]": y.from, "search[filter_float_year:to]": y.to });
+  }
+  function aliasModel(p, map) {
+    const m = slug(p.model);
+    return map[m] ? Object.assign({}, p, { model: map[m] }) : p;
+  }
+  function aliasMake(p, map) {
+    const m = slug(p.make);
+    return map[m] ? Object.assign({}, p, { make: map[m] }) : p;
+  }
+
   const MORE_SOURCES = [
     /* ---------- North America ---------- */
     { id: "classic-com", name: "CLASSIC.COM", region: "US", regions: ["us", "worldwide"], kinds: ["classic", "market", "auction"],
@@ -439,17 +516,24 @@
       home: "https://www.autotempest.com/", verify: "verified",
       note: "Aggregator that searches many US sites at once (nationwide radius)",
       build(p) {
-        const make = slug(p.make), model = slug(p.model);
+        // AutoTempest ids are lower-case with no separators (landrover, landcruiser,
+        // mercedesbenz, gclass); "land-cruiser" or "mercedes-benz" gives an error page.
+        const id = s => slug(s).replace(/-/g, "");
+        const make = id(p.make), model = id(p.model), y = yr(p);
         if (!make) return "https://www.autotempest.com/";
         const qs = new URLSearchParams({ make, model, zip: "", radius: "any" });
-        if (p.yearFrom) qs.set("minyear", p.yearFrom);
-        if (p.yearTo) qs.set("maxyear", p.yearTo);
+        if (y.from) qs.set("minyear", y.from);
+        if (y.to) qs.set("maxyear", y.to);
         return "https://www.autotempest.com/results?" + qs.toString();
       } },
     { id: "carmax", name: "CarMax", region: "US", regions: ["us", "worldwide"], kinds: ["dealer"],
       home: "https://www.carmax.com/", verify: "verified",
       note: "Nationwide used-car retailer (make/model page)",
-      build(p) { return pathMM(p, "https://www.carmax.com/cars", "", "https://www.carmax.com/cars"); } },
+      build(p) {
+        const y = yr(p), now = new Date().getFullYear() + 1;
+        return withQs(pathMM(p, "https://www.carmax.com/cars", "", "https://www.carmax.com/cars"),
+          { year: y.any ? (y.from || "1990") + "-" + (y.to || now) : "" });
+      } },
     { id: "carvana", name: "Carvana", region: "US", regions: ["us", "worldwide"], kinds: ["dealer"],
       home: "https://www.carvana.com/", verify: "verified",
       note: "Online used-car retailer. If the model is out of stock it falls back to the make page.",
@@ -463,12 +547,16 @@
       note: "Used listings by make/model. Automated checks hit a 'press and hold' bot check, so this stays a browser link.",
       build(p) { return pathMM(p, "https://www.truecar.com/used-cars-for-sale/listings", "/", "https://www.truecar.com/used-cars-for-sale/listings/"); } },
     { id: "edmunds", name: "Edmunds", region: "US", regions: ["us", "worldwide"], kinds: ["market"],
-      home: "https://www.edmunds.com/", verify: "bot_blocked",
-      note: "Used inventory search. Automated checks got a 403, so this stays a browser link.",
+      home: "https://www.edmunds.com/", verify: "verified",
+      note: "US dealer inventory (make/model + year filters). Results are sorted by distance from your location (New York by default).",
       build(p) {
-        const make = slug(p.make), model = slug(p.model);
+        // Verified 2026-11-10 by outside fetch: make=land-rover&model=land-rover|defender and
+        // year=2015-2020 return only matching cars. (Our box itself gets a 403.)
+        const make = slug(p.make), model = slug(p.model), y = yr(p);
         if (!make) return "https://www.edmunds.com/inventory/srp.html";
-        return "https://www.edmunds.com/inventory/srp.html?make=" + make + (model ? "&model=" + make + "|" + model : "");
+        let url = "https://www.edmunds.com/inventory/srp.html?make=" + make + (model ? "&model=" + make + "|" + model : "");
+        if (y.any) url += "&year=" + (y.from || "1990") + "-" + (y.to || String(new Date().getFullYear() + 1));
+        return url;
       } },
     { id: "copart", name: "Copart", region: "US", regions: ["us", "ca", "uk", "worldwide"], kinds: ["auction", "salvage"],
       home: "https://www.copart.com/", verify: "verified",
@@ -494,19 +582,19 @@
     { id: "mercadolibre-mx", name: "Mercado Libre México", region: "Latin America", regions: ["mx", "worldwide"], kinds: ["market", "classifieds"],
       home: "https://autos.mercadolibre.com.mx/", verify: "verified",
       note: "Mexico vehicle listings (make/model path)",
-      build(p) { return pathMM(p, "https://autos.mercadolibre.com.mx", "/", "https://autos.mercadolibre.com.mx/"); } },
+      build(p) { return mlPath(p, "https://autos.mercadolibre.com.mx"); } },
     { id: "mercadolibre-ar", name: "Mercado Libre Argentina", region: "Latin America", regions: ["ar", "worldwide"], kinds: ["market", "classifieds"],
       home: "https://autos.mercadolibre.com.ar/", verify: "verified",
       note: "Argentina vehicle listings (make/model path)",
-      build(p) { return pathMM(p, "https://autos.mercadolibre.com.ar", "/", "https://autos.mercadolibre.com.ar/"); } },
+      build(p) { return mlPath(p, "https://autos.mercadolibre.com.ar"); } },
     { id: "mercadolibre-cl", name: "Mercado Libre Chile", region: "Latin America", regions: ["cl", "worldwide"], kinds: ["market", "classifieds"],
       home: "https://autos.mercadolibre.cl/", verify: "verified",
       note: "Chile vehicle listings (make/model path)",
-      build(p) { return pathMM(p, "https://autos.mercadolibre.cl", "/", "https://autos.mercadolibre.cl/"); } },
+      build(p) { return mlPath(p, "https://autos.mercadolibre.cl"); } },
     { id: "mercadolibre-co", name: "Mercado Libre Colombia", region: "Latin America", regions: ["co", "worldwide"], kinds: ["market", "classifieds"],
       home: "https://carros.mercadolibre.com.co/", verify: "bot_blocked",
       note: "Colombia vehicle listings. Same path format as the other Mercado Libre sites; automated checks hit a security wall, so this stays a browser link.",
-      build(p) { return pathMM(p, "https://carros.mercadolibre.com.co", "/", "https://carros.mercadolibre.com.co/"); } },
+      build(p) { return mlPath(p, "https://carros.mercadolibre.com.co"); } },
     { id: "webmotors", name: "Webmotors", region: "Latin America", regions: ["br", "worldwide"], kinds: ["market"],
       home: "https://www.webmotors.com.br/", verify: "verified",
       note: "Brazil’s largest car marketplace (make/model path)",
@@ -538,13 +626,15 @@
       note: "Ireland’s largest car classifieds (make/model path)",
       build(p) {
         const mk = String(p.make || "").trim(), md = String(p.model || "").trim();
-        if (!mk) return "https://www.donedeal.ie/cars";
-        return "https://www.donedeal.ie/cars/" + enc(mk) + (md ? "/" + enc(md) : "");
+        const y = yr(p);
+        const url = mk ? "https://www.donedeal.ie/cars/" + enc(mk) + (md ? "/" + enc(md) : "") : "https://www.donedeal.ie/cars";
+        return withQs(url, { year_from: y.from, year_to: y.to });
       } },
     { id: "carzone", name: "Carzone", region: "UK & Ireland", regions: ["ie", "worldwide"], kinds: ["market"],
       home: "https://www.carzone.ie/", verify: "verified",
       note: "Irish dealer and private listings. If no cars match the model it falls back to the make page.",
-      build(p) { return pathMM(p, "https://www.carzone.ie/used-cars", "", "https://www.carzone.ie/used-cars"); } },
+      // Irish listings spell it "Landcruiser" (land-cruiser falls back to all Toyotas).
+      build(p) { return pathMM(aliasModel(p, { "land-cruiser": "landcruiser" }), "https://www.carzone.ie/used-cars", "", "https://www.carzone.ie/used-cars"); } },
 
     /* ---------- Europe ---------- */
     { id: "classic-trader", name: "Classic Trader", region: "Europe", regions: ["de", "eu", "uk", "worldwide"], kinds: ["classic", "classifieds"],
@@ -553,31 +643,33 @@
       build(p) { return kwq(p, "https://www.classic-trader.com/uk/cars/search?fulltext=", "", "https://www.classic-trader.com/uk/cars/search", true); } },
     { id: "autoscout24-de", name: "AutoScout24 Germany", region: "Europe", regions: ["de", "eu"], kinds: ["market"],
       home: "https://www.autoscout24.de/", verify: "verified", note: "German AutoScout24 site (make/model path)",
-      build(p) { return pathMM(p, "https://www.autoscout24.de/lst", "", "https://www.autoscout24.de/lst"); } },
+      build(p) { return as24(p, "https://www.autoscout24.de/lst"); } },
     { id: "autoscout24-it", name: "AutoScout24 Italy", region: "Europe", regions: ["it", "eu"], kinds: ["market"],
       home: "https://www.autoscout24.it/", verify: "verified", note: "Italian AutoScout24 site (make/model path)",
-      build(p) { return pathMM(p, "https://www.autoscout24.it/lst", "", "https://www.autoscout24.it/lst"); } },
+      build(p) { return as24(p, "https://www.autoscout24.it/lst"); } },
     { id: "autoscout24-fr", name: "AutoScout24 France", region: "Europe", regions: ["fr", "eu"], kinds: ["market"],
       home: "https://www.autoscout24.fr/", verify: "verified", note: "French AutoScout24 site (make/model path)",
-      build(p) { return pathMM(p, "https://www.autoscout24.fr/lst", "", "https://www.autoscout24.fr/lst"); } },
+      build(p) { return as24(p, "https://www.autoscout24.fr/lst"); } },
     { id: "autoscout24-nl", name: "AutoScout24 Netherlands", region: "Europe", regions: ["nl", "eu"], kinds: ["market"],
       home: "https://www.autoscout24.nl/", verify: "verified", note: "Dutch AutoScout24 site (make/model path)",
-      build(p) { return pathMM(p, "https://www.autoscout24.nl/lst", "", "https://www.autoscout24.nl/lst"); } },
+      build(p) { return as24(p, "https://www.autoscout24.nl/lst"); } },
     { id: "autoscout24-be", name: "AutoScout24 Belgium", region: "Europe", regions: ["be", "eu"], kinds: ["market"],
       home: "https://www.autoscout24.be/", verify: "verified", note: "Belgian AutoScout24 site (make/model path)",
-      build(p) { return pathMM(p, "https://www.autoscout24.be/nl/lst", "", "https://www.autoscout24.be/nl/lst"); } },
+      build(p) { return as24(p, "https://www.autoscout24.be/nl/lst"); } },
     { id: "autoscout24-es", name: "AutoScout24 Spain", region: "Europe", regions: ["es", "eu"], kinds: ["market"],
       home: "https://www.autoscout24.es/", verify: "verified", note: "Spanish AutoScout24 site (make/model path)",
-      build(p) { return pathMM(p, "https://www.autoscout24.es/lst", "", "https://www.autoscout24.es/lst"); } },
+      build(p) { return as24(p, "https://www.autoscout24.es/lst"); } },
     { id: "autoscout24-at", name: "AutoScout24 Austria", region: "Europe", regions: ["at", "eu"], kinds: ["market"],
       home: "https://www.autoscout24.at/", verify: "verified", note: "Austrian AutoScout24 site (make/model path)",
-      build(p) { return pathMM(p, "https://www.autoscout24.at/lst", "", "https://www.autoscout24.at/lst"); } },
+      build(p) { return as24(p, "https://www.autoscout24.at/lst"); } },
     { id: "kleinanzeigen", name: "Kleinanzeigen", region: "Europe", regions: ["de", "eu"], kinds: ["classifieds"],
       home: "https://www.kleinanzeigen.de/", verify: "verified",
       note: "Germany’s big classifieds site (formerly eBay Kleinanzeigen), cars category",
       build(p) {
-        const k = slug(mmText(p));
-        return k ? "https://www.kleinanzeigen.de/s-autos/" + k + "/k0c216" : "https://www.kleinanzeigen.de/s-autos/c216";
+        const k = slug(mmText(p)), y = yr(p);
+        // "+autos.ez_i:FROM,TO" is the first-registration filter (verified 33 of 37 years in range).
+        const ez = y.any ? "+autos.ez_i:" + y.from + "%2C" + y.to : "";
+        return k ? "https://www.kleinanzeigen.de/s-autos/" + k + "/k0c216" + ez : "https://www.kleinanzeigen.de/s-autos/c216" + ez;
       } },
     { id: "ebay-de", name: "eBay Germany", region: "Europe", regions: ["de", "eu"], kinds: ["market", "auction"],
       home: "https://www.ebay.de/", verify: "bot_blocked",
@@ -585,12 +677,12 @@
       build(p) { return kwq(p, "https://www.ebay.de/sch/i.html?_sacat=9801&_nkw=", "", "https://www.ebay.de/b/Autos/9801", true); } },
     { id: "marktplaats", name: "Marktplaats", region: "Europe", regions: ["nl", "eu"], kinds: ["classifieds"],
       home: "https://www.marktplaats.nl/", verify: "verified",
-      note: "Netherlands classifieds (keyword)",
-      build(p) { const t = mmText(p).toLowerCase(); return t ? "https://www.marktplaats.nl/q/" + plus(t) + "/" : "https://www.marktplaats.nl/l/auto-s/"; } },
+      note: "Netherlands classifieds, cars category (make path + model keyword)",
+      build(p) { return mpPath(p, "https://www.marktplaats.nl"); } },
     { id: "2dehands", name: "2dehands", region: "Europe", regions: ["be", "eu"], kinds: ["classifieds"],
       home: "https://www.2dehands.be/", verify: "verified",
-      note: "Belgium classifieds (keyword)",
-      build(p) { const t = mmText(p).toLowerCase(); return t ? "https://www.2dehands.be/q/" + plus(t) + "/" : "https://www.2dehands.be/l/auto-s/"; } },
+      note: "Belgium classifieds, cars category (make path + model keyword)",
+      build(p) { return mpPath(p, "https://www.2dehands.be"); } },
     { id: "lacentrale", name: "La Centrale", region: "Europe", regions: ["fr", "eu"], kinds: ["market"],
       home: "https://www.lacentrale.fr/", verify: "bot_blocked",
       note: "Major French used-car site (MAKE:MODEL filter). Automated checks got a 403, so this stays a browser link.",
@@ -602,7 +694,7 @@
     { id: "subito", name: "Subito", region: "Europe", regions: ["it", "eu"], kinds: ["classifieds"],
       home: "https://www.subito.it/", verify: "verified",
       note: "Italy classifieds, cars category, all of Italy (keyword)",
-      build(p) { return kwq(p, "https://www.subito.it/annunci-italia/vendita/auto/?q=", "", "https://www.subito.it/annunci-italia/vendita/auto/", true); } },
+      build(p) { const y = yr(p); return withQs("https://www.subito.it/annunci-italia/vendita/auto/", { q: mmText(p), ys: y.from, ye: y.to }); } },
     { id: "coches-net", name: "coches.net", region: "Europe", regions: ["es", "eu"], kinds: ["market"],
       home: "https://www.coches.net/", verify: "verified",
       note: "Spain’s big used-car portal (keyword)",
@@ -617,24 +709,39 @@
       build(p) { return kwq(p, "https://es.wallapop.com/search?category_id=100&keywords=", "", "https://es.wallapop.com/coches-segunda-mano", false); } },
     { id: "standvirtual", name: "Standvirtual", region: "Europe", regions: ["pt", "eu"], kinds: ["market"],
       home: "https://www.standvirtual.com/", verify: "verified",
-      note: "Portugal’s main car marketplace (make/model path)",
-      build(p) { return pathMM(p, "https://www.standvirtual.com/carros", "", "https://www.standvirtual.com/carros"); } },
+      note: "Portugal’s main car marketplace (make path + model keyword, year filter)",
+      build(p) {
+        // Model paths map to one generation (/porsche/911 = "911 Série F", 10 ads),
+        // so use the make path plus a q- keyword (303 ads) and the year filter.
+        const make = slug(p.make), model = slug(p.model), y = yr(p);
+        let url = "https://www.standvirtual.com/carros" + (make ? "/" + make : "") + (model ? "/q-" + model : "");
+        return withQs(url, { "search[filter_float_first_registration_year:from]": y.from, "search[filter_float_first_registration_year:to]": y.to });
+      } },
     { id: "willhaben", name: "willhaben", region: "Europe", regions: ["at", "eu"], kinds: ["classifieds", "market"],
       home: "https://www.willhaben.at/", verify: "verified",
       note: "Austria’s largest classifieds, car exchange (keyword)",
-      build(p) { return kwq(p, "https://www.willhaben.at/iad/gebrauchtwagen/auto/gebrauchtwagenboerse?keyword=", "", "https://www.willhaben.at/iad/gebrauchtwagen/auto/gebrauchtwagenboerse", true); } },
+      build(p) { const y = yr(p); return withQs("https://www.willhaben.at/iad/gebrauchtwagen/auto/gebrauchtwagenboerse", { keyword: mmText(p), YEAR_MODEL_FROM: y.from, YEAR_MODEL_TO: y.to }); } },
     { id: "blocket", name: "Blocket", region: "Europe", regions: ["se", "eu"], kinds: ["classifieds", "market"],
       home: "https://www.blocket.se/", verify: "verified",
       note: "Sweden’s main classifieds, cars (keyword)",
-      build(p) { return kwq(p, "https://www.blocket.se/mobility/search/car?q=", "", "https://www.blocket.se/mobility/search/car", true); } },
+      build(p) { const y = yr(p); return withQs("https://www.blocket.se/mobility/search/car", { q: mmText(p), year_from: y.from, year_to: y.to }); } },
     { id: "finn", name: "FINN.no", region: "Europe", regions: ["no", "eu"], kinds: ["classifieds", "market"],
       home: "https://www.finn.no/", verify: "verified",
       note: "Norway’s main marketplace, cars (keyword)",
-      build(p) { return kwq(p, "https://www.finn.no/mobility/search/car?q=", "", "https://www.finn.no/mobility/search/car", true); } },
+      build(p) { const y = yr(p); return withQs("https://www.finn.no/mobility/search/car", { q: mmText(p), year_from: y.from, year_to: y.to }); } },
     { id: "bilbasen", name: "Bilbasen", region: "Europe", regions: ["dk", "eu"], kinds: ["market"],
       home: "https://www.bilbasen.dk/", verify: "verified",
       note: "Denmark’s largest used-car site (make/model path)",
-      build(p) { return pathMM(p, "https://www.bilbasen.dk/brugt/bil", "", "https://www.bilbasen.dk/brugt/bil"); } },
+      build(p) {
+        // Bilbasen ids use underscores (land_rover, land_cruiser) and "mercedes";
+        // hyphenated names silently fall back to all 42,000 cars.
+        const alias = { "mercedes-benz": "mercedes" };
+        let make = slug(p.make);
+        make = alias[make] || make.replace(/-/g, "_");
+        const model = uslug(p.model);
+        if (!make) return "https://www.bilbasen.dk/brugt/bil";
+        return "https://www.bilbasen.dk/brugt/bil/" + make + (model ? "/" + model : "");
+      } },
     { id: "nettiauto", name: "Nettiauto", region: "Europe", regions: ["fi", "eu"], kinds: ["market"],
       home: "https://www.nettiauto.com/", verify: "verified",
       note: "Finland’s main car marketplace (make/model path)",
@@ -642,7 +749,7 @@
     { id: "otomoto", name: "Otomoto", region: "Europe", regions: ["pl", "eu"], kinds: ["market"],
       home: "https://www.otomoto.pl/", verify: "verified",
       note: "Poland’s largest car marketplace (make/model path)",
-      build(p) { return pathMM(p, "https://www.otomoto.pl/osobowe", "", "https://www.otomoto.pl/osobowe"); } },
+      build(p) { return olxYears(p, pathMM(p, "https://www.otomoto.pl/osobowe", "", "https://www.otomoto.pl/osobowe")); } },
     { id: "sauto", name: "Sauto", region: "Europe", regions: ["cz", "eu"], kinds: ["market"],
       home: "https://www.sauto.cz/", verify: "verified",
       note: "Czech Republic car marketplace (make/model path)",
@@ -650,7 +757,7 @@
     { id: "autovit", name: "Autovit", region: "Europe", regions: ["ro", "eu"], kinds: ["market"],
       home: "https://www.autovit.ro/", verify: "verified",
       note: "Romania’s main car marketplace (make/model path)",
-      build(p) { return pathMM(p, "https://www.autovit.ro/autoturisme", "", "https://www.autovit.ro/autoturisme"); } },
+      build(p) { return olxYears(p, pathMM(p, "https://www.autovit.ro/autoturisme", "", "https://www.autovit.ro/autoturisme")); } },
     { id: "car-gr", name: "Car.gr", region: "Europe", regions: ["gr", "eu"], kinds: ["market", "classifieds"],
       home: "https://www.car.gr/", verify: "search_on_site",
       note: "Greece’s main car site. Filters need internal IDs and automated checks were blocked. Opens car classifieds — pick the make and model there.",
@@ -680,11 +787,21 @@
     { id: "tcv", name: "TCV", region: "Japan", regions: ["jp", "worldwide"], kinds: ["export", "market"],
       home: "https://www.tc-v.com/", verify: "verified",
       note: "Japan export marketplace, formerly tradecarview (make/model path)",
-      build(p) { return pathMM(p, "https://www.tc-v.com/used_car", "/", "https://www.tc-v.com/used_car/"); } },
+      build(p) {
+        // TCV paths use lower-case names with spaces ("land rover", "land cruiser");
+        // hyphenated multi-word names 404. fid/jid = year from/to.
+        const name = s => String(s || "").trim().toLowerCase().replace(/\s+/g, " ");
+        const alias = { kia: "kia motors" };
+        let mk = name(p.make), md = name(p.model);
+        mk = alias[mk] || mk;
+        const y = yr(p);
+        const url = mk ? "https://www.tc-v.com/used_car/" + enc(mk) + "/" + (md ? enc(md) + "/" : "") : "https://www.tc-v.com/used_car/all/all/";
+        return withQs(url, { fid: y.from, jid: y.to });
+      } },
     { id: "sbt-japan", name: "SBT Japan", region: "Japan", regions: ["jp", "worldwide"], kinds: ["export"],
       home: "https://www.sbtjapan.com/", verify: "verified",
       note: "Japanese used-car exporter (make/model path)",
-      build(p) { return pathMM(p, "https://www.sbtjapan.com/used-cars", "", "https://www.sbtjapan.com/used-cars"); } },
+      build(p) { return pathMM(aliasMake(p, { "mercedes-benz": "mercedes" }), "https://www.sbtjapan.com/used-cars", "", "https://www.sbtjapan.com/used-cars"); } },
     { id: "carfromjapan", name: "CAR FROM JAPAN", region: "Japan", regions: ["jp", "worldwide"], kinds: ["export"],
       home: "https://carfromjapan.com/", verify: "verified",
       note: "Japan export marketplace (make/model page)",
@@ -756,7 +873,8 @@
     { id: "drive-au", name: "Drive Marketplace", region: "Australia & NZ", regions: ["au", "worldwide"], kinds: ["market"],
       home: "https://www.drive.com.au/cars-for-sale/", verify: "verified",
       note: "Australia dealer and private listings (make/model path)",
-      build(p) { return pathMM(p, "https://www.drive.com.au/cars-for-sale/search/all/all", "/", "https://www.drive.com.au/cars-for-sale/"); } },
+      // Australian listings spell it "Landcruiser"; /land-cruiser/ is a 404.
+      build(p) { return pathMM(aliasModel(p, { "land-cruiser": "landcruiser" }), "https://www.drive.com.au/cars-for-sale/search/all/all", "/", "https://www.drive.com.au/cars-for-sale/"); } },
     { id: "gumtree-au", name: "Gumtree Australia", region: "Australia & NZ", regions: ["au", "worldwide"], kinds: ["classifieds"],
       home: "https://www.gumtree.com.au/", verify: "bot_blocked",
       note: "Australia classifieds, cars (keyword). Automated checks got Access Denied, so this stays a browser link.",
@@ -776,7 +894,7 @@
     { id: "trademe", name: "Trade Me Motors", region: "Australia & NZ", regions: ["nz", "au", "worldwide"], kinds: ["market", "classifieds"],
       home: "https://www.trademe.co.nz/a/motors", verify: "verified",
       note: "New Zealand’s main marketplace (make/model path)",
-      build(p) { return pathMM(p, "https://www.trademe.co.nz/a/motors/cars", "", "https://www.trademe.co.nz/a/motors/cars"); } },
+      build(p) { const y = yr(p); return withQs(pathMM(p, "https://www.trademe.co.nz/a/motors/cars", "", "https://www.trademe.co.nz/a/motors/cars"), { year_min: y.from, year_max: y.to }); } },
 
     /* ---------- Middle East & Africa ---------- */
     { id: "yallamotor", name: "YallaMotor", region: "Middle East", regions: ["ae", "worldwide"], kinds: ["market"],
@@ -802,7 +920,11 @@
     { id: "autotrader-za", name: "AutoTrader South Africa", region: "Africa", regions: ["za", "worldwide"], kinds: ["market"],
       home: "https://www.autotrader.co.za/", verify: "verified",
       note: "South Africa listings (make/model path)",
-      build(p) { return pathMM(p, "https://www.autotrader.co.za/cars-for-sale", "", "https://www.autotrader.co.za/cars-for-sale"); } },
+      build(p) {
+        const y = yr(p);
+        return withQs(pathMM(p, "https://www.autotrader.co.za/cars-for-sale", "", "https://www.autotrader.co.za/cars-for-sale"),
+          { year: y.any ? (y.from || "1950") + "-to-" + (y.to || String(new Date().getFullYear() + 1)) : "" });
+      } },
     { id: "jiji-ng", name: "Jiji Nigeria", region: "Africa", regions: ["ng", "worldwide"], kinds: ["classifieds"],
       home: "https://jiji.ng/", verify: "verified",
       note: "Nigeria classifieds, cars (make-model path). Our box was blocked, but an outside fetch returned filtered listings.",
@@ -836,9 +958,9 @@
       note: "Global collector car auctions. Query links were not applied. Opens the lots page — filter there.",
       build(p) { return "https://www.goodingco.com/lots"; } },
     { id: "broad-arrow", name: "Broad Arrow Auctions", region: "Auctions", regions: ["worldwide", "us", "eu"], kinds: ["auction", "classic"],
-      home: "https://www.broadarrowauctions.com/", verify: "deeplink",
-      note: "Hagerty-owned collector auctions. Search link to auction results; the filter could not be fully confirmed.",
-      build(p) { return kwq(p, "https://www.broadarrowauctions.com/vehicles/results?q%5Bsearch%5D=", "", "https://www.broadarrowauctions.com/vehicles", true); } },
+      home: "https://www.broadarrowauctions.com/", verify: "search_on_site",
+      note: "Hagerty-owned collector auctions. Its search ignores URL keywords (tested: unrelated cars shown), so search on the site.",
+      build(p) { return "https://www.broadarrowauctions.com/vehicles"; } },
     { id: "bonhams", name: "Bonhams", region: "Auctions", regions: ["worldwide", "uk", "us", "eu"], kinds: ["auction", "classic"],
       home: "https://www.bonhams.com/", verify: "search_on_site",
       note: "Global auction house. The search page loads but the query is not applied from a link — type the car there.",
@@ -858,7 +980,16 @@
     { id: "jamesedition", name: "JamesEdition", region: "Auctions", regions: ["worldwide", "us", "eu", "ae"], kinds: ["exotic", "market"],
       home: "https://www.jamesedition.com/cars/", verify: "verified",
       note: "Global luxury marketplace, dealer listings worldwide (make/model path)",
-      build(p) { return pathMM(p, "https://www.jamesedition.com/cars", "/", "https://www.jamesedition.com/cars/"); } }
+      build(p) {
+        // Make ids use underscores (aston_martin, land_rover, rolls_royce) and
+        // Mercedes-Benz is "mercedes"; hyphenated makes redirect to the unfiltered /cars page.
+        const mkAlias = { "mercedes-benz": "mercedes" };
+        let make = slug(p.make);
+        make = mkAlias[make] || make.replace(/-/g, "_");
+        const model = slug(p.model);
+        if (!make) return "https://www.jamesedition.com/cars/";
+        return "https://www.jamesedition.com/cars/" + make + "/" + (model ? model + "/" : "");
+      } }
   ];
 
   /* ---- Forums & communities. Most forums have no public query URL, so these
@@ -964,8 +1095,45 @@
     return SOURCES.filter(s => (s.regions || []).includes(c));
   }
 
+  // Single-brand sites (e.g. Elferspot = Porsche only) are hidden for other makes.
+  function makeAllowed(src, params) {
+    if (!src.onlyMakes) return true;
+    const m = slug(params.make);
+    return !m || src.onlyMakes.indexOf(m) !== -1;
+  }
+  // A source "applies years" if adding a year range changes its URL.
+  function appliesYears(src, params) {
+    const base = Object.assign({}, params, { yearFrom: "", yearTo: "" });
+    const withY = Object.assign({}, params, { yearFrom: "2001", yearTo: "2002" });
+    try { return src.build(base) !== src.build(withY); } catch (e) { return false; }
+  }
+  function safeUrl(src, params) {
+    let u;
+    try { u = src.build(params); } catch (e) { u = ""; }
+    if (!u || /undefined|null/.test(u)) u = src.home;
+    return u;
+  }
+
+  // Free-text makes: map common spellings to the names marketplaces use
+  // ("mercedes benz" → "Mercedes-Benz", "vw" → "Volkswagen"). Unknown makes pass through.
+  const MAKE_ALIASES = {
+    "mercedes": "Mercedes-Benz", "mercedes benz": "Mercedes-Benz", "mercedesbenz": "Mercedes-Benz", "merc": "Mercedes-Benz", "benz": "Mercedes-Benz",
+    "vw": "Volkswagen", "chevy": "Chevrolet", "landrover": "Land Rover", "land-rover": "Land Rover",
+    "rolls royce": "Rolls-Royce", "rollsroyce": "Rolls-Royce", "aston": "Aston Martin", "aston-martin": "Aston Martin",
+    "alfa": "Alfa Romeo", "alfa-romeo": "Alfa Romeo", "lambo": "Lamborghini", "citroën": "Citroen", "škoda": "Skoda"
+  };
+  function normParams(params) {
+    const p = Object.assign({}, params);
+    const key = String(p.make || "").trim().toLowerCase().replace(/\s+/g, " ");
+    if (MAKE_ALIASES[key]) p.make = MAKE_ALIASES[key];
+    p.make = String(p.make || "").trim();
+    p.model = String(p.model || "").trim();
+    return p;
+  }
+
   function buildResults(params) {
-    const list = sourcesFor(params.country).concat(forumsFor(params));
+    params = normParams(params || {});
+    const list = sourcesFor(params.country).filter(s => makeAllowed(s, params)).concat(forumsFor(params));
     return list.map(src => ({
       id: src.id,
       name: src.name,
@@ -974,7 +1142,8 @@
       note: src.note,
       home: src.home,
       kinds: src.kinds,
-      url: src.build(params)
+      years: appliesYears(src, params),
+      url: safeUrl(src, params)
     }));
   }
 

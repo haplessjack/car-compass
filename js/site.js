@@ -351,7 +351,10 @@
     updateOpenSelectedLabel(container);
   }
 
-  function renderSourceItem(it, checked) {
+  function renderSourceItem(it, checked, wantYears) {
+    // Only some sites accept a year range in the link; say so on the others.
+    const yearNote = wantYears && !it.years && it.verify !== "search_on_site" && it.verify !== "google_site"
+      ? `<span class="year-hint">Year range not applied by this link — set it on the site.</span>` : "";
     const action = it.verify === "search_on_site"
       ? "Open " + escapeHtml(it.name) + " and type the make and model there"
       : it.verify === "google_site"
@@ -365,6 +368,7 @@
                   <span class="source-check-body">
                     <h3>${escapeHtml(it.name)}</h3>
                     <p>${escapeHtml(it.note || "")}</p>
+                    ${yearNote}
                   </span>
                 </label>
                 <div class="source-actions">
@@ -389,6 +393,8 @@
     const summary = [params.make, params.model].filter(Boolean).join(" ") || "Any make/model";
     const years = [params.yearFrom, params.yearTo].filter(Boolean).join("–") || "Any year";
     const region = params.country || "worldwide";
+    const wantYears = !!(params.yearFrom || params.yearTo);
+    const yearCount = wantYears ? markets.filter(m => m.years).length : 0;
     const forumBlock = forums.length ? `
         <div class="region-block forum-block" data-region="${escapeHtml(FORUM_REGION)}" data-kind="forum" id="forums">
           <div class="region-header">
@@ -414,6 +420,11 @@
         region <strong>${escapeHtml(region)}</strong>.
         This site does not host listings or prices — each button opens the live search on that site.
       </div>
+      <p class="hint stock-hint">Each link opens that site’s own live search. A page saying “no results” or “0 cars” usually means
+        that market has no matching car for sale right now — try another region or widen the search.
+        If a site doesn’t recognise a model name it may show the whole make instead.${wantYears
+          ? ` The year range is built into ${yearCount} of ${markets.length} marketplace links; the others are marked so you can set the years on the site.`
+          : ""}</p>
       <div class="results-toolbar" role="group" aria-label="Open marketplace tabs">
         <button type="button" class="btn btn-primary btn-sm" data-open-all
           aria-label="Open all ${markets.length} marketplace searches in new tabs">
@@ -435,7 +446,7 @@
             </button>
           </div>
           <div class="source-list">
-            ${g.items.map(it => renderSourceItem(it, true)).join("")}
+            ${g.items.map(it => renderSourceItem(it, true, wantYears)).join("")}
           </div>
         </div>
       `).join("")}
