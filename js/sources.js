@@ -37,8 +37,9 @@
         const qs = new URLSearchParams();
         if (p.yearFrom) qs.set("startYear", p.yearFrom);
         if (p.yearTo) qs.set("endYear", p.yearTo);
+        // 0 = nationwide. Do not send marketExtension without a zip;
+        // that pairing can yield a "no vehicles found" page for some users.
         qs.set("searchRadius", "0");
-        qs.set("marketExtension", "include");
         const q = qs.toString();
         return q ? url + "?" + q : url;
       }
@@ -50,15 +51,14 @@
       regions: ["us", "worldwide"],
       kinds: ["market"],
       home: "https://www.cars.com/",
-      verify: "bot_blocked",
-      note: "Bot-blocked from server checks; browser deep link uses standard filters",
+      verify: "verified",
+      note: "National US marketplace",
       build(p) {
         const make = slug(p.make);
         const model = slug(p.model);
         const params = new URLSearchParams();
         params.set("stock_type", "all");
         params.set("maximum_distance", "all");
-        params.set("zip", "");
         if (make) params.append("makes[]", make);
         if (make && model) params.append("models[]", `${make}-${model}`);
         if (p.yearFrom) params.set("year_min", p.yearFrom);
@@ -73,20 +73,10 @@
       regions: ["us", "worldwide"],
       kinds: ["market"],
       home: "https://www.cargurus.com/",
-      verify: "bot_blocked",
-      note: "Pretty entity URLs often blocked to bots; uses inventory listing filters",
+      verify: "search_on_site",
+      note: "No reliable public URL filters by make/model without CarGurus’ internal IDs. Opens CarGurus search — type the make and model there.",
       build(p) {
-        // Entity IDs vary by model; use year filters + on-site refinement.
-        // Pretty /l-Used-Make-Model-dNNN URLs often return 406 to bots.
-        const params = new URLSearchParams();
-        params.set("sourceContext", "untrackedExternal_false_0");
-        params.set("newSearchFromOverviewPage", "true");
-        if (p.yearFrom) params.set("startYear", p.yearFrom);
-        if (p.yearTo) params.set("endYear", p.yearTo);
-        const kw = keyword(p.make, p.model, "", "");
-        const hash = kw ? ("#q=" + enc(kw)) : "#resultsPage=1";
-        return "https://www.cargurus.com/Cars/inventorylisting/viewDetailsFilterViewInventoryListing.action?" +
-          params.toString() + hash;
+        return "https://www.cargurus.com/Cars/";
       }
     },
     {
@@ -96,11 +86,12 @@
       regions: ["us", "worldwide"],
       kinds: ["market", "auction"],
       home: "https://www.ebay.com/motors",
-      verify: "bot_blocked",
+      verify: "verified",
       note: "Cars & Trucks category search",
       build(p) {
         const nkw = keyword(p.make, p.model, p.yearFrom, p.yearTo) || "car";
-        return `https://www.ebay.com/sch/Cars-Trucks/6001/i.html?_nkw=${enc(nkw)}&_from=R40`;
+        // Current public search form (legacy /sch/Cars-Trucks/6001/i.html returns an error page).
+        return `https://www.ebay.com/sch/i.html?_nkw=${enc(nkw)}&_sacat=6001`;
       }
     },
     {
@@ -138,7 +129,7 @@
       regions: ["us", "worldwide"],
       kinds: ["classic", "market"],
       home: "https://www.hemmings.com/",
-      verify: "bot_blocked",
+      verify: "verified",
       note: "Classic and collector classifieds",
       build(p) {
         const make = slug(p.make), model = slug(p.model);
@@ -173,15 +164,19 @@
       kinds: ["market"],
       home: "https://www.autotrader.co.uk/",
       verify: "verified",
-      note: "UK national classifieds",
+      note: "UK classifieds. The site hides results until a postcode is set, so this link uses a default London postcode (SW1A 1AA) with a 1500-mile nationwide radius.",
       build(p) {
         const params = new URLSearchParams();
+        params.set("advertising-location", "at_cars");
         if (p.make) params.set("make", p.make);
         if (p.model) params.set("model", p.model);
         if (p.yearFrom) params.set("year-from", p.yearFrom);
         if (p.yearTo) params.set("year-to", p.yearTo);
-        const q = params.toString();
-        return q ? "https://www.autotrader.co.uk/car-search?" + q : "https://www.autotrader.co.uk/car-search";
+        // The UK site shows "0 results" until a postcode is provided.
+        // Default London postcode + 1500-mile radius = nationwide results.
+        params.set("postcode", "SW1A1AA");
+        params.set("radius", "1500");
+        return "https://www.autotrader.co.uk/car-search?" + params.toString();
       }
     },
     {
@@ -192,14 +187,13 @@
       kinds: ["market", "enthusiast"],
       home: "https://www.pistonheads.com/",
       verify: "verified",
-      note: "UK enthusiast classifieds; site may normalize query params",
+      note: "UK enthusiast classifieds (keyword search)",
       build(p) {
         const params = new URLSearchParams();
-        params.set("Category", "used-cars");
-        if (p.make) params.set("Make", p.make);
-        if (p.model) params.set("Model", p.model);
-        if (p.yearFrom) params.set("YearFrom", p.yearFrom);
-        if (p.yearTo) params.set("YearTo", p.yearTo);
+        // Current UI ignores Category/Make/Model query params and redirects to
+        // an unfiltered search. The keywords= parameter does filter.
+        const s = keyword(p.make, p.model, p.yearFrom, p.yearTo);
+        if (s) params.set("keywords", s);
         return "https://www.pistonheads.com/buy/search?" + params.toString();
       }
     },
@@ -210,8 +204,8 @@
       regions: ["de", "eu", "worldwide"],
       kinds: ["market"],
       home: "https://www.mobile.de/",
-      verify: "bot_blocked",
-      note: "Germany’s largest marketplace; keyword search deep link",
+      verify: "verified",
+      note: "Germany’s largest marketplace; keyword search",
       build(p) {
         const q = keyword(p.make, p.model, p.yearFrom, p.yearTo) || "auto";
         return "https://suchen.mobile.de/fahrzeuge/search.html?dam=false&isSearchRequest=true&ref=quickSearch&s=Car&sb=rel&vc=Car&q=" + enc(q);
@@ -246,7 +240,7 @@
       kinds: ["market"],
       home: "https://www.leboncoin.fr/",
       verify: "bot_blocked",
-      note: "France classifieds (category 2 = vehicles)",
+      note: "France classifieds (category 2 = vehicles). The URL format is standard; automated checks hit a 403/captcha, so this stays a browser link.",
       build(p) {
         const text = keyword(p.make, p.model, p.yearFrom, p.yearTo) || "voiture";
         return "https://www.leboncoin.fr/recherche?category=2&text=" + enc(text) + "&owner_type=all";
@@ -260,12 +254,13 @@
       kinds: ["market"],
       home: "https://www.carsensor.net/",
       verify: "verified",
-      note: "Major Japanese used-car portal",
+      note: "Major Japanese used-car portal (free-word search)",
       build(p) {
         const kw = keyword(p.make, p.model, p.yearFrom, p.yearTo);
-        // Keyword endpoint used by the site’s search box
+        // /usedcar/search.php?keyword= does not apply the filter (shows the
+        // unfiltered national list). The freeword path does.
         return kw
-          ? "https://www.carsensor.net/usedcar/search.php?STID=CS210610&keyword=" + enc(kw)
+          ? "https://www.carsensor.net/usedcar/freeword/" + enc(kw) + "/index.html"
           : "https://www.carsensor.net/usedcar/";
       }
     },
@@ -276,13 +271,15 @@
       regions: ["jp", "worldwide"],
       kinds: ["market", "export"],
       home: "https://www.goo-net-exchange.com/",
-      verify: "bot_blocked",
-      note: "English-facing Goo-net; domestic goo-net.com TLS failed from this environment",
+      verify: "verified",
+      note: "English-facing Goo-net (make/model path)",
       build(p) {
-        const kw = keyword(p.make, p.model, p.yearFrom, p.yearTo);
-        return kw
-          ? "https://www.goo-net-exchange.com/search/?keyword=" + enc(kw)
-          : "https://www.goo-net-exchange.com/";
+        const make = slug(p.make).toUpperCase();
+        const model = slug(p.model).toUpperCase();
+        // /search/?keyword= returns a 404. Public listings use /usedcars/MAKE/MODEL/.
+        if (make && model) return `https://www.goo-net-exchange.com/usedcars/${make}/${model}/`;
+        if (make) return `https://www.goo-net-exchange.com/usedcars/${make}/`;
+        return "https://www.goo-net-exchange.com/usedcars/";
       }
     },
     {
@@ -293,11 +290,11 @@
       kinds: ["export", "market"],
       home: "https://www.beforward.jp/",
       verify: "verified",
-      note: "Japan export stock; keyword stocklist (make IDs are numeric on-site)",
+      note: "Japan export stock (keyword stocklist)",
       build(p) {
         const kw = keyword(p.make, p.model, p.yearFrom, p.yearTo);
         return kw
-          ? "https://www.beforward.jp/stocklist/keyword=" + enc(kw) + "/"
+          ? "https://www.beforward.jp/stocklist/keyword=" + enc(kw)
           : "https://www.beforward.jp/stocklist/";
       }
     },
@@ -309,7 +306,7 @@
       kinds: ["market"],
       home: "https://www.carsales.com.au/",
       verify: "bot_blocked",
-      note: "Australia’s largest car classifieds",
+      note: "Australia’s largest car classifieds. The URL format is standard; automated checks hit a captcha, so this stays a browser link.",
       build(p) {
         const make = slug(p.make), model = slug(p.model);
         if (make && model) return `https://www.carsales.com.au/cars/${make}/${model}/`;
@@ -356,7 +353,7 @@
       regions: ["worldwide", "us", "uk", "de", "eu"],
       kinds: ["classic"],
       home: "https://www.classicdriver.com/",
-      verify: "bot_blocked",
+      verify: "verified",
       note: "Global classic & exotic marketplace",
       build(p) {
         const make = slug(p.make), model = slug(p.model);
@@ -372,14 +369,15 @@
       regions: ["worldwide", "de", "eu", "us"],
       kinds: ["classic"],
       home: "https://www.elferspot.com/",
-      verify: "bot_blocked",
-      note: "Porsche-strong classic marketplace; filters work for other makes too",
+      verify: "deeplink",
+      note: "Porsche-focused classic marketplace. Search uses the cs= parameter (spaces as +).",
       build(p) {
-        const params = new URLSearchParams();
-        if (p.make) params.set("make", p.make);
-        if (p.model) params.set("model", p.model);
-        const q = params.toString();
-        return q ? "https://www.elferspot.com/en/cars/?" + q : "https://www.elferspot.com/en/cars/";
+        const s = keyword(p.make, p.model, "", "");
+        if (!s) return "https://www.elferspot.com/en/search/";
+        const qs = new URLSearchParams();
+        qs.set("cs", s);
+        qs.set("sorting", "newest");
+        return "https://www.elferspot.com/en/search/?" + qs.toString();
       }
     },
     {
@@ -389,11 +387,10 @@
       regions: ["worldwide", "uk", "us", "eu"],
       kinds: ["auction", "classic"],
       home: "https://collectingcars.com/",
-      verify: "verified",
-      note: "Online collector auctions; site search via ?q=",
+      verify: "search_on_site",
+      note: "Filtered pages need Collecting Cars’ internal make/model IDs, and query-string searches were redirected unfiltered. Opens their buy page — type the make and model there.",
       build(p) {
-        const s = keyword(p.make, p.model, p.yearFrom, p.yearTo);
-        return s ? `https://collectingcars.com/?q=${enc(s)}` : "https://collectingcars.com/auctions";
+        return "https://collectingcars.com/buy";
       }
     },
     {

@@ -184,6 +184,10 @@ a:hover { color: var(--accent); }
 .results-toolbar .btn:disabled {
   opacity: 0.45; cursor: not-allowed;
 }
+
+.btn-confirm-pending {
+  box-shadow: 0 0 0 2px rgba(212,175,55,0.55);
+}
 .results-toolbar-hint { margin-left: auto; }
 .region-header {
   display: flex; align-items: center; justify-content: space-between;
@@ -221,6 +225,7 @@ a:hover { color: var(--accent); }
 .status-pill.live { color: var(--ok); border-color: rgba(92,158,122,0.4); }
 .status-pill.deeplink { color: var(--gold-soft); border-color: rgba(212,175,55,0.35); }
 .status-pill.blocked { color: #c45c5c; border-color: rgba(196,92,92,0.35); }
+.status-pill.onsite { color: var(--text-muted); border-color: rgba(154,149,136,0.45); }
 
 .notice {
   border: 1px solid rgba(212,175,55,0.25);

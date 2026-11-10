@@ -199,15 +199,27 @@
   function statusClass(v) {
     if (v === "verified") return "live";
     if (v === "bot_blocked") return "blocked";
+    if (v === "search_on_site") return "onsite";
     return "deeplink";
   }
   function statusLabel(v) {
     if (v === "verified") return "Verified link";
     if (v === "bot_blocked") return "Browser link";
+    if (v === "search_on_site") return "Search on site";
     return "Deep link";
   }
+  function actionLabel(v) {
+    return v === "search_on_site" ? "Search on site" : "Open search";
+  }
+
 
   const OPEN_TABS_CONFIRM_THRESHOLD = 8;
+  const CONFIRM_RESET_MS = 10000;
+  let pendingConfirm = null;
+
+  function popupHostLabel() {
+    return location.hostname || "this site";
+  }
 
   function showPopupNotice(container, attempted, opened) {
     let notice = container.querySelector(".popup-blocker-notice");
@@ -220,12 +232,15 @@
       if (toolbar && toolbar.nextSibling) container.insertBefore(notice, toolbar.nextSibling);
       else container.prepend(notice);
     }
-    const host = location.hostname || "this site";
+    const host = popupHostLabel();
     notice.innerHTML = `
-      <strong>Some tabs were blocked</strong>
-      (${opened} of ${attempted} opened). Your browser stopped the extra windows.
-      Allow pop-ups for <strong>${escapeHtml(host)}</strong> (usually via the icon in the address bar),
-      then click the button again.`;
+      <strong>Your browser blocked the extra tabs</strong>
+      (${opened} of ${attempted} opened). Chrome and other browsers usually allow only
+      <strong>one</strong> new tab per click unless pop-ups are allowed for this site.
+      To open all ${attempted} tabs at once, allow pop-ups for
+      <strong>${escapeHtml(host)}</strong>
+      (click the pop-up icon in the address bar, then choose “Always allow”),
+      and click the button again.`;
     notice.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
@@ -234,34 +249,56 @@
     if (notice) notice.remove();
   }
 
-  function openUrlsInTabs(urls, container) {
+  function clearPendingConfirm() {
+    if (!pendingConfirm) return;
+    const { btn, label, aria, timer } = pendingConfirm;
+    if (timer) clearTimeout(timer);
+    if (btn && btn.dataset.confirmPending === "1") {
+      btn.dataset.confirmPending = "";
+      btn.classList.remove("btn-confirm-pending");
+      if (label) btn.textContent = label;
+      if (aria) btn.setAttribute("aria-label", aria);
+    }
+    pendingConfirm = null;
+  }
+
+  function armConfirm(btn, count) {
+    clearPendingConfirm();
+    const label = btn.textContent;
+    const aria = btn.getAttribute("aria-label") || label;
+    btn.dataset.confirmPending = "1";
+    btn.classList.add("btn-confirm-pending");
+    btn.textContent = "Click again to open " + count + " tabs";
+    btn.setAttribute("aria-label", "Click again to open " + count + " marketplace searches in new tabs");
+    const timer = setTimeout(clearPendingConfirm, CONFIRM_RESET_MS);
+    pendingConfirm = { btn, label, aria, timer };
+  }
+
+  function openUrlsInTabs(urls, container, btn) {
     const list = (urls || []).filter(Boolean);
     if (!list.length) return { opened: 0, blocked: false };
 
-    if (list.length > OPEN_TABS_CONFIRM_THRESHOLD) {
-      const ok = window.confirm(
-        `Open ${list.length} marketplace tabs?\n\nYour browser may ask you to allow pop-ups for this site.`
-      );
-      if (!ok) return { opened: 0, blocked: false, cancelled: true };
+    // Two-step confirmation without window.confirm(), which would
+    // consume the user gesture and cause every window.open to be blocked.
+    const armed = btn && btn.dataset.confirmPending === "1";
+    if (list.length > OPEN_TABS_CONFIRM_THRESHOLD && btn && !armed) {
+      armConfirm(btn, list.length);
+      return { opened: 0, blocked: false, pending: true };
     }
+    if (armed) clearPendingConfirm();
 
     clearPopupNotice(container);
     let opened = 0;
-    let blocked = false;
     for (let i = 0; i < list.length; i++) {
-      const win = window.open(list[i], "_blank", "noopener");
-      if (win) {
-        opened += 1;
-      } else if (i > 0) {
-        // First open can succeed under a user gesture; later ones are often blocked.
-        blocked = true;
-        break;
-      } else {
-        // Even the first tab was blocked — treat as blocked.
-        blocked = true;
-        break;
-      }
+      // Do not pass "noopener" as a window.open feature string: that makes
+      // the call return null even when the tab opened, so blocker detection
+      // misfires and the rest of the loop is aborted.
+      const win = window.open(list[i], "_blank");
+      if (!win) break;
+      try { win.opener = null; } catch (_) {}
+      opened += 1;
     }
+    const blocked = opened < list.length;
     if (blocked) showPopupNotice(container, list.length, opened);
     return { opened, blocked };
   }
@@ -298,7 +335,7 @@
       } else if (btn.hasAttribute("data-open-all")) {
         urls = [...container.querySelectorAll(".source-include")].map(cb => cb.value).filter(Boolean);
       }
-      openUrlsInTabs(urls, container);
+      openUrlsInTabs(urls, container, btn);
     });
 
     container.addEventListener("change", (e) => {
@@ -338,7 +375,7 @@
           aria-label="Open selected marketplace searches in new tabs">
           Open selected in tabs
         </button>
-        <span class="hint results-toolbar-hint">Uses new tabs. Allow pop-ups if your browser asks.</span>
+        <span class="hint results-toolbar-hint">Browsers allow one new tab per click unless you allow pop-ups for this site.</span>
       </div>
       ${groups.map(g => `
         <div class="region-block" data-region="${escapeHtml(g.region)}">
@@ -362,7 +399,8 @@
                 </label>
                 <div class="source-actions">
                   <span class="status-pill ${statusClass(it.verify)}">${statusLabel(it.verify)}</span>
-                  <a class="btn btn-primary btn-sm" href="${escapeHtml(it.url)}" target="_blank" rel="noopener noreferrer">Open search</a>
+                  <a class="btn btn-primary btn-sm" href="${escapeHtml(it.url)}" target="_blank" rel="noopener noreferrer"
+                    aria-label="${it.verify === "search_on_site" ? "Open " + escapeHtml(it.name) + " and type the make and model there" : "Open " + escapeHtml(it.name) + " search"}">${actionLabel(it.verify)}</a>
                 </div>
               </article>
             `).join("")}
@@ -381,6 +419,6 @@
   global.SiteApp = {
     cfg, url, pathRel, absolutePublic, injectSeo, renderChrome,
     bindSearchForm, readQuery, goSearch, renderResultGroups,
-    loadJSON, yearsOptions, escapeHtml, statusClass, statusLabel, resolvedRoot
+    loadJSON, yearsOptions, escapeHtml, statusClass, statusLabel, actionLabel, resolvedRoot
   };
 })(window);
