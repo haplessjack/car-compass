@@ -284,3 +284,49 @@ When the user sets years, the other links show "Year range not applied by this l
 - **Rate-limited intermittently from the box:** Autotrader US ("page unavailable"), Cars.com, CarMax, mobile.de and Kleinanzeigen. Each was confirmed working in at least one test run.
 - **Sauto shows a Seznam consent page first** in a fresh browser. curl confirmed filtered counts (187 Porsche 911s, 3 Supras, 102 Ferraris).
 - **Make pages on TCV and Goo-net Exchange** (e.g. Ferrari) are make landing pages listing that make's models and counts.
+
+# Precision pass 2: empty and fallback results (2026-11-10)
+
+## Model kept instead of falling back to the whole make
+
+| Source | Before | Now |
+|---|---|---|
+| Carvana | `/cars/toyota-supra` redirected to all 6,224 Toyotas. `land-rover-defender` showed every Land Rover (Carvana splits it into Defender 90/110/130). Ferrari gave a 404. | The site's own filter link, `/cars/filters?cvnaid=` (base64url JSON with makes, parentModels and a year min/max). Results: Land Cruiser 15, Defender 97, 911 56, GR Supra 22 (Supra is aliased to Carvana's name), 911 2015–2020 gives 24 cars, all in range. With no stock it shows "0 cars", not the make. |
+| Carzone | The `/used-cars/make/model` path redirected to the make when nothing matched (Supra showed 5,063 Toyotas). | `/search?make=&model=&minYear=&maxYear=`. Counts match the path (911: 33), Supra shows "0 results found", and Landcruiser gives 141 ("Land Cruiser" gives 0, so it's aliased). The years filter works: 911 2015–2020 gives 1, matching the site's year facet. |
+| Cars.co.za | Model paths are split by variant (Land-Cruiser-79/200/300/Prado, Defender-90/110, GR-Supra), and unknown models fell back to the make. | `/usedcars/?make_model=Make&keyword=model&year=a-b`. Results: Land Cruiser 1,385 (all variants), Defender 390 (90 and 110 only), 911 47, Supra 3 (all GR Supra). 911 2015–2020 gives 22, all in range. |
+| Bilbasen | Model paths miss variants: `/porsche/911` = 29 cars, and Defender fell back to all Land Rovers. | `/brugt/bil/{make}?free=model` (the site's own search box). Results: 911 181, Defender 17, Land Cruiser 6, Supra 4. |
+| CarDekho | `land-cruiser` redirected to all 60,000 cars in India. | Aliased to `land-cruiser-300` (6 cars; the 200 and Prado pages also exist). There is no keyword URL, because CarDekho's search box opens an AI chat. Models it doesn't list (Supra) still open its general search page. |
+| CarWale | Supra redirected to all Toyotas. | No keyword URL exists, and the Supra isn't in CarWale's catalogue, so this is real zero stock. The note now says so. |
+
+## Make-only searches now list cars
+- **TCV:** `/used_car/{make}/all/`. The bare make page was a model index.
+- **Goo-net Exchange:** `/usedcars/{MAKE}/ALL/`. Checked for Ferrari and Mercedes-Benz.
+
+## Relabelled
+- **Autohero → Search on site.** The link now opens only the make (`brand0=`). Its model filter only matches generation names: `models0=golf` gives 0 results while Golf VII cars are listed. Autohero had 1 Porsche in stock, so the earlier 911 zeros were real.
+- **Wallapop → Search on site.** It always showed "Nada por aquí" from our box, and outside fetches got a 403. The link still pre-fills the keyword.
+- **Browser link → Verified link** for eBay UK, eBay DE, Jiji Kenya, OLX India and One2car. Outside fetches showed filtered Land Cruiser results (272, 7, about 20, 149 and 55).
+
+## Empties checked and confirmed as real zero stock
+- DoneDeal: Supra (both the Supra and GR Supra paths return 0)
+- Mercado Libre Chile: Supra (`gr-supra` is a 404)
+- OLX Brasil: Supra (`q=supra` returns 5 BMWs and no Supra)
+- DuPont: Land Cruiser and Defender
+- Artcurial: Supra
+
+## Still unverifiable
+The box gets 403s or timeouts, as did the outside fetch and reader:
+- eBay AU
+- TrueCar
+- Carsales
+- Autotrader AU
+- Gumtree AU
+- Leboncoin
+- La Centrale
+- Milanuncios
+- Carsome
+- Webmotors
+- Mercado Libre Colombia
+- Goo-net (Japan)
+
+They keep the standard public URL format, and none has been shown to be wrong.

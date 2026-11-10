@@ -36,6 +36,10 @@
     return q ? url + (url.indexOf("?") === -1 ? "?" : "&") + q : url;
   }
   // slug with underscores instead of hyphens inside a name (cars.com, Goo-net, JamesEdition)
+  function b64url(str) {
+    const b = btoa(unescape(encodeURIComponent(str)));
+    return b.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
   function uslug(s) { return slug(s).replace(/-/g, "_"); }
 
   const SOURCES = [
@@ -314,7 +318,8 @@
         const model = uslug(p.model).toUpperCase();
         // /search/?keyword= returns a 404. Public listings use /usedcars/MAKE/MODEL/.
         if (make && model) return `https://www.goo-net-exchange.com/usedcars/${make}/${model}/`;
-        if (make) return `https://www.goo-net-exchange.com/usedcars/${make}/`;
+        // The bare make page is a model index; /ALL/ lists the make's cars.
+        if (make) return `https://www.goo-net-exchange.com/usedcars/${make}/ALL/`;
         return "https://www.goo-net-exchange.com/usedcars/";
       }
     },
@@ -536,11 +541,21 @@
       } },
     { id: "carvana", name: "Carvana", region: "US", regions: ["us", "worldwide"], kinds: ["dealer"],
       home: "https://www.carvana.com/", verify: "verified",
-      note: "Online used-car retailer. If the model is out of stock it falls back to the make page.",
+      note: "Online used-car retailer (make, model and year filters). Shows 0 cars when the model is not in stock.",
       build(p) {
-        const make = slug(p.make), model = slug(p.model);
+        // Carvana's /cars/make-model pages redirect to the whole make when the slug
+        // is unknown (toyota-supra → all Toyotas; Defender is split into 90/110/130).
+        // The site's own filter link (cvnaid = base64url JSON) keeps the model:
+        // Land Cruiser 15, Defender 97, 911 56 cars; year {min,max} 911 2015–2020 → 24 cars.
+        const make = String(p.make || "").trim(), model = String(p.model || "").trim();
         if (!make) return "https://www.carvana.com/cars";
-        return "https://www.carvana.com/cars/" + make + (model ? "-" + model : "");
+        const alias = { supra: "GR Supra" }; // Carvana sells the current Supra as "GR Supra"
+        const m = { name: make };
+        if (model) m.parentModels = [{ name: alias[model.toLowerCase()] || model }];
+        const f = { makes: [m] };
+        const y = yr(p);
+        if (y.any) f.year = { min: +(y.from || 1990), max: +(y.to || new Date().getFullYear() + 1) };
+        return "https://www.carvana.com/cars/filters?cvnaid=" + b64url(JSON.stringify({ filters: f }));
       } },
     { id: "truecar", name: "TrueCar", region: "US", regions: ["us", "worldwide"], kinds: ["market"],
       home: "https://www.truecar.com/", verify: "bot_blocked",
@@ -618,8 +633,8 @@
       note: "UK classifieds, cars category (keyword)",
       build(p) { return kwq(p, "https://www.gumtree.com/search?search_category=cars&q=", "", "https://www.gumtree.com/cars", true); } },
     { id: "ebay-uk", name: "eBay UK Motors", region: "UK & Ireland", regions: ["uk", "worldwide"], kinds: ["market", "auction"],
-      home: "https://www.ebay.co.uk/", verify: "bot_blocked",
-      note: "Cars category search. Same format as eBay US; automated checks got eBay’s error page, so this stays a browser link.",
+      home: "https://www.ebay.co.uk/", verify: "verified",
+      note: "Cars category keyword search (outside check: Land Cruiser → 272 results, all Land Cruisers).",
       build(p) { return kwq(p, "https://www.ebay.co.uk/sch/i.html?_sacat=9801&_nkw=", "", "https://www.ebay.co.uk/b/Cars/9801", true); } },
     { id: "donedeal", name: "DoneDeal", region: "UK & Ireland", regions: ["ie", "uk", "worldwide"], kinds: ["classifieds", "market"],
       home: "https://www.donedeal.ie/", verify: "verified",
@@ -632,9 +647,19 @@
       } },
     { id: "carzone", name: "Carzone", region: "UK & Ireland", regions: ["ie", "worldwide"], kinds: ["market"],
       home: "https://www.carzone.ie/", verify: "verified",
-      note: "Irish dealer and private listings. If no cars match the model it falls back to the make page.",
-      // Irish listings spell it "Landcruiser" (land-cruiser falls back to all Toyotas).
-      build(p) { return pathMM(aliasModel(p, { "land-cruiser": "landcruiser" }), "https://www.carzone.ie/used-cars", "", "https://www.carzone.ie/used-cars"); } },
+      note: "Irish dealer and private listings (make, model and year filters). Shows 0 results when the model is not in stock.",
+      build(p) {
+        // The /used-cars/make/model path redirects to the whole make when nothing matches
+        // (Supra → 5,063 Toyotas). The site's own /search form keeps the filter and says
+        // "0 results found" instead. Same counts as the path (911: 33). Irish listings
+        // spell it "Landcruiser" (141; "Land Cruiser" gives 0). minYear/maxYear verified.
+        const make = String(p.make || "").trim(); let model = String(p.model || "").trim();
+        if (!make) return "https://www.carzone.ie/used-cars";
+        const alias = { "land cruiser": "Landcruiser", "land-cruiser": "Landcruiser" };
+        model = alias[model.toLowerCase()] || model;
+        const y = yr(p);
+        return withQs("https://www.carzone.ie/search", { make, model, minYear: y.from, maxYear: y.to });
+      } },
 
     /* ---------- Europe ---------- */
     { id: "classic-trader", name: "Classic Trader", region: "Europe", regions: ["de", "eu", "uk", "worldwide"], kinds: ["classic", "classifieds"],
@@ -672,8 +697,8 @@
         return k ? "https://www.kleinanzeigen.de/s-autos/" + k + "/k0c216" + ez : "https://www.kleinanzeigen.de/s-autos/c216" + ez;
       } },
     { id: "ebay-de", name: "eBay Germany", region: "Europe", regions: ["de", "eu"], kinds: ["market", "auction"],
-      home: "https://www.ebay.de/", verify: "bot_blocked",
-      note: "Autos category search. Same format as eBay US; automated checks got eBay’s error page, so this stays a browser link.",
+      home: "https://www.ebay.de/", verify: "verified",
+      note: "Autos category keyword search (outside check: Land Cruiser → 7 matches; eBay may add “fewer search terms” results below).",
       build(p) { return kwq(p, "https://www.ebay.de/sch/i.html?_sacat=9801&_nkw=", "", "https://www.ebay.de/b/Autos/9801", true); } },
     { id: "marktplaats", name: "Marktplaats", region: "Europe", regions: ["nl", "eu"], kinds: ["classifieds"],
       home: "https://www.marktplaats.nl/", verify: "verified",
@@ -704,8 +729,8 @@
       note: "Spain classifieds, used cars (keyword). Automated checks hit a captcha, so this stays a browser link.",
       build(p) { return kwq(p, "https://www.milanuncios.com/coches-de-segunda-mano/?s=", "", "https://www.milanuncios.com/coches-de-segunda-mano/", true); } },
     { id: "wallapop", name: "Wallapop", region: "Europe", regions: ["es", "eu"], kinds: ["classifieds"],
-      home: "https://es.wallapop.com/", verify: "deeplink",
-      note: "Spain peer-to-peer marketplace, cars category. The search URL is accepted, but results load only after Wallapop knows your location.",
+      home: "https://es.wallapop.com/", verify: "search_on_site",
+      note: "Spain peer-to-peer marketplace, cars category. The link pre-fills your search, but every check we ran showed “Nada por aquí” (Wallapop needs your location and blocks outside checks). If it's empty, set your location and search on the site.",
       build(p) { return kwq(p, "https://es.wallapop.com/search?category_id=100&keywords=", "", "https://es.wallapop.com/coches-segunda-mano", false); } },
     { id: "standvirtual", name: "Standvirtual", region: "Europe", regions: ["pt", "eu"], kinds: ["market"],
       home: "https://www.standvirtual.com/", verify: "verified",
@@ -731,16 +756,20 @@
       build(p) { const y = yr(p); return withQs("https://www.finn.no/mobility/search/car", { q: mmText(p), year_from: y.from, year_to: y.to }); } },
     { id: "bilbasen", name: "Bilbasen", region: "Europe", regions: ["dk", "eu"], kinds: ["market"],
       home: "https://www.bilbasen.dk/", verify: "verified",
-      note: "Denmark’s largest used-car site (make/model path)",
+      note: "Denmark’s largest used-car site (make page + model keyword)",
       build(p) {
         // Bilbasen ids use underscores (land_rover, land_cruiser) and "mercedes";
         // hyphenated names silently fall back to all 42,000 cars.
         const alias = { "mercedes-benz": "mercedes" };
         let make = slug(p.make);
         make = alias[make] || make.replace(/-/g, "_");
-        const model = uslug(p.model);
+        // Model ids are split by variant (911 = 29 cars, but "911 Carrera S", "911 GT3"…
+        // are separate models; Defender is only "Defender 90/110"), so a model path misses most
+        // cars or falls back to the make. The site's own free-text box (free=) on the make page
+        // keeps them all: 911 → 181, Defender → 17, Land Cruiser → 6, Supra → 4.
+        const model = String(p.model || "").trim();
         if (!make) return "https://www.bilbasen.dk/brugt/bil";
-        return "https://www.bilbasen.dk/brugt/bil/" + make + (model ? "/" + model : "");
+        return withQs("https://www.bilbasen.dk/brugt/bil/" + make, { free: model });
       } },
     { id: "nettiauto", name: "Nettiauto", region: "Europe", regions: ["fi", "eu"], kinds: ["market"],
       home: "https://www.nettiauto.com/", verify: "verified",
@@ -763,12 +792,15 @@
       note: "Greece’s main car site. Filters need internal IDs and automated checks were blocked. Opens car classifieds — pick the make and model there.",
       build(p) { return "https://www.car.gr/classifieds/cars/"; } },
     { id: "autohero", name: "Autohero", region: "Europe", regions: ["de", "eu"], kinds: ["dealer"],
-      home: "https://www.autohero.com/", verify: "deeplink",
-      note: "Online used-car retailer (Germany). The brand/model filter is accepted; stock is small, so rare models may show no cars.",
+      home: "https://www.autohero.com/", verify: "search_on_site",
+      note: "Online used-car retailer (Germany). Opens the make’s cars; pick the model on the site (Autohero names models by generation, e.g. “Golf VII”).",
       build(p) {
-        const make = slug(p.make), model = slug(p.model);
+        // brand0= filters correctly (Mercedes-Benz 9,572 cars, Porsche 1). The model filter
+        // only matches Autohero's generation names: models0=golf → 0 results though Golf VII
+        // cars are listed, so we don't pass the model.
+        const make = slug(p.make);
         if (!make) return "https://www.autohero.com/de/search/";
-        return "https://www.autohero.com/de/search/?brand=" + make + (model ? "&model=" + model : "");
+        return "https://www.autohero.com/de/search/?brand0=" + make;
       } },
 
     /* ---------- Japan, Korea, China & Hong Kong ---------- */
@@ -795,7 +827,8 @@
         let mk = name(p.make), md = name(p.model);
         mk = alias[mk] || mk;
         const y = yr(p);
-        const url = mk ? "https://www.tc-v.com/used_car/" + enc(mk) + "/" + (md ? enc(md) + "/" : "") : "https://www.tc-v.com/used_car/all/all/";
+        // Make-only: /make/ is a model index, /make/all/ lists the cars ("All Models (61)").
+        const url = mk ? "https://www.tc-v.com/used_car/" + enc(mk) + "/" + (md ? enc(md) + "/" : "all/") : "https://www.tc-v.com/used_car/all/all/";
         return withQs(url, { fid: y.from, jid: y.to });
       } },
     { id: "sbt-japan", name: "SBT Japan", region: "Japan", regions: ["jp", "worldwide"], kinds: ["export"],
@@ -845,28 +878,31 @@
       note: "Malaysia used-car retailer. The make filter applies; when the model isn’t stocked it shows the whole make.",
       build(p) { return pathMM(p, "https://www.carsome.my/buy-car", "", "https://www.carsome.my/buy-car"); } },
     { id: "one2car", name: "One2car", region: "Southeast Asia", regions: ["th", "worldwide"], kinds: ["market"],
-      home: "https://www.one2car.com/", verify: "bot_blocked",
-      note: "Thailand car marketplace (make/model path). Automated checks hit a Cloudflare check, so this stays a browser link.",
+      home: "https://www.one2car.com/", verify: "verified",
+      note: "Thailand car marketplace (make/model path; outside check: 55 Land Cruisers).",
       build(p) { return pathMM(p, "https://www.one2car.com/en/cars-for-sale", "", "https://www.one2car.com/en/cars-for-sale"); } },
     { id: "cardekho", name: "CarDekho", region: "India", regions: ["in", "worldwide"], kinds: ["market"],
       home: "https://www.cardekho.com/", verify: "verified",
-      note: "India used cars (make/model page). Tested with Toyota Fortuner; rare imports may show no cars.",
+      note: "India used cars (make/model page). Land Cruiser opens the Land Cruiser 300 page; models CarDekho doesn't list open its general search.",
       build(p) {
+        // CarDekho splits Land Cruiser into 200 / 300 / Prado; plain land-cruiser redirects
+        // to all of India (60,000+ cars). There is no keyword URL (its search box opens an AI chat).
+        p = aliasModel(p, { "land-cruiser": "land-cruiser-300" });
         const make = slug(p.make), model = slug(p.model);
         if (!make) return "https://www.cardekho.com/used-cars+in+india";
         return "https://www.cardekho.com/used-" + make + (model ? "-" + model : "") + "+cars+in+india";
       } },
     { id: "carwale", name: "CarWale", region: "India", regions: ["in", "worldwide"], kinds: ["market"],
       home: "https://www.carwale.com/", verify: "verified",
-      note: "India used cars (make-model page). Tested with Toyota Fortuner.",
+      note: "India used cars (make-model page). If the model has no used listings in India (e.g. Supra), CarWale shows the whole make.",
       build(p) {
         const make = slug(p.make), model = slug(p.model);
         if (!make) return "https://www.carwale.com/used/";
         return "https://www.carwale.com/used/" + make + (model ? "-" + model : "") + "/";
       } },
     { id: "olx-in", name: "OLX India", region: "India", regions: ["in", "worldwide"], kinds: ["classifieds"],
-      home: "https://www.olx.in/", verify: "bot_blocked",
-      note: "India classifieds, cars (keyword). Automated checks got Access Denied, so this stays a browser link.",
+      home: "https://www.olx.in/", verify: "verified",
+      note: "India classifieds, cars (keyword; outside check: 149 Land Cruisers).",
       build(p) { const k = slug(mmText(p)); return k ? "https://www.olx.in/cars_c84/q-" + k : "https://www.olx.in/cars_c84"; } },
 
     /* ---------- Australia & NZ ---------- */
@@ -911,11 +947,18 @@
       build(p) { return kwq(p, "https://haraj.com.sa/search/", "/", "https://haraj.com.sa/", false); } },
     { id: "cars-co-za", name: "Cars.co.za", region: "Africa", regions: ["za", "worldwide"], kinds: ["market"],
       home: "https://www.cars.co.za/", verify: "verified",
-      note: "South Africa used cars (Make/Model path). If no cars match the model it shows the make page.",
+      note: "South Africa used cars (make filter + model keyword, year filter).",
       build(p) {
-        const mk = String(p.make || "").trim(), md = String(p.model || "").trim();
+        // Model paths are split by variant (Land-Cruiser-79/200/300/Prado, Defender-90/110,
+        // GR-Supra), and an unknown model falls back to the make page. The site's search
+        // with make_model=Make&keyword=model keeps every variant: Land Cruiser 1,385,
+        // Defender 390 (all 90/110), 911 47, Supra 3 (GR Supra). year=2015-2020 → 22, all in range.
+        const mk = String(p.make || "").trim(), md = String(p.model || "").trim(), y = yr(p);
         if (!mk) return "https://www.cars.co.za/usedcars/";
-        return "https://www.cars.co.za/usedcars/" + enc(mk) + "/" + (md ? enc(md) + "/" : "");
+        return withQs("https://www.cars.co.za/usedcars/", {
+          make_model: mk, keyword: md,
+          year: y.any ? (y.from || "1950") + "-" + (y.to || String(new Date().getFullYear() + 1)) : ""
+        });
       } },
     { id: "autotrader-za", name: "AutoTrader South Africa", region: "Africa", regions: ["za", "worldwide"], kinds: ["market"],
       home: "https://www.autotrader.co.za/", verify: "verified",
@@ -933,8 +976,8 @@
         return make ? "https://jiji.ng/cars/" + make + (model ? "-" + model : "") : "https://jiji.ng/cars";
       } },
     { id: "jiji-ke", name: "Jiji Kenya", region: "Africa", regions: ["ke", "worldwide"], kinds: ["classifieds"],
-      home: "https://jiji.co.ke/", verify: "bot_blocked",
-      note: "Kenya classifieds, cars (same path format as Jiji Nigeria). Automated checks hit a Cloudflare check, so this stays a browser link.",
+      home: "https://jiji.co.ke/", verify: "verified",
+      note: "Kenya classifieds, cars (make-model path; outside check: Land Cruiser listings only).",
       build(p) {
         const make = slug(p.make), model = slug(p.model);
         return make ? "https://jiji.co.ke/cars/" + make + (model ? "-" + model : "") : "https://jiji.co.ke/cars";
