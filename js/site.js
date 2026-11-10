@@ -207,6 +207,109 @@
     return "Deep link";
   }
 
+  const OPEN_TABS_CONFIRM_THRESHOLD = 8;
+
+  function showPopupNotice(container, attempted, opened) {
+    let notice = container.querySelector(".popup-blocker-notice");
+    if (!notice) {
+      notice = document.createElement("div");
+      notice.className = "notice popup-blocker-notice";
+      notice.setAttribute("role", "status");
+      notice.setAttribute("aria-live", "polite");
+      const toolbar = container.querySelector(".results-toolbar");
+      if (toolbar && toolbar.nextSibling) container.insertBefore(notice, toolbar.nextSibling);
+      else container.prepend(notice);
+    }
+    const host = location.hostname || "this site";
+    notice.innerHTML = `
+      <strong>Some tabs were blocked</strong>
+      (${opened} of ${attempted} opened). Your browser stopped the extra windows.
+      Allow pop-ups for <strong>${escapeHtml(host)}</strong> (usually via the icon in the address bar),
+      then click the button again.`;
+    notice.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function clearPopupNotice(container) {
+    const notice = container.querySelector(".popup-blocker-notice");
+    if (notice) notice.remove();
+  }
+
+  function openUrlsInTabs(urls, container) {
+    const list = (urls || []).filter(Boolean);
+    if (!list.length) return { opened: 0, blocked: false };
+
+    if (list.length > OPEN_TABS_CONFIRM_THRESHOLD) {
+      const ok = window.confirm(
+        `Open ${list.length} marketplace tabs?\n\nYour browser may ask you to allow pop-ups for this site.`
+      );
+      if (!ok) return { opened: 0, blocked: false, cancelled: true };
+    }
+
+    clearPopupNotice(container);
+    let opened = 0;
+    let blocked = false;
+    for (let i = 0; i < list.length; i++) {
+      const win = window.open(list[i], "_blank", "noopener");
+      if (win) {
+        opened += 1;
+      } else if (i > 0) {
+        // First open can succeed under a user gesture; later ones are often blocked.
+        blocked = true;
+        break;
+      } else {
+        // Even the first tab was blocked — treat as blocked.
+        blocked = true;
+        break;
+      }
+    }
+    if (blocked) showPopupNotice(container, list.length, opened);
+    return { opened, blocked };
+  }
+
+  function collectCheckedUrls(scope) {
+    return [...scope.querySelectorAll(".source-include:checked")].map(cb => cb.value).filter(Boolean);
+  }
+
+  function updateOpenSelectedLabel(container) {
+    const btn = container.querySelector("[data-open-selected]");
+    if (!btn) return;
+    const n = container.querySelectorAll(".source-include:checked").length;
+    btn.textContent = n ? `Open selected (${n}) in tabs` : "Open selected in tabs";
+    btn.disabled = n === 0;
+    btn.setAttribute("aria-label", n
+      ? `Open ${n} selected marketplace searches in new tabs`
+      : "Open selected marketplace searches in new tabs");
+  }
+
+  function bindOpenAllControls(container) {
+    container.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-open-all], button[data-open-selected], button[data-open-region]");
+      if (!btn || !container.contains(btn)) return;
+      e.preventDefault();
+
+      let urls = [];
+      if (btn.hasAttribute("data-open-selected")) {
+        urls = collectCheckedUrls(container);
+      } else if (btn.hasAttribute("data-open-region")) {
+        const region = btn.closest(".region-block");
+        urls = region
+          ? [...region.querySelectorAll(".source-include")].map(cb => cb.value).filter(Boolean)
+          : [];
+      } else if (btn.hasAttribute("data-open-all")) {
+        urls = [...container.querySelectorAll(".source-include")].map(cb => cb.value).filter(Boolean);
+      }
+      openUrlsInTabs(urls, container);
+    });
+
+    container.addEventListener("change", (e) => {
+      if (e.target && e.target.classList && e.target.classList.contains("source-include")) {
+        updateOpenSelectedLabel(container);
+      }
+    });
+
+    updateOpenSelectedLabel(container);
+  }
+
   function renderResultGroups(container, params) {
     if (!container || !global.SITE_SOURCES) return;
     const results = global.SITE_SOURCES.buildResults(params);
@@ -226,25 +329,47 @@
         region <strong>${escapeHtml(region)}</strong>.
         This site does not host listings or prices — each button opens the live search on that site.
       </div>
+      <div class="results-toolbar" role="group" aria-label="Open marketplace tabs">
+        <button type="button" class="btn btn-primary btn-sm" data-open-all
+          aria-label="Open all ${results.length} marketplace searches in new tabs">
+          Open all ${results.length} sites in tabs
+        </button>
+        <button type="button" class="btn btn-ghost btn-sm" data-open-selected
+          aria-label="Open selected marketplace searches in new tabs">
+          Open selected in tabs
+        </button>
+        <span class="hint results-toolbar-hint">Uses new tabs. Allow pop-ups if your browser asks.</span>
+      </div>
       ${groups.map(g => `
-        <div class="region-block">
-          <h2>${escapeHtml(g.region)}</h2>
+        <div class="region-block" data-region="${escapeHtml(g.region)}">
+          <div class="region-header">
+            <h2>${escapeHtml(g.region)}</h2>
+            <button type="button" class="btn btn-ghost btn-sm" data-open-region
+              aria-label="Open all ${g.items.length} ${escapeHtml(g.region)} marketplace searches in new tabs">
+              Open all ${g.items.length} in tabs
+            </button>
+          </div>
           <div class="source-list">
             ${g.items.map(it => `
               <article class="source-item">
-                <div>
-                  <h3>${escapeHtml(it.name)}</h3>
-                  <p>${escapeHtml(it.note || "")}</p>
-                </div>
-                <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+                <label class="source-check">
+                  <input type="checkbox" class="source-include" value="${escapeHtml(it.url)}" checked
+                    aria-label="Include ${escapeHtml(it.name)} when opening selected tabs" />
+                  <span class="source-check-body">
+                    <h3>${escapeHtml(it.name)}</h3>
+                    <p>${escapeHtml(it.note || "")}</p>
+                  </span>
+                </label>
+                <div class="source-actions">
                   <span class="status-pill ${statusClass(it.verify)}">${statusLabel(it.verify)}</span>
-                  <a class="btn btn-primary btn-sm" href="${it.url}" target="_blank" rel="noopener noreferrer">Open search</a>
+                  <a class="btn btn-primary btn-sm" href="${escapeHtml(it.url)}" target="_blank" rel="noopener noreferrer">Open search</a>
                 </div>
               </article>
             `).join("")}
           </div>
         </div>
       `).join("")}`;
+    bindOpenAllControls(container);
   }
 
   async function loadJSON(rel) {
