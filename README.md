@@ -41,7 +41,8 @@ python3 -m http.server 8082
 
 ## Features
 
-- Search by make, model, year range, country/region → marketplace deep links
+- Search by make, model, year range, country/region → deep links to 110+ marketplaces, auctions and classifieds
+- Forums & communities section: 50+ enthusiast forums matched by make/model (Google site-search links, labelled "Forum search via Google")
 - NHTSA vPIC client-side make/model autocomplete + VIN decoder (`vin.html`)
 - Sources directory by region (`sources.html`)
 - Per-make pages (`cars/*/`) and per-country pages (`country/*/`)

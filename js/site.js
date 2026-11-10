@@ -200,15 +200,18 @@
     if (v === "verified") return "live";
     if (v === "bot_blocked") return "blocked";
     if (v === "search_on_site") return "onsite";
+    if (v === "google_site") return "google";
     return "deeplink";
   }
   function statusLabel(v) {
     if (v === "verified") return "Verified link";
     if (v === "bot_blocked") return "Browser link";
     if (v === "search_on_site") return "Search on site";
+    if (v === "google_site") return "Forum search via Google";
     return "Deep link";
   }
   function actionLabel(v) {
+    if (v === "google_site") return "Search forum posts";
     return v === "search_on_site" ? "Search on site" : "Open search";
   }
 
@@ -333,7 +336,8 @@
           ? [...region.querySelectorAll(".source-include")].map(cb => cb.value).filter(Boolean)
           : [];
       } else if (btn.hasAttribute("data-open-all")) {
-        urls = [...container.querySelectorAll(".source-include")].map(cb => cb.value).filter(Boolean);
+        // Marketplaces only; forums have their own section button.
+        urls = [...container.querySelectorAll('.region-block[data-kind="market"] .source-include')].map(cb => cb.value).filter(Boolean);
       }
       openUrlsInTabs(urls, container, btn);
     });
@@ -347,50 +351,16 @@
     updateOpenSelectedLabel(container);
   }
 
-  function renderResultGroups(container, params) {
-    if (!container || !global.SITE_SOURCES) return;
-    const results = global.SITE_SOURCES.buildResults(params);
-    const groups = global.SITE_SOURCES.groupByRegion(results);
-    if (!results.length) {
-      container.innerHTML = `<div class="empty">No sources matched that region.</div>`;
-      return;
-    }
-    const summary = [params.make, params.model].filter(Boolean).join(" ") || "Any make/model";
-    const years = [params.yearFrom, params.yearTo].filter(Boolean).join("–") || "Any year";
-    const region = params.country || "worldwide";
-    container.innerHTML = `
-      <div class="notice" style="margin-bottom:1.25rem">
-        Showing <strong>${results.length}</strong> marketplace deep links for
-        <strong>${escapeHtml(summary)}</strong>,
-        <strong>${escapeHtml(years)}</strong>,
-        region <strong>${escapeHtml(region)}</strong>.
-        This site does not host listings or prices — each button opens the live search on that site.
-      </div>
-      <div class="results-toolbar" role="group" aria-label="Open marketplace tabs">
-        <button type="button" class="btn btn-primary btn-sm" data-open-all
-          aria-label="Open all ${results.length} marketplace searches in new tabs">
-          Open all ${results.length} sites in tabs
-        </button>
-        <button type="button" class="btn btn-ghost btn-sm" data-open-selected
-          aria-label="Open selected marketplace searches in new tabs">
-          Open selected in tabs
-        </button>
-        <span class="hint results-toolbar-hint">Browsers allow one new tab per click unless you allow pop-ups for this site.</span>
-      </div>
-      ${groups.map(g => `
-        <div class="region-block" data-region="${escapeHtml(g.region)}">
-          <div class="region-header">
-            <h2>${escapeHtml(g.region)}</h2>
-            <button type="button" class="btn btn-ghost btn-sm" data-open-region
-              aria-label="Open all ${g.items.length} ${escapeHtml(g.region)} marketplace searches in new tabs">
-              Open all ${g.items.length} in tabs
-            </button>
-          </div>
-          <div class="source-list">
-            ${g.items.map(it => `
+  function renderSourceItem(it, checked) {
+    const action = it.verify === "search_on_site"
+      ? "Open " + escapeHtml(it.name) + " and type the make and model there"
+      : it.verify === "google_site"
+        ? "Search " + escapeHtml(it.name) + " for-sale posts on Google"
+        : "Open " + escapeHtml(it.name) + " search";
+    return `
               <article class="source-item">
                 <label class="source-check">
-                  <input type="checkbox" class="source-include" value="${escapeHtml(it.url)}" checked
+                  <input type="checkbox" class="source-include" value="${escapeHtml(it.url)}" ${checked ? "checked" : ""}
                     aria-label="Include ${escapeHtml(it.name)} when opening selected tabs" />
                   <span class="source-check-body">
                     <h3>${escapeHtml(it.name)}</h3>
@@ -400,13 +370,76 @@
                 <div class="source-actions">
                   <span class="status-pill ${statusClass(it.verify)}">${statusLabel(it.verify)}</span>
                   <a class="btn btn-primary btn-sm" href="${escapeHtml(it.url)}" target="_blank" rel="noopener noreferrer"
-                    aria-label="${it.verify === "search_on_site" ? "Open " + escapeHtml(it.name) + " and type the make and model there" : "Open " + escapeHtml(it.name) + " search"}">${actionLabel(it.verify)}</a>
+                    aria-label="${action}">${actionLabel(it.verify)}</a>
                 </div>
-              </article>
-            `).join("")}
+              </article>`;
+  }
+
+  function renderResultGroups(container, params) {
+    if (!container || !global.SITE_SOURCES) return;
+    const results = global.SITE_SOURCES.buildResults(params);
+    const FORUM_REGION = "Forums & communities";
+    const markets = results.filter(r => r.region !== FORUM_REGION);
+    const forums = results.filter(r => r.region === FORUM_REGION);
+    const groups = global.SITE_SOURCES.groupByRegion(markets);
+    if (!results.length) {
+      container.innerHTML = `<div class="empty">No sources matched that region.</div>`;
+      return;
+    }
+    const summary = [params.make, params.model].filter(Boolean).join(" ") || "Any make/model";
+    const years = [params.yearFrom, params.yearTo].filter(Boolean).join("–") || "Any year";
+    const region = params.country || "worldwide";
+    const forumBlock = forums.length ? `
+        <div class="region-block forum-block" data-region="${escapeHtml(FORUM_REGION)}" data-kind="forum" id="forums">
+          <div class="region-header">
+            <h2>${escapeHtml(FORUM_REGION)}</h2>
+            <button type="button" class="btn btn-ghost btn-sm" data-open-region
+              aria-label="Open all ${forums.length} forum searches in new tabs">
+              Open all ${forums.length} forum searches in tabs
+            </button>
+          </div>
+          <p class="hint forum-hint">Enthusiasts often sell cars in forum classifieds. Most forums have no search link, so these open a
+            Google search limited to that forum for “for sale” posts${params.make ? " about <strong>" + escapeHtml(summary) + "</strong>" : ""}.
+            Results are forum posts, not verified listings — check dates and sellers. Brand and model forums appear when they match your search.
+            Forum boxes start unticked so “Open selected” stays marketplace-only unless you tick them.</p>
+          <div class="source-list">
+            ${forums.map(it => renderSourceItem(it, false)).join("")}
+          </div>
+        </div>` : "";
+    container.innerHTML = `
+      <div class="notice" style="margin-bottom:1.25rem">
+        Showing <strong>${markets.length}</strong> marketplace deep links${forums.length ? ` and <strong>${forums.length}</strong> <a href="#forums">forum searches</a>` : ""} for
+        <strong>${escapeHtml(summary)}</strong>,
+        <strong>${escapeHtml(years)}</strong>,
+        region <strong>${escapeHtml(region)}</strong>.
+        This site does not host listings or prices — each button opens the live search on that site.
+      </div>
+      <div class="results-toolbar" role="group" aria-label="Open marketplace tabs">
+        <button type="button" class="btn btn-primary btn-sm" data-open-all
+          aria-label="Open all ${markets.length} marketplace searches in new tabs">
+          Open all ${markets.length} marketplaces in tabs
+        </button>
+        <button type="button" class="btn btn-ghost btn-sm" data-open-selected
+          aria-label="Open selected marketplace searches in new tabs">
+          Open selected in tabs
+        </button>
+        <span class="hint results-toolbar-hint">Browsers allow one new tab per click unless you allow pop-ups for this site.</span>
+      </div>
+      ${groups.map(g => `
+        <div class="region-block" data-region="${escapeHtml(g.region)}" data-kind="market">
+          <div class="region-header">
+            <h2>${escapeHtml(g.region)}</h2>
+            <button type="button" class="btn btn-ghost btn-sm" data-open-region
+              aria-label="Open all ${g.items.length} ${escapeHtml(g.region)} marketplace searches in new tabs">
+              Open all ${g.items.length} in tabs
+            </button>
+          </div>
+          <div class="source-list">
+            ${g.items.map(it => renderSourceItem(it, true)).join("")}
           </div>
         </div>
-      `).join("")}`;
+      `).join("")}
+      ${forumBlock}`;
     bindOpenAllControls(container);
   }
 

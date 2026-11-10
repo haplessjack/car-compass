@@ -226,6 +226,8 @@ a:hover { color: var(--accent); }
 .status-pill.deeplink { color: var(--gold-soft); border-color: rgba(212,175,55,0.35); }
 .status-pill.blocked { color: #c45c5c; border-color: rgba(196,92,92,0.35); }
 .status-pill.onsite { color: var(--text-muted); border-color: rgba(154,149,136,0.45); }
+.status-pill.google { color: #8fb3e0; border-color: rgba(143,179,224,0.45); }
+.forum-hint { margin: 0 0 0.85rem; max-width: 70ch; }
 
 .notice {
   border: 1px solid rgba(212,175,55,0.25);
@@ -267,3 +269,7 @@ a:hover { color: var(--accent); }
   .results-toolbar-hint { margin-left: 0; width: 100%; }
   .source-actions { justify-content: flex-start; }
 }
+
+.legend { list-style: none; padding: 0; margin: 0 0 1.5rem; display: grid; gap: 0.5rem; }
+.legend li { display: flex; gap: 0.6rem; align-items: baseline; color: var(--text-muted); }
+.legend .status-pill { flex: 0 0 auto; }

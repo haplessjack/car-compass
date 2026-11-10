@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sources — Car Compass</title>
-  <meta name="description" content="Worldwide car listing sources by region." />
+  <meta name="description" content="Worldwide car listing sources by region: 110+ marketplaces, auctions and classifieds, plus 50+ enthusiast forums." />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -16,9 +16,19 @@
       <div class="container">
         <div class="eyebrow">Directory</div>
         <h1>Listing sources by region</h1>
-        <p class="lead">These are the marketplaces, auctions and classifieds Car Compass links to. “Verified link” means a confirmed make/model deep link. “Browser link” means automated checks were blocked (captcha or 403) but the standard public URL format is still used. “Search on site” means there is no reliable filtered deep link, so the button opens the site’s own search for you to type the make and model.</p>
+        <p class="lead">These are the marketplaces, auctions, classifieds and enthusiast forums Car Compass links to (<span id="source-counts">110+ marketplaces and 50+ forums</span>).</p>
+        <ul class="legend">
+          <li><span class="status-pill live">Verified link</span> We opened a test search (e.g. Toyota Supra, Porsche 911) and the site showed filtered results.</li>
+          <li><span class="status-pill deeplink">Deep link</span> The site accepts the filtered URL, but we could not fully confirm the results (for example, results load only after you set a location).</li>
+          <li><span class="status-pill blocked">Browser link</span> Automated checks were blocked (captcha, 403 or login), so the site’s standard public URL format is used. It should work in your browser.</li>
+          <li><span class="status-pill onsite">Search on site</span> No reliable filtered link exists, so the button opens the site’s own search for you to type the make and model.</li>
+          <li><span class="status-pill google">Forum search via Google</span> The forum has no public search link, so this opens a Google search limited to that forum for “for sale” posts. These are forum posts, not verified listings.</li>
+        </ul>
         <div class="filters" id="region-filters"></div>
         <div id="source-directory"></div>
+        <h2 id="forums" style="margin-top:2.5rem">Forums &amp; communities</h2>
+        <p class="hint">Enthusiasts often list cars in forum classifieds. General communities appear in every search; brand and model forums appear when your search matches the brands shown on each card.</p>
+        <div id="forum-directory"></div>
       </div>
     </section>
 
@@ -33,7 +43,7 @@
     SiteApp.renderChrome('sources');
     SiteApp.injectSeo({
       title: 'Sources — ' + SiteApp.cfg.siteName,
-      description: 'Car marketplaces and auctions by region used for worldwide car search.',
+      description: 'Car marketplaces, auctions, classifieds and enthusiast forums by region used for worldwide car search.',
       path: 'sources.html'
     });
     const all = SITE_SOURCES.SOURCES;
@@ -74,6 +84,25 @@
       paint(btn.dataset.r);
     });
     paint('all');
+
+    document.getElementById('source-counts').textContent =
+      all.length + ' marketplaces, auctions and classifieds, and ' + SITE_SOURCES.FORUMS.length + ' forums and communities';
+    const label = m => m.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    document.getElementById('forum-directory').innerHTML = `
+      <div class="source-list">
+        ${SITE_SOURCES.FORUMS.map(it => `
+          <article class="source-item">
+            <div>
+              <h3>${SiteApp.escapeHtml(it.name)}</h3>
+              <p>${SiteApp.escapeHtml(it.note || '')}</p>
+              <div>${(it.makes ? it.makes.map(label) : ['All makes']).map(k => `<span class="tag">${SiteApp.escapeHtml(k)}</span>`).join('')}</div>
+            </div>
+            <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+              <span class="status-pill ${SiteApp.statusClass(it.verify)}">${SiteApp.statusLabel(it.verify)}</span>
+              <a class="btn btn-ghost btn-sm" href="${it.home}" target="_blank" rel="noopener noreferrer">Homepage</a>
+            </div>
+          </article>`).join('')}
+      </div>`;
   </script>
 
 </body>
