@@ -322,6 +322,9 @@
   }
 
   function bindOpenAllControls(container) {
+    // The results can be re-rendered once stock hints arrive; bind the delegated listeners only once.
+    if (container.dataset.openBound === "1") { updateOpenSelectedLabel(container); return; }
+    container.dataset.openBound = "1";
     container.addEventListener("click", (e) => {
       const btn = e.target.closest("button[data-open-all], button[data-open-selected], button[data-open-region]");
       if (!btn || !container.contains(btn)) return;
@@ -351,6 +354,17 @@
     updateOpenSelectedLabel(container);
   }
 
+  function fmtCheckDate(iso) {
+    try {
+      return new Date(iso + "T12:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+    } catch (e) { return iso; }
+  }
+  function stockBadge(it) {
+    if (!it.stock || it.stock.status !== "found") return "";
+    const n = it.stock.count ? ` · ${Number(it.stock.count).toLocaleString("en-US")} results` : "";
+    return `<span class="stock-badge" title="Our nightly check found matching cars on this page (any year). Stock changes daily.">Stock checked ${escapeHtml(fmtCheckDate(it.stock.checked))}${n}</span>`;
+  }
+
   function renderSourceItem(it, checked, wantYears) {
     // Only some sites accept a year range in the link; say so on the others.
     const yearNote = wantYears && !it.years && it.verify !== "search_on_site" && it.verify !== "google_site"
@@ -369,6 +383,7 @@
                     <h3>${escapeHtml(it.name)}</h3>
                     <p>${escapeHtml(it.note || "")}</p>
                     ${yearNote}
+                    ${stockBadge(it)}
                   </span>
                 </label>
                 <div class="source-actions">
@@ -379,13 +394,50 @@
               </article>`;
   }
 
-  function renderResultGroups(container, params) {
+  // ---- Stock hints (data/stock-hints.json, written by the nightly stock checker) ----
+  let stockHintsPromise = null;
+  function loadStockHints() {
+    if (!stockHintsPromise) {
+      const day = new Date().toISOString().slice(0, 10);    // cache-bust once a day
+      stockHintsPromise = fetch(url("data/stock-hints.json") + "?d=" + day, { cache: "no-cache" })
+        .then(r => (r.ok ? r.json() : null))
+        .catch(() => null);                                  // missing file or offline: behave as before
+    }
+    return stockHintsPromise;
+  }
+  function stockEntryFor(hints, params) {
+    if (!hints || !hints.searches || !global.SITE_SOURCES || !global.SITE_SOURCES.stockKey) return null;
+    if (!params.make) return null;
+    const e = hints.searches[global.SITE_SOURCES.stockKey(params)];
+    return e && e.sources ? e : null;
+  }
+
+  function renderResultGroups(container, params, hints) {
     if (!container || !global.SITE_SOURCES) return;
+    if (hints === undefined) {
+      // Render straight away, then re-render if the nightly check covers this search.
+      loadStockHints().then(h => { if (stockEntryFor(h, params)) renderResultGroups(container, params, h); });
+    }
+    const entry = stockEntryFor(hints, params);
     const results = global.SITE_SOURCES.buildResults(params);
     const FORUM_REGION = "Forums & communities";
-    const markets = results.filter(r => r.region !== FORUM_REGION);
+    let markets = results.filter(r => r.region !== FORUM_REGION);
     const forums = results.filter(r => r.region === FORUM_REGION);
+    let found = [], zero = [], hidden = [];
+    if (entry) {
+      const siteBroken = hints.broken || {};
+      const rest = [];
+      markets.forEach(m => {
+        const s = entry.sources[m.id];
+        if (siteBroken[m.id] || (s && s.status === "broken")) hidden.push(m);
+        else if (s && s.status === "found") { m.stock = Object.assign({ checked: entry.checked }, s); found.push(m); }
+        else if (s && s.status === "zero") zero.push(m);
+        else rest.push(m);
+      });
+      markets = rest;
+    }
     const groups = global.SITE_SOURCES.groupByRegion(markets);
+    const shown = markets.length + found.length;
     if (!results.length) {
       container.innerHTML = `<div class="empty">No sources matched that region.</div>`;
       return;
@@ -394,7 +446,33 @@
     const years = [params.yearFrom, params.yearTo].filter(Boolean).join("–") || "Any year";
     const region = params.country || "worldwide";
     const wantYears = !!(params.yearFrom || params.yearTo);
-    const yearCount = wantYears ? markets.filter(m => m.years).length : 0;
+    const yearCount = wantYears ? markets.concat(found).filter(m => m.years).length : 0;
+    const checkedOn = entry ? fmtCheckDate(entry.checked) : "";
+    const foundBlock = found.length ? `
+        <div class="region-block found-block" data-region="In stock at last check" data-kind="market">
+          <div class="region-header">
+            <h2>Matching cars found at last check</h2>
+            <button type="button" class="btn btn-ghost btn-sm" data-open-region
+              aria-label="Open all ${found.length} marketplaces that had matching cars in new tabs">
+              Open all ${found.length} in tabs
+            </button>
+          </div>
+          <p class="hint">Our automatic check on ${escapeHtml(checkedOn)} found ${escapeHtml([params.make, params.model].filter(Boolean).join(" "))} listings on these sites${wantYears ? " (any year — check your year range on the site)" : ""}. Stock changes daily.</p>
+          <div class="source-list">
+            ${found.map(it => renderSourceItem(it, true, wantYears)).join("")}
+          </div>
+        </div>` : "";
+    const zeroBlock = zero.length ? `
+        <details class="region-block zero-block" data-region="No matching cars at last check" data-kind="zero">
+          <summary><h2>No matching cars at last check (${escapeHtml(checkedOn)})</h2>
+            <span class="hint">${zero.length} site${zero.length === 1 ? "" : "s"} — not included in “Open all”. Click to show.</span></summary>
+          <p class="hint">These sites showed no matching cars for this search when we checked. They may have new stock since, so the links are still here.</p>
+          <div class="source-list">
+            ${zero.map(it => renderSourceItem(it, false, wantYears)).join("")}
+          </div>
+        </details>` : "";
+    const hiddenNote = hidden.length
+      ? `<p class="hint hidden-note" role="note">${hidden.length} link${hidden.length === 1 ? "" : "s"} hidden because ${hidden.length === 1 ? "it was" : "they were"} broken at last check (${escapeHtml(checkedOn)}).</p>` : "";
     const forumBlock = forums.length ? `
         <div class="region-block forum-block" data-region="${escapeHtml(FORUM_REGION)}" data-kind="forum" id="forums">
           <div class="region-header">
@@ -414,7 +492,7 @@
         </div>` : "";
     container.innerHTML = `
       <div class="notice" style="margin-bottom:1.25rem">
-        Showing <strong>${markets.length}</strong> marketplace deep links${forums.length ? ` and <strong>${forums.length}</strong> <a href="#forums">forum searches</a>` : ""} for
+        Showing <strong>${shown}</strong> marketplace deep links${forums.length ? ` and <strong>${forums.length}</strong> <a href="#forums">forum searches</a>` : ""} for
         <strong>${escapeHtml(summary)}</strong>,
         <strong>${escapeHtml(years)}</strong>,
         region <strong>${escapeHtml(region)}</strong>.
@@ -423,12 +501,12 @@
       <p class="hint stock-hint">Each link opens that site’s own live search. A page saying “no results” or “0 cars” usually means
         that market has no matching car for sale right now — try another region or widen the search.
         If a site doesn’t recognise a model name it may show the whole make instead.${wantYears
-          ? ` The year range is built into ${yearCount} of ${markets.length} marketplace links; the others are marked so you can set the years on the site.`
+          ? ` The year range is built into ${yearCount} of ${shown} marketplace links; the others are marked so you can set the years on the site.`
           : ""}</p>
       <div class="results-toolbar" role="group" aria-label="Open marketplace tabs">
         <button type="button" class="btn btn-primary btn-sm" data-open-all
-          aria-label="Open all ${markets.length} marketplace searches in new tabs">
-          Open all ${markets.length} marketplaces in tabs
+          aria-label="Open all ${shown} marketplace searches in new tabs">
+          Open all ${shown} marketplaces in tabs
         </button>
         <button type="button" class="btn btn-ghost btn-sm" data-open-selected
           aria-label="Open selected marketplace searches in new tabs">
@@ -436,6 +514,7 @@
         </button>
         <span class="hint results-toolbar-hint">Browsers allow one new tab per click unless you allow pop-ups for this site.</span>
       </div>
+      ${foundBlock}
       ${groups.map(g => `
         <div class="region-block" data-region="${escapeHtml(g.region)}" data-kind="market">
           <div class="region-header">
@@ -450,6 +529,8 @@
           </div>
         </div>
       `).join("")}
+      ${zeroBlock}
+      ${hiddenNote}
       ${forumBlock}`;
     bindOpenAllControls(container);
   }

@@ -275,3 +275,18 @@ a:hover { color: var(--accent); }
 .legend { list-style: none; padding: 0; margin: 0 0 1.5rem; display: grid; gap: 0.5rem; }
 .legend li { display: flex; gap: 0.6rem; align-items: baseline; color: var(--text-muted); }
 .legend .status-pill { flex: 0 0 auto; }
+
+/* Stock hints from the nightly checker */
+.stock-badge {
+  display: inline-block; margin-top: 0.35rem; padding: 0.1rem 0.5rem; border-radius: 999px;
+  font-size: 0.75rem; color: #d9f0e3; background: rgba(92,158,122,0.18); border: 1px solid rgba(92,158,122,0.55);
+}
+.found-block .region-header h2 { color: var(--ok); }
+.zero-block { opacity: 0.85; }
+.zero-block > summary { cursor: pointer; list-style: none; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 1rem; margin-bottom: 0.75rem; }
+.zero-block > summary::-webkit-details-marker { display: none; }
+.zero-block > summary h2 { display: inline; font-size: 1.05rem; }
+.zero-block > summary h2::before { content: "▸ "; color: var(--gold-dim); }
+.zero-block[open] > summary h2::before { content: "▾ "; }
+.zero-block > summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.hidden-note { margin: 0.5rem 0 1.5rem; font-style: italic; }

@@ -200,7 +200,9 @@
         if (p.make) params.set("make", p.make);
         // Autotrader UK needs its exact model name; Defender is split into
         // "Defender 90/110/130", so model=Defender shows 0 results. Use keywords there.
-        const splitModels = { defender: 1 };
+        // Same for names the UK site files differently (found by the nightly stock check:
+        // "G Class", Civic + Type R trim, Lancer + Evo trim, Impreza WRX): keywords keep the model.
+        const splitModels = { defender: 1, "g-class": 1, "civic-type-r": 1, "lancer-evolution": 1, wrx: 1 };
         if (p.model) params.set(splitModels[slug(p.model)] ? "keywords" : "model", p.model);
         const y = yr(p);
         if (y.from) params.set("year-from", y.from);
@@ -524,7 +526,10 @@
         // AutoTempest ids are lower-case with no separators (landrover, landcruiser,
         // mercedesbenz, gclass); "land-cruiser" or "mercedes-benz" gives an error page.
         const id = s => slug(s).replace(/-/g, "");
-        const make = id(p.make), model = id(p.model), y = yr(p);
+        // AutoTempest's id for the MX-5 is "mx5miata" ("mx5" gives no results; checked: 211+).
+        const atAlias = { mx5: "mx5miata", miata: "mx5miata" };
+        const make = id(p.make), y = yr(p);
+        const model = atAlias[id(p.model)] || id(p.model);
         if (!make) return "https://www.autotempest.com/";
         const qs = new URLSearchParams({ make, model, zip: "", radius: "any" });
         if (y.from) qs.set("minyear", y.from);
@@ -549,7 +554,8 @@
         // Land Cruiser 15, Defender 97, 911 56 cars; year {min,max} 911 2015–2020 → 24 cars.
         const make = String(p.make || "").trim(), model = String(p.model || "").trim();
         if (!make) return "https://www.carvana.com/cars";
-        const alias = { supra: "GR Supra" }; // Carvana sells the current Supra as "GR Supra"
+        // Carvana sells the current Supra as "GR Supra" and the MX-5 as "MX-5 Miata" (MX-5 alone shows 0 cars; checked: 355).
+        const alias = { supra: "GR Supra", "mx-5": "MX-5 Miata", miata: "MX-5 Miata", "mx-5 miata": "MX-5 Miata" };
         const m = { name: make };
         if (model) m.parentModels = [{ name: alias[model.toLowerCase()] || model }];
         const f = { makes: [m] };
@@ -1204,5 +1210,12 @@
     return keys.map(k => ({ region: k, items: map[k] }));
   }
 
-  global.SITE_SOURCES = { SOURCES, FORUMS, sourcesFor, forumsFor, buildResults, groupByRegion };
+  // Key used by data/stock-hints.json (written by the nightly stock checker): "make|model", lower-case, aliases applied.
+  function stockKey(params) {
+    const p = normParams(params || {});
+    const n = s => String(s || "").trim().toLowerCase().replace(/\s+/g, " ");
+    return n(p.make) + "|" + n(p.model);
+  }
+
+  global.SITE_SOURCES = { SOURCES, FORUMS, sourcesFor, forumsFor, buildResults, groupByRegion, normParams, stockKey };
 })(window);

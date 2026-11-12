@@ -330,3 +330,10 @@ The box gets 403s or timeouts, as did the outside fetch and reader:
 - Goo-net (Japan)
 
 They keep the standard public URL format, and none has been shown to be wrong.
+
+# Nightly stock check (2026-11-12)
+`data/stock-hints.json` is written by the stock checker (see the runbook in the monitor workspace). The first full run covered 42 searches and 4,077 links.
+It found three builder naming bugs, which are now fixed and rechecked:
+- **AutoTrader UK:** G-Class, Civic Type R, Lancer Evolution and WRX used `model=` and showed 0 results. They now use `keywords=` and show 435, 70, 19 and 154 results.
+- **Carvana:** MX-5 is now aliased to "MX-5 Miata" (355 cars).
+- **AutoTempest:** `mx5` is now aliased to `mx5miata` (211+).
