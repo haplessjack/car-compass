@@ -103,6 +103,7 @@
           <nav class="nav" aria-label="Primary">
             <a href="${pathRel("index.html")}" ${active === "home" ? 'aria-current="page"' : ""}>Search</a>
             <a href="${pathRel("sources.html")}" ${active === "sources" ? 'aria-current="page"' : ""}>Sources</a>
+            <a href="${pathRel("rare-finds.html")}" ${active === "rare" ? 'aria-current="page"' : ""}>Rare Finds</a>
             <a href="${pathRel("vin.html")}" ${active === "vin" ? 'aria-current="page"' : ""}>VIN decoder</a>
             <a href="${pathRel("about.html")}" ${active === "about" ? 'aria-current="page"' : ""}>About</a>
           </nav>
@@ -118,6 +119,7 @@
           </div>
           <div class="footer-links">
             <a href="${pathRel("sources.html")}">Sources</a>
+            <a href="${pathRel("rare-finds.html")}">Rare Finds</a>
             <a href="${pathRel("vin.html")}">VIN decoder</a>
             <a href="${pathRel("about.html")}">About</a>
             <a href="${pathRel("robots.txt")}">robots.txt</a>

@@ -16,6 +16,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://haplessjack.github.io/car-compass/rare-finds.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://haplessjack.github.io/car-compass/vin.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

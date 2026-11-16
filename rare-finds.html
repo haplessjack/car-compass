@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rare Finds: rare and exotic cars for sale at auction and in classifieds — Car Compass</title>
+  <meta name="description" content="Rare, low-production and exotic cars currently listed on public auction and classified sites worldwide, checked nightly. Every card links straight to the original listing." />
+  <link rel="canonical" href="https://haplessjack.github.io/car-compass/rare-finds.html" />
+  <meta property="og:title" content="Rare Finds — Car Compass" />
+  <meta property="og:description" content="Rare, low-production and exotic cars currently listed on public auction and classified sites worldwide, checked nightly." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://haplessjack.github.io/car-compass/rare-finds.html" />
+  <meta property="og:site_name" content="Car Compass" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+
+    <section class="hero rf-hero">
+      <div class="container">
+        <div class="eyebrow">Rare Finds</div>
+        <h1>Rare and exotic cars, <em>found for you</em></h1>
+        <p class="lead">Low-production, homologation, coachbuilt and collector cars currently listed on public auction and classified sites around the world. Each card links straight to the original listing.</p>
+        <p class="notice rf-disclaimer"><strong>How this works:</strong> listings come from public auction and classified pages and are checked nightly. Stock changes fast, so a car may already be sold or withdrawn. Always confirm details, price and availability on the source. Car Compass is not a party to any sale and does not host, copy or price listings.</p>
+      </div>
+    </section>
+
+    <section class="section rf-section">
+      <div class="container">
+        <div class="rf-wanted card" id="rf-wanted" aria-labelledby="rf-wanted-h">
+          <h2 id="rf-wanted-h">Wanted</h2>
+          <div id="rf-wanted-body"><p>Loading wanted requests…</p></div>
+        </div>
+
+        <form class="results-toolbar rf-filters" id="rf-filters" role="search" aria-label="Filter rare finds" onsubmit="return false">
+          <div class="field rf-q"><label for="rf-q">Search</label><input id="rf-q" type="search" placeholder="e.g. Integrale, F40, 911 RS" autocomplete="off" /></div>
+          <div class="field"><label for="rf-make">Make</label><select id="rf-make"><option value="">All makes</option></select></div>
+          <div class="field"><label for="rf-era">Era</label><select id="rf-era"><option value="">Any era</option></select></div>
+          <div class="field"><label for="rf-region">Region</label><select id="rf-region"><option value="">Anywhere</option></select></div>
+          <div class="field"><label for="rf-type">Source type</label><select id="rf-type"><option value="">All types</option><option value="auction">Auction</option><option value="classified">Classified</option><option value="dealer">Dealer</option></select></div>
+          <div class="field"><label for="rf-recent">Found</label><select id="rf-recent"><option value="">Any time</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select></div>
+          <div class="field"><label for="rf-tag">Rarity</label><select id="rf-tag"><option value="">All rarity tags</option></select></div>
+          <div class="field"><label for="rf-sort">Sort</label><select id="rf-sort"><option value="newest">Newest first</option><option value="make">Make A–Z</option></select></div>
+          <div class="rf-filter-actions"><button type="button" class="btn btn-ghost btn-sm" id="rf-reset">Reset filters</button><span class="hint" id="rf-count" aria-live="polite"></span></div>
+        </form>
+
+        <div class="grid rf-grid" id="rf-grid" aria-live="polite"><div class="empty">Loading rare finds…</div></div>
+        <noscript><div class="empty">Rare Finds needs JavaScript to filter the list. You can still browse each source from the <a href="sources.html">source directory</a>.</div></noscript>
+
+        <div class="prose rf-about">
+          <h2>About Rare Finds</h2>
+          <p>A small nightly job reads a few public auction and classified index pages, the same pages anyone can open, and keeps listings whose title matches a curated list of rare, low-production and exotic models. It honours each site's robots.txt, waits between requests, never signs in, and skips any site that blocks automated visits.</p>
+          <p>The "why it's rare" notes are short and deliberately cautious. Prices and estimates appear only when the source shows them, exactly as shown at the last check; otherwise the card says "See listing". Listings not seen for 21 days, and auctions that have ended, drop off automatically.</p>
+          <p id="rf-checked"></p>
+          <ul class="rf-sources" id="rf-sources"></ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/config.js"></script>
+  <script src="js/sources.js"></script>
+  <script src="js/site.js"></script>
+  <script src="js/rare-finds.js"></script>
+  <script>
+    SiteApp.renderChrome('rare');
+    SiteApp.injectSeo({
+      title: 'Rare Finds: rare and exotic cars for sale at auction and in classifieds — ' + SiteApp.cfg.siteName,
+      description: 'Rare, low-production and exotic cars currently listed on public auction and classified sites worldwide, checked nightly. Every card links straight to the original listing.',
+      path: 'rare-finds.html'
+    });
+    RareFinds.init();
+  </script>
+</body>
+</html>

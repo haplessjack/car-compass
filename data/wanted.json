@@ -1,0 +1,5 @@
+{
+  "note": "Wanted requests shown on the Rare Finds page. The site owner adds entries to the 'wanted' list; it starts empty. Each entry: {\"make\": \"Lancia\", \"model\": \"Delta Integrale\", \"years\": [1991, 1994], \"region\": \"Europe\", \"note\": \"Evo II preferred\"}. make is required; model, years, region and note are optional. A card is flagged when its make matches and the model words all appear in its title or model name, its year is in range, and its region matches.",
+  "updated": "2026-11-13",
+  "wanted": []
+}
