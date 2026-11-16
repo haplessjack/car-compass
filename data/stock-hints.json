@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-13T08:39:47.334Z",
+ "generated": "2026-11-16T08:34:00.506Z",
  "searches": {
   "toyota|supra": {
    "checked": "2026-11-12",
@@ -1688,25 +1688,39 @@
    }
   },
   "toyota|land cruiser": {
-   "checked": "2026-11-12",
+   "checked": "2026-11-16",
    "sources": {
-    "classiccars": {
-     "status": "found",
-     "count": 114
+    "ebay-motors": {
+     "status": "blocked"
     },
-    "autoscout24": {
-     "status": "found",
-     "count": 1617
+    "cars-com": {
+     "status": "blocked"
     },
-    "pistonheads": {
+    "bringatrailer": {
+     "status": "found"
+    },
+    "hemmings": {
      "status": "found",
-     "count": 168
+     "count": 72
     },
     "carsandbids": {
      "status": "found"
     },
-    "leboncoin": {
-     "status": "blocked"
+    "autotrader-us": {
+     "status": "found",
+     "count": 1263
+    },
+    "classiccars": {
+     "status": "found",
+     "count": 111
+    },
+    "pistonheads": {
+     "status": "found",
+     "count": 166
+    },
+    "autoscout24": {
+     "status": "found",
+     "count": 1631
     },
     "autotrader-uk": {
      "status": "found",
@@ -1714,63 +1728,50 @@
     },
     "mobile-de": {
      "status": "found",
-     "count": 898
+     "count": 938
     },
-    "ebay-motors": {
+    "leboncoin": {
      "status": "blocked"
     },
-    "cars-com": {
-     "status": "blocked"
-    },
-    "hemmings": {
-     "status": "found",
-     "count": 72
-    },
-    "autotrader-us": {
-     "status": "found",
-     "count": 1262
-    },
-    "bringatrailer": {
+    "goonet-exchange": {
      "status": "found"
     },
     "carsensor": {
      "status": "unknown"
-    },
-    "goonet-exchange": {
-     "status": "found"
     },
     "beforward": {
      "status": "unknown"
     },
     "autotrader-ca": {
      "status": "found",
-     "count": 126
+     "count": 125
     },
     "carsales": {
      "status": "blocked"
     },
     "dubizzle": {
      "status": "found",
-     "count": 686
+     "count": 666
     },
     "classicdriver": {
      "status": "blocked"
     },
-    "dupontregistry": {
-     "status": "zero"
-    },
     "classic-com": {
      "status": "found"
+    },
+    "dupontregistry": {
+     "status": "zero"
     },
     "autotempest": {
      "status": "found"
     },
+    "carmax": {
+     "status": "found",
+     "count": 39
+    },
     "carvana": {
      "status": "found",
-     "count": 13
-    },
-    "carmax": {
-     "status": "blocked"
+     "count": 14
     },
     "truecar": {
      "status": "blocked"
@@ -1784,29 +1785,29 @@
     "hagerty-marketplace": {
      "status": "found"
     },
+    "kijiji-autos": {
+     "status": "found",
+     "count": 41
+    },
     "pcarmarket": {
      "status": "found"
     },
-    "kijiji-autos": {
-     "status": "found",
-     "count": 42
-    },
     "mercadolibre-mx": {
      "status": "found",
-     "count": 11
+     "count": 10
     },
     "mercadolibre-ar": {
      "status": "found",
-     "count": 71
+     "count": 64
     },
     "mercadolibre-cl": {
      "status": "found",
-     "count": 9
-    },
-    "mercadolibre-co": {
-     "status": "blocked"
+     "count": 8
     },
     "webmotors": {
+     "status": "blocked"
+    },
+    "mercadolibre-co": {
      "status": "blocked"
     },
     "olx-br": {
@@ -1815,18 +1816,18 @@
     },
     "gumtree-uk": {
      "status": "found",
-     "count": 62
+     "count": 63
     },
     "carandclassic": {
      "status": "found",
-     "count": 370
+     "count": 776
     },
     "ebay-uk": {
      "status": "blocked"
     },
     "carzone": {
      "status": "found",
-     "count": 140
+     "count": 139
     },
     "donedeal": {
      "status": "found",
@@ -1834,28 +1835,28 @@
     },
     "autoscout24-de": {
      "status": "found",
-     "count": 482
+     "count": 488
     },
     "classic-trader": {
-     "status": "found"
-    },
-    "autoscout24-it": {
      "status": "found"
     },
     "autoscout24-nl": {
      "status": "found",
      "count": 156
     },
+    "autoscout24-it": {
+     "status": "found"
+    },
     "autoscout24-fr": {
      "status": "found"
     },
     "autoscout24-be": {
      "status": "found",
-     "count": 127
+     "count": 131
     },
     "autoscout24-at": {
      "status": "found",
-     "count": 59
+     "count": 60
     },
     "autoscout24-es": {
      "status": "found"
@@ -1863,37 +1864,37 @@
     "kleinanzeigen": {
      "status": "found"
     },
-    "ebay-de": {
-     "status": "blocked"
-    },
     "marktplaats": {
      "status": "found",
-     "count": 128
+     "count": 129
     },
     "2dehands": {
      "status": "found",
-     "count": 70
+     "count": 67
+    },
+    "ebay-de": {
+     "status": "blocked"
     },
     "lacentrale": {
      "status": "blocked"
     },
     "subito": {
      "status": "found",
-     "count": 833
+     "count": 878
     },
     "coches-net": {
      "status": "found",
-     "count": 994
+     "count": 978
     },
     "milanuncios": {
      "status": "blocked"
     },
-    "finn": {
-     "status": "found",
-     "count": 672
-    },
     "standvirtual": {
      "status": "found"
+    },
+    "finn": {
+     "status": "found",
+     "count": 673
     },
     "willhaben": {
      "status": "found"
@@ -1910,13 +1911,16 @@
     },
     "otomoto": {
      "status": "found",
-     "count": 269
+     "count": 271
     },
     "sauto": {
      "status": "found",
-     "count": 118
+     "count": 115
     },
     "autovit": {
+     "status": "found"
+    },
+    "tcv": {
      "status": "found"
     },
     "yahoo-auctions-jp": {
@@ -1925,15 +1929,12 @@
     "goo-net": {
      "status": "unknown"
     },
-    "tcv": {
+    "sbt-japan": {
      "status": "found"
     },
     "carfromjapan": {
      "status": "found",
-     "count": 403
-    },
-    "sbt-japan": {
-     "status": "found"
+     "count": 424
     },
     "carousell-sg": {
      "status": "found"
@@ -1950,23 +1951,25 @@
     "carsome": {
      "status": "blocked"
     },
-    "one2car": {
-     "status": "blocked"
-    },
     "cardekho": {
      "status": "found",
      "count": 6
+    },
+    "one2car": {
+     "status": "found",
+     "count": 57
     },
     "carwale": {
      "status": "found",
      "count": 4200
     },
     "olx-in": {
-     "status": "blocked"
+     "status": "found",
+     "count": 162
     },
     "drive-au": {
      "status": "found",
-     "count": 1234
+     "count": 1175
     },
     "gumtree-au": {
      "status": "blocked"
@@ -1979,11 +1982,11 @@
     },
     "trademe": {
      "status": "found",
-     "count": 351
+     "count": 354
     },
     "yallamotor": {
      "status": "found",
-     "count": 484
+     "count": 485
     },
     "opensooq": {
      "status": "found"
@@ -1998,9 +2001,6 @@
      "status": "found",
      "count": 7
     },
-    "jamesedition": {
-     "status": "found"
-    },
     "jiji-ng": {
      "status": "blocked"
     },
@@ -2009,7 +2009,10 @@
     },
     "rm-sothebys": {
      "status": "found",
-     "count": 125
+     "count": 126
+    },
+    "mecum": {
+     "status": "found"
     },
     "artcurial": {
      "status": "found"
@@ -2017,7 +2020,7 @@
     "catawiki": {
      "status": "found"
     },
-    "mecum": {
+    "jamesedition": {
      "status": "found"
     }
    }
@@ -3666,48 +3669,48 @@
    }
   },
   "ford|mustang": {
-   "checked": "2026-11-12",
+   "checked": "2026-11-16",
    "sources": {
-    "classiccars": {
-     "status": "found",
-     "count": 1422
-    },
-    "autoscout24": {
-     "status": "found",
-     "count": 2826
-    },
-    "pistonheads": {
-     "status": "found",
-     "count": 410
-    },
     "carsandbids": {
      "status": "found"
     },
-    "mobile-de": {
-     "status": "found",
-     "count": 2134
-    },
-    "autotrader-uk": {
-     "status": "found",
-     "count": 336
+    "hemmings": {
+     "status": "found"
     },
     "ebay-motors": {
-     "status": "blocked"
-    },
-    "leboncoin": {
      "status": "blocked"
     },
     "cars-com": {
      "status": "blocked"
     },
-    "hemmings": {
+    "autotrader-us": {
      "status": "found"
     },
     "bringatrailer": {
      "status": "found"
     },
-    "autotrader-us": {
-     "status": "found"
+    "classiccars": {
+     "status": "found",
+     "count": 1420
+    },
+    "pistonheads": {
+     "status": "found",
+     "count": 398
+    },
+    "autoscout24": {
+     "status": "found",
+     "count": 2816
+    },
+    "autotrader-uk": {
+     "status": "found",
+     "count": 332
+    },
+    "mobile-de": {
+     "status": "found",
+     "count": 2109
+    },
+    "leboncoin": {
+     "status": "blocked"
     },
     "goonet-exchange": {
      "status": "found"
@@ -3716,7 +3719,7 @@
      "status": "unknown"
     },
     "beforward": {
-     "status": "found"
+     "status": "unknown"
     },
     "autotrader-ca": {
      "status": "found"
@@ -3724,15 +3727,8 @@
     "carsales": {
      "status": "blocked"
     },
-    "dubizzle": {
-     "status": "found",
-     "count": 232
-    },
     "classicdriver": {
      "status": "blocked"
-    },
-    "dupontregistry": {
-     "status": "found"
     },
     "classic-com": {
      "status": "found"
@@ -3740,35 +3736,42 @@
     "autotempest": {
      "status": "found"
     },
+    "carmax": {
+     "status": "found",
+     "count": 448
+    },
+    "dubizzle": {
+     "status": "unknown"
+    },
+    "dupontregistry": {
+     "status": "found"
+    },
     "carvana": {
      "status": "found",
-     "count": 803
-    },
-    "carmax": {
-     "status": "blocked"
+     "count": 790
     },
     "truecar": {
      "status": "blocked"
     },
-    "copart": {
-     "status": "blocked"
-    },
     "edmunds": {
      "status": "blocked"
+    },
+    "copart": {
+     "status": "found"
     },
     "hagerty-marketplace": {
      "status": "found"
     },
     "kijiji-autos": {
      "status": "found",
-     "count": 845
-    },
-    "mercadolibre-mx": {
-     "status": "found",
-     "count": 362
+     "count": 848
     },
     "pcarmarket": {
      "status": "found"
+    },
+    "mercadolibre-mx": {
+     "status": "found",
+     "count": 365
     },
     "mercadolibre-ar": {
      "status": "found",
@@ -3776,25 +3779,25 @@
     },
     "mercadolibre-cl": {
      "status": "found",
-     "count": 30
-    },
-    "mercadolibre-co": {
-     "status": "blocked"
+     "count": 31
     },
     "webmotors": {
      "status": "blocked"
     },
-    "gumtree-uk": {
-     "status": "found",
-     "count": 26
+    "mercadolibre-co": {
+     "status": "blocked"
     },
     "olx-br": {
      "status": "found",
-     "count": 273
+     "count": 269
+    },
+    "gumtree-uk": {
+     "status": "found",
+     "count": 24
     },
     "carandclassic": {
      "status": "found",
-     "count": 691
+     "count": 1102
     },
     "ebay-uk": {
      "status": "blocked"
@@ -3803,76 +3806,75 @@
      "status": "found",
      "count": 7
     },
-    "donedeal": {
-     "status": "found",
-     "count": 5
-    },
     "autoscout24-de": {
      "status": "found",
-     "count": 1195
+     "count": 1187
+    },
+    "donedeal": {
+     "status": "found",
+     "count": 6
     },
     "classic-trader": {
      "status": "found"
     },
     "autoscout24-nl": {
      "status": "found",
-     "count": 270
-    },
-    "autoscout24-it": {
-     "status": "found"
+     "count": 274
     },
     "autoscout24-fr": {
      "status": "found",
      "count": 314
     },
+    "autoscout24-it": {
+     "status": "found"
+    },
     "autoscout24-be": {
      "status": "found",
-     "count": 176
+     "count": 180
     },
     "autoscout24-at": {
      "status": "found",
-     "count": 124
+     "count": 120
     },
     "autoscout24-es": {
      "status": "found"
     },
     "marktplaats": {
      "status": "found",
-     "count": 301
+     "count": 309
+    },
+    "2dehands": {
+     "status": "found",
+     "count": 156
     },
     "kleinanzeigen": {
-     "status": "found",
-     "count": 5
+     "status": "blocked"
     },
     "ebay-de": {
      "status": "blocked"
     },
-    "2dehands": {
-     "status": "found",
-     "count": 157
+    "lacentrale": {
+     "status": "blocked"
     },
     "subito": {
      "status": "found",
-     "count": 355
+     "count": 357
     },
     "coches-net": {
      "status": "found",
-     "count": 402
-    },
-    "lacentrale": {
-     "status": "blocked"
+     "count": 401
     },
     "milanuncios": {
      "status": "blocked"
     },
     "finn": {
      "status": "found",
-     "count": 661
-    },
-    "willhaben": {
-     "status": "found"
+     "count": 691
     },
     "standvirtual": {
+     "status": "found"
+    },
+    "willhaben": {
      "status": "found"
     },
     "blocket": {
@@ -3880,40 +3882,40 @@
     },
     "bilbasen": {
      "status": "found",
-     "count": 243
+     "count": 239
+    },
+    "otomoto": {
+     "status": "found",
+     "count": 384
+    },
+    "sauto": {
+     "status": "found",
+     "count": 141
     },
     "nettiauto": {
      "status": "found"
     },
-    "otomoto": {
-     "status": "found",
-     "count": 364
-    },
-    "sauto": {
-     "status": "found",
-     "count": 145
-    },
     "autovit": {
      "status": "found"
+    },
+    "tcv": {
+     "status": "unknown"
     },
     "yahoo-auctions-jp": {
      "status": "found",
      "count": 100
     },
-    "tcv": {
+    "goo-net": {
+     "status": "unknown"
+    },
+    "sbt-japan": {
      "status": "found"
     },
     "carfromjapan": {
      "status": "found",
-     "count": 41
-    },
-    "goo-net": {
-     "status": "unknown"
+     "count": 42
     },
     "carousell-sg": {
-     "status": "found"
-    },
-    "sbt-japan": {
      "status": "found"
     },
     "sgcarmart": {
@@ -3928,12 +3930,13 @@
     "carsome": {
      "status": "blocked"
     },
-    "one2car": {
-     "status": "blocked"
-    },
     "cardekho": {
      "status": "found",
-     "count": 4
+     "count": 3
+    },
+    "one2car": {
+     "status": "found",
+     "count": 21
     },
     "carwale": {
      "status": "found",
@@ -3941,11 +3944,11 @@
     },
     "olx-in": {
      "status": "found",
-     "count": 89
+     "count": 86
     },
     "drive-au": {
      "status": "found",
-     "count": 237
+     "count": 232
     },
     "gumtree-au": {
      "status": "blocked"
@@ -3958,16 +3961,16 @@
     },
     "trademe": {
      "status": "found",
-     "count": 250
+     "count": 255
     },
     "yallamotor": {
      "status": "found",
-     "count": 280
-    },
-    "haraj": {
-     "status": "found"
+     "count": 282
     },
     "opensooq": {
+     "status": "found"
+    },
+    "haraj": {
      "status": "found"
     },
     "cars-co-za": {
@@ -3975,16 +3978,12 @@
     },
     "autotrader-za": {
      "status": "found",
-     "count": 142
-    },
-    "jamesedition": {
-     "status": "found",
-     "count": 500
-    },
-    "jiji-ke": {
-     "status": "blocked"
+     "count": 148
     },
     "jiji-ng": {
+     "status": "blocked"
+    },
+    "jiji-ke": {
      "status": "blocked"
     },
     "rm-sothebys": {
@@ -3995,10 +3994,15 @@
      "status": "found"
     },
     "catawiki": {
-     "status": "found"
+     "status": "found",
+     "count": 18
     },
     "mecum": {
-     "status": "found"
+     "status": "blocked"
+    },
+    "jamesedition": {
+     "status": "found",
+     "count": 500
     }
    }
   },
@@ -5958,28 +5962,14 @@
    }
   },
   "honda|nsx": {
-   "checked": "2026-11-12",
+   "checked": "2026-11-16",
    "sources": {
-    "autoscout24": {
-     "status": "found",
-     "count": 10
-    },
-    "classiccars": {
-     "status": "unknown"
-    },
-    "pistonheads": {
-     "status": "found",
-     "count": 14
-    },
-    "mobile-de": {
-     "status": "blocked"
-    },
-    "autotrader-uk": {
-     "status": "found",
-     "count": 11
-    },
     "carsandbids": {
      "status": "unknown"
+    },
+    "hemmings": {
+     "status": "found",
+     "count": 1
     },
     "ebay-motors": {
      "status": "blocked"
@@ -5987,18 +5977,33 @@
     "cars-com": {
      "status": "blocked"
     },
-    "hemmings": {
-     "status": "found",
-     "count": 1
-    },
-    "leboncoin": {
-     "status": "blocked"
+    "autotrader-us": {
+     "status": "unknown"
     },
     "bringatrailer": {
      "status": "found",
-     "count": 972
+     "count": 973
     },
-    "autotrader-us": {
+    "pistonheads": {
+     "status": "found",
+     "count": 14
+    },
+    "classiccars": {
+     "status": "unknown"
+    },
+    "autoscout24": {
+     "status": "found",
+     "count": 10
+    },
+    "autotrader-uk": {
+     "status": "found",
+     "count": 10
+    },
+    "mobile-de": {
+     "status": "found",
+     "count": 10
+    },
+    "leboncoin": {
      "status": "blocked"
     },
     "carsensor": {
@@ -6009,22 +6014,16 @@
      "status": "found"
     },
     "beforward": {
-     "status": "found"
+     "status": "unknown"
     },
     "autotrader-ca": {
      "status": "broken"
     },
-    "dubizzle": {
-     "status": "found"
-    },
-    "classicdriver": {
-     "status": "blocked"
-    },
     "carsales": {
      "status": "blocked"
     },
-    "dupontregistry": {
-     "status": "unknown"
+    "classicdriver": {
+     "status": "blocked"
     },
     "classic-com": {
      "status": "found",
@@ -6033,11 +6032,14 @@
     "autotempest": {
      "status": "unknown"
     },
+    "carmax": {
+     "status": "unknown"
+    },
+    "dubizzle": {
+     "status": "found"
+    },
     "carvana": {
      "status": "zero"
-    },
-    "carmax": {
-     "status": "blocked"
     },
     "truecar": {
      "status": "blocked"
@@ -6045,47 +6047,46 @@
     "edmunds": {
      "status": "blocked"
     },
+    "dupontregistry": {
+     "status": "unknown"
+    },
     "copart": {
      "status": "unknown"
     },
+    "hagerty-marketplace": {
+     "status": "blocked"
+    },
     "kijiji-autos": {
+     "status": "unknown"
+    },
+    "pcarmarket": {
      "status": "unknown"
     },
     "mercadolibre-mx": {
      "status": "found",
      "count": 5
     },
-    "hagerty-marketplace": {
-     "status": "blocked"
+    "mercadolibre-ar": {
+     "status": "broken"
     },
     "mercadolibre-cl": {
      "status": "broken"
     },
-    "mercadolibre-ar": {
-     "status": "broken"
-    },
-    "pcarmarket": {
-     "status": "unknown"
+    "webmotors": {
+     "status": "blocked"
     },
     "mercadolibre-co": {
      "status": "blocked"
     },
-    "webmotors": {
-     "status": "blocked"
+    "olx-br": {
+     "status": "zero"
     },
     "gumtree-uk": {
-     "status": "found",
-     "count": 1
-    },
-    "olx-br": {
      "status": "zero"
     },
     "carandclassic": {
      "status": "found",
-     "count": 690
-    },
-    "carzone": {
-     "status": "zero"
+     "count": 687
     },
     "autoscout24-de": {
      "status": "found",
@@ -6093,6 +6094,9 @@
     },
     "ebay-uk": {
      "status": "blocked"
+    },
+    "carzone": {
+     "status": "zero"
     },
     "donedeal": {
      "status": "zero"
@@ -6104,15 +6108,15 @@
     "classic-trader": {
      "status": "unknown"
     },
-    "autoscout24-be": {
-     "status": "found",
-     "count": 10
+    "autoscout24-fr": {
+     "status": "found"
     },
     "autoscout24-it": {
      "status": "found"
     },
-    "autoscout24-fr": {
-     "status": "found"
+    "autoscout24-be": {
+     "status": "found",
+     "count": 10
     },
     "autoscout24-at": {
      "status": "found",
@@ -6125,22 +6129,25 @@
      "status": "found",
      "count": 2
     },
+    "kleinanzeigen": {
+     "status": "found"
+    },
+    "ebay-de": {
+     "status": "blocked"
+    },
+    "lacentrale": {
+     "status": "blocked"
+    },
     "subito": {
      "status": "found",
      "count": 2
     },
     "coches-net": {
      "status": "found",
-     "count": 2
+     "count": 3
     },
-    "ebay-de": {
-     "status": "blocked"
-    },
-    "kleinanzeigen": {
-     "status": "found"
-    },
-    "lacentrale": {
-     "status": "blocked"
+    "marktplaats": {
+     "status": "unknown"
     },
     "milanuncios": {
      "status": "blocked"
@@ -6148,18 +6155,18 @@
     "finn": {
      "status": "zero"
     },
+    "standvirtual": {
+     "status": "unknown"
+    },
     "willhaben": {
      "status": "unknown"
     },
-    "standvirtual": {
-     "status": "found"
+    "blocket": {
+     "status": "unknown"
     },
     "bilbasen": {
      "status": "found",
      "count": 1
-    },
-    "blocket": {
-     "status": "unknown"
     },
     "otomoto": {
      "status": "found",
@@ -6174,6 +6181,9 @@
     "autovit": {
      "status": "unknown"
     },
+    "tcv": {
+     "status": "unknown"
+    },
     "yahoo-auctions-jp": {
      "status": "unknown"
     },
@@ -6181,14 +6191,14 @@
      "status": "found",
      "count": 27
     },
-    "tcv": {
+    "sbt-japan": {
+     "status": "found"
+    },
+    "goo-net": {
      "status": "unknown"
     },
     "sgcarmart": {
      "status": "blocked"
-    },
-    "sbt-japan": {
-     "status": "found"
     },
     "carousell-sg": {
      "status": "found"
@@ -6199,17 +6209,15 @@
     "mudah": {
      "status": "unknown"
     },
-    "goo-net": {
-     "status": "unknown"
-    },
     "carsome": {
-     "status": "blocked"
-    },
-    "one2car": {
      "status": "blocked"
     },
     "cardekho": {
      "status": "unknown"
+    },
+    "one2car": {
+     "status": "found",
+     "count": 6
     },
     "carwale": {
      "status": "unknown"
@@ -6230,20 +6238,25 @@
     "ebay-au": {
      "status": "blocked"
     },
-    "haraj": {
-     "status": "found"
+    "trademe": {
+     "status": "found",
+     "count": 1
+    },
+    "yallamotor": {
+     "status": "found",
+     "count": 1
     },
     "opensooq": {
      "status": "unknown"
+    },
+    "haraj": {
+     "status": "found"
     },
     "cars-co-za": {
      "status": "unknown"
     },
     "autotrader-za": {
      "status": "zero"
-    },
-    "jamesedition": {
-     "status": "found"
     },
     "jiji-ng": {
      "status": "blocked"
@@ -6255,25 +6268,17 @@
      "status": "found",
      "count": 9
     },
-    "catawiki": {
-     "status": "unknown"
-    },
     "artcurial": {
      "status": "found"
+    },
+    "catawiki": {
+     "status": "unknown"
     },
     "mecum": {
      "status": "found"
     },
-    "trademe": {
-     "status": "found",
-     "count": 1
-    },
-    "yallamotor": {
-     "status": "found",
-     "count": 1
-    },
-    "marktplaats": {
-     "status": "unknown"
+    "jamesedition": {
+     "status": "found"
     }
    }
   },
@@ -8271,38 +8276,16 @@
    }
   },
   "audi|rs6": {
-   "checked": "2026-11-12",
+   "checked": "2026-11-16",
    "sources": {
-    "autoscout24": {
-     "status": "found",
-     "count": 1382
-    },
-    "classiccars": {
-     "status": "found",
-     "count": 2
-    },
-    "pistonheads": {
-     "status": "found",
-     "count": 713
-    },
-    "autotrader-uk": {
-     "status": "found",
-     "count": 5
-    },
     "carsandbids": {
      "status": "found"
-    },
-    "mobile-de": {
-     "status": "blocked"
-    },
-    "ebay-motors": {
-     "status": "blocked"
     },
     "hemmings": {
      "status": "found",
      "count": 1
     },
-    "leboncoin": {
+    "ebay-motors": {
      "status": "blocked"
     },
     "cars-com": {
@@ -8315,6 +8298,28 @@
     "autotrader-us": {
      "status": "unknown"
     },
+    "classiccars": {
+     "status": "found",
+     "count": 2
+    },
+    "autoscout24": {
+     "status": "found",
+     "count": 1409
+    },
+    "pistonheads": {
+     "status": "unknown"
+    },
+    "autotrader-uk": {
+     "status": "found",
+     "count": 5
+    },
+    "mobile-de": {
+     "status": "found",
+     "count": 4708
+    },
+    "leboncoin": {
+     "status": "blocked"
+    },
     "carsensor": {
      "status": "found",
      "count": 822
@@ -8324,55 +8329,59 @@
     },
     "autotrader-ca": {
      "status": "found",
-     "count": 48
+     "count": 49
     },
     "beforward": {
-     "status": "found"
-    },
-    "dubizzle": {
-     "status": "found",
-     "count": 19
-    },
-    "classicdriver": {
-     "status": "blocked"
+     "status": "unknown"
     },
     "carsales": {
      "status": "blocked"
     },
-    "dupontregistry": {
-     "status": "zero"
+    "classicdriver": {
+     "status": "blocked"
     },
     "classic-com": {
      "status": "found",
-     "count": 768
+     "count": 771
     },
     "autotempest": {
      "status": "found"
     },
+    "carmax": {
+     "status": "found",
+     "count": 3
+    },
+    "dubizzle": {
+     "status": "found",
+     "count": 18
+    },
     "carvana": {
      "status": "zero"
     },
-    "carmax": {
+    "truecar": {
      "status": "blocked"
     },
-    "truecar": {
+    "edmunds": {
      "status": "blocked"
     },
     "copart": {
      "status": "found"
     },
-    "edmunds": {
+    "hagerty-marketplace": {
      "status": "blocked"
     },
+    "dupontregistry": {
+     "status": "zero"
+    },
     "kijiji-autos": {
+     "status": "found"
+    },
+    "pcarmarket": {
      "status": "found"
     },
     "mercadolibre-mx": {
      "status": "found",
      "count": 8
-    },
-    "hagerty-marketplace": {
-     "status": "blocked"
     },
     "mercadolibre-ar": {
      "status": "unknown"
@@ -8380,86 +8389,87 @@
     "mercadolibre-cl": {
      "status": "unknown"
     },
-    "pcarmarket": {
-     "status": "found"
+    "webmotors": {
+     "status": "blocked"
+    },
+    "mercadolibre-co": {
+     "status": "blocked"
+    },
+    "olx-br": {
+     "status": "found",
+     "count": 67
     },
     "gumtree-uk": {
      "status": "found",
      "count": 19
     },
-    "mercadolibre-co": {
-     "status": "blocked"
-    },
-    "webmotors": {
-     "status": "blocked"
+    "carandclassic": {
+     "status": "found",
+     "count": 729
     },
     "autoscout24-de": {
      "status": "found",
-     "count": 410
-    },
-    "olx-br": {
-     "status": "found",
-     "count": 71
+     "count": 416
     },
     "carzone": {
      "status": "found",
      "count": 7
     },
-    "carandclassic": {
-     "status": "found",
-     "count": 734
-    },
     "ebay-uk": {
      "status": "blocked"
-    },
-    "autoscout24-nl": {
-     "status": "found",
-     "count": 218
     },
     "donedeal": {
      "status": "found",
      "count": 7
     },
-    "autoscout24-be": {
+    "autoscout24-nl": {
      "status": "found",
-     "count": 93
-    },
-    "autoscout24-at": {
-     "status": "found",
-     "count": 73
+     "count": 226
     },
     "classic-trader": {
-     "status": "found"
-    },
-    "autoscout24-it": {
      "status": "found"
     },
     "autoscout24-fr": {
      "status": "found"
     },
+    "autoscout24-be": {
+     "status": "found",
+     "count": 98
+    },
+    "autoscout24-it": {
+     "status": "found"
+    },
+    "autoscout24-at": {
+     "status": "found",
+     "count": 72
+    },
     "2dehands": {
      "status": "found",
      "count": 61
     },
-    "subito": {
-     "status": "found",
-     "count": 923
-    },
     "autoscout24-es": {
      "status": "found"
-    },
-    "coches-net": {
-     "status": "found",
-     "count": 284
-    },
-    "ebay-de": {
-     "status": "blocked"
     },
     "kleinanzeigen": {
      "status": "found"
     },
+    "subito": {
+     "status": "found",
+     "count": 934
+    },
+    "ebay-de": {
+     "status": "blocked"
+    },
     "lacentrale": {
      "status": "blocked"
+    },
+    "coches-net": {
+     "status": "found",
+     "count": 277
+    },
+    "marktplaats": {
+     "status": "found",
+     "count": 261
     },
     "finn": {
      "status": "found",
@@ -8468,22 +8478,22 @@
     "milanuncios": {
      "status": "blocked"
     },
+    "standvirtual": {
+     "status": "found"
+    },
     "willhaben": {
+     "status": "found"
+    },
+    "blocket": {
      "status": "found"
     },
     "bilbasen": {
      "status": "found",
      "count": 14
     },
-    "blocket": {
-     "status": "found"
-    },
-    "standvirtual": {
-     "status": "found"
-    },
     "otomoto": {
      "status": "found",
-     "count": 40
+     "count": 39
     },
     "sauto": {
      "status": "found",
@@ -8495,15 +8505,25 @@
     "autovit": {
      "status": "found"
     },
-    "carfromjapan": {
-     "status": "found",
-     "count": 2
-    },
     "tcv": {
      "status": "found"
     },
     "yahoo-auctions-jp": {
      "status": "unknown"
+    },
+    "carfromjapan": {
+     "status": "found",
+     "count": 2
+    },
+    "sbt-japan": {
+     "status": "found"
+    },
+    "goo-net": {
+     "status": "unknown"
+    },
+    "carousell-sg": {
+     "status": "found",
+     "count": 14
     },
     "sgcarmart": {
      "status": "blocked"
@@ -8511,27 +8531,18 @@
     "carlist-my": {
      "status": "blocked"
     },
-    "carousell-sg": {
-     "status": "found",
-     "count": 39
-    },
     "mudah": {
-     "status": "found"
-    },
-    "sbt-japan": {
      "status": "found"
     },
     "carsome": {
      "status": "blocked"
     },
-    "goo-net": {
+    "cardekho": {
      "status": "unknown"
     },
     "one2car": {
-     "status": "blocked"
-    },
-    "cardekho": {
-     "status": "unknown"
+     "status": "found",
+     "count": 2
     },
     "carwale": {
      "status": "unknown"
@@ -8547,22 +8558,31 @@
     "gumtree-au": {
      "status": "blocked"
     },
-    "autotrader-za": {
-     "status": "found",
-     "count": 26
+    "autotrader-au": {
+     "status": "blocked"
     },
-    "jamesedition": {
-     "status": "found",
-     "count": 4
+    "ebay-au": {
+     "status": "blocked"
     },
-    "haraj": {
-     "status": "found"
+    "trademe": {
+     "status": "found",
+     "count": 44
+    },
+    "yallamotor": {
+     "status": "broken"
     },
     "opensooq": {
      "status": "unknown"
     },
+    "haraj": {
+     "status": "found"
+    },
     "cars-co-za": {
      "status": "found"
+    },
+    "autotrader-za": {
+     "status": "found",
+     "count": 27
     },
     "jiji-ng": {
      "status": "blocked"
@@ -8579,25 +8599,12 @@
     "catawiki": {
      "status": "found"
     },
-    "trademe": {
+    "jamesedition": {
      "status": "found",
-     "count": 44
+     "count": 4
     },
     "mecum": {
      "status": "found"
-    },
-    "yallamotor": {
-     "status": "broken"
-    },
-    "ebay-au": {
-     "status": "blocked"
-    },
-    "autotrader-au": {
-     "status": "blocked"
-    },
-    "marktplaats": {
-     "status": "found",
-     "count": 252
     }
    }
   },
@@ -10601,48 +10608,49 @@
    }
   },
   "tesla|model 3": {
-   "checked": "2026-11-12",
+   "checked": "2026-11-16",
    "sources": {
-    "autoscout24": {
-     "status": "found",
-     "count": 1852
-    },
-    "classiccars": {
-     "status": "found",
-     "count": 2
-    },
-    "pistonheads": {
-     "status": "found",
-     "count": 893
-    },
     "carsandbids": {
-     "status": "found"
-    },
-    "autotrader-uk": {
-     "status": "found",
-     "count": 992
-    },
-    "mobile-de": {
-     "status": "found",
-     "count": 805
-    },
-    "ebay-motors": {
-     "status": "blocked"
-    },
-    "leboncoin": {
-     "status": "blocked"
-    },
-    "cars-com": {
      "status": "found"
     },
     "hemmings": {
      "status": "found",
      "count": 1
     },
+    "ebay-motors": {
+     "status": "blocked"
+    },
+    "cars-com": {
+     "status": "blocked"
+    },
+    "autotrader-us": {
+     "status": "found",
+     "count": 3945
+    },
     "bringatrailer": {
      "status": "unknown"
     },
-    "autotrader-us": {
+    "classiccars": {
+     "status": "found",
+     "count": 15
+    },
+    "autoscout24": {
+     "status": "found",
+     "count": 1860
+    },
+    "pistonheads": {
+     "status": "found",
+     "count": 882
+    },
+    "autotrader-uk": {
+     "status": "found",
+     "count": 983
+    },
+    "mobile-de": {
+     "status": "found",
+     "count": 785
+    },
+    "leboncoin": {
      "status": "blocked"
     },
     "carsensor": {
@@ -10653,177 +10661,177 @@
     },
     "autotrader-ca": {
      "status": "found",
-     "count": 773
+     "count": 764
     },
     "beforward": {
-     "status": "blocked"
-    },
-    "dubizzle": {
-     "status": "found",
-     "count": 80
-    },
-    "classicdriver": {
-     "status": "blocked"
+     "status": "unknown"
     },
     "carsales": {
+     "status": "blocked"
+    },
+    "classicdriver": {
      "status": "blocked"
     },
     "classic-com": {
      "status": "found"
     },
-    "dupontregistry": {
-     "status": "zero"
-    },
     "autotempest": {
      "status": "found"
     },
-    "carvana": {
+    "dubizzle": {
      "status": "found",
-     "count": 841
+     "count": 77
     },
     "carmax": {
-     "status": "blocked"
+     "status": "found",
+     "count": 803
+    },
+    "carvana": {
+     "status": "found",
+     "count": 854
     },
     "truecar": {
+     "status": "blocked"
+    },
+    "edmunds": {
      "status": "blocked"
     },
     "copart": {
      "status": "found"
     },
+    "hagerty-marketplace": {
+     "status": "blocked"
+    },
     "kijiji-autos": {
      "status": "found",
-     "count": 310
-    },
-    "edmunds": {
-     "status": "blocked"
+     "count": 289
     },
     "mercadolibre-mx": {
      "status": "found",
-     "count": 51
-    },
-    "mercadolibre-cl": {
-     "status": "found",
-     "count": 13
-    },
-    "mercadolibre-ar": {
-     "status": "unknown"
-    },
-    "hagerty-marketplace": {
-     "status": "blocked"
+     "count": 48
     },
     "pcarmarket": {
      "status": "unknown"
     },
-    "gumtree-uk": {
+    "mercadolibre-cl": {
      "status": "found",
-     "count": 132
+     "count": 12
+    },
+    "mercadolibre-ar": {
+     "status": "unknown"
+    },
+    "dupontregistry": {
+     "status": "zero"
     },
     "webmotors": {
      "status": "blocked"
-    },
-    "mercadolibre-co": {
-     "status": "blocked"
-    },
-    "autoscout24-de": {
-     "status": "found",
-     "count": 331
-    },
-    "carzone": {
-     "status": "found",
-     "count": 80
     },
     "olx-br": {
      "status": "found",
      "count": 8
     },
+    "mercadolibre-co": {
+     "status": "blocked"
+    },
+    "gumtree-uk": {
+     "status": "found",
+     "count": 138
+    },
     "carandclassic": {
      "status": "found"
     },
-    "autoscout24-nl": {
+    "autoscout24-de": {
      "status": "found",
-     "count": 353
+     "count": 320
+    },
+    "carzone": {
+     "status": "found",
+     "count": 81
     },
     "ebay-uk": {
      "status": "blocked"
     },
+    "autoscout24-nl": {
+     "status": "found",
+     "count": 349
+    },
     "donedeal": {
      "status": "found",
-     "count": 98
-    },
-    "autoscout24-be": {
-     "status": "found",
-     "count": 128
-    },
-    "autoscout24-at": {
-     "status": "found",
-     "count": 128
-    },
-    "autoscout24-it": {
-     "status": "found"
+     "count": 100
     },
     "classic-trader": {
      "status": "unknown"
     },
+    "autoscout24-be": {
+     "status": "found",
+     "count": 132
+    },
     "autoscout24-fr": {
+     "status": "found"
+    },
+    "autoscout24-at": {
+     "status": "found",
+     "count": 135
+    },
+    "autoscout24-it": {
      "status": "found"
     },
     "2dehands": {
      "status": "found",
-     "count": 110
-    },
-    "subito": {
-     "status": "found",
-     "count": 735
-    },
-    "coches-net": {
-     "status": "found",
-     "count": 560
+     "count": 112
     },
     "autoscout24-es": {
      "status": "found"
     },
-    "ebay-de": {
-     "status": "blocked"
-    },
     "kleinanzeigen": {
      "status": "found"
     },
-    "lacentrale": {
+    "subito": {
+     "status": "found",
+     "count": 745
+    },
+    "coches-net": {
+     "status": "found",
+     "count": 565
+    },
+    "ebay-de": {
      "status": "blocked"
+    },
+    "lacentrale": {
+     "status": "found",
+     "count": 251
+    },
+    "marktplaats": {
+     "status": "found",
+     "count": 620
     },
     "finn": {
      "status": "found",
-     "count": 1228
+     "count": 1212
     },
     "milanuncios": {
      "status": "blocked"
     },
-    "willhaben": {
+    "standvirtual": {
      "status": "found"
     },
-    "otomoto": {
-     "status": "found",
-     "count": 135
-    },
-    "sauto": {
-     "status": "found",
-     "count": 124
+    "willhaben": {
+     "status": "unknown"
     },
     "blocket": {
      "status": "found"
     },
+    "otomoto": {
+     "status": "found",
+     "count": 129
+    },
     "bilbasen": {
      "status": "found",
-     "count": 494
+     "count": 475
     },
-    "standvirtual": {
-     "status": "found"
-    },
-    "nettiauto": {
-     "status": "found"
-    },
-    "carfromjapan": {
-     "status": "zero"
+    "sauto": {
+     "status": "found",
+     "count": 120
     },
     "autovit": {
      "status": "found"
@@ -10831,11 +10839,26 @@
     "tcv": {
      "status": "broken"
     },
+    "nettiauto": {
+     "status": "found"
+    },
     "yahoo-auctions-jp": {
      "status": "unknown"
     },
+    "carfromjapan": {
+     "status": "zero"
+    },
+    "sbt-japan": {
+     "status": "broken"
+    },
     "sgcarmart": {
      "status": "blocked"
+    },
+    "carousell-sg": {
+     "status": "found"
+    },
+    "goo-net": {
+     "status": "unknown"
     },
     "carlist-my": {
      "status": "blocked"
@@ -10843,46 +10866,54 @@
     "mudah": {
      "status": "found"
     },
-    "carousell-sg": {
-     "status": "found"
-    },
-    "sbt-japan": {
-     "status": "broken"
-    },
     "carsome": {
-     "status": "blocked"
-    },
-    "one2car": {
      "status": "blocked"
     },
     "cardekho": {
      "status": "unknown"
     },
+    "one2car": {
+     "status": "found",
+     "count": 45
+    },
     "carwale": {
      "status": "unknown"
     },
-    "goo-net": {
-     "status": "unknown"
-    },
     "olx-in": {
+     "status": "blocked"
+    },
+    "drive-au": {
      "status": "found",
-     "count": 1
+     "count": 115
     },
-    "jamesedition": {
+    "gumtree-au": {
+     "status": "blocked"
+    },
+    "autotrader-au": {
+     "status": "blocked"
+    },
+    "ebay-au": {
+     "status": "blocked"
+    },
+    "trademe": {
      "status": "found",
-     "count": 301
+     "count": 164
     },
-    "autotrader-za": {
-     "status": "zero"
-    },
-    "haraj": {
-     "status": "found"
+    "yallamotor": {
+     "status": "found",
+     "count": 61
     },
     "opensooq": {
      "status": "found"
     },
+    "haraj": {
+     "status": "found"
+    },
     "cars-co-za": {
      "status": "unknown"
+    },
+    "autotrader-za": {
+     "status": "zero"
     },
     "jiji-ng": {
      "status": "blocked"
@@ -10893,37 +10924,18 @@
     "rm-sothebys": {
      "status": "zero"
     },
+    "jamesedition": {
+     "status": "found",
+     "count": 311
+    },
     "artcurial": {
      "status": "zero"
     },
     "catawiki": {
      "status": "unknown"
     },
-    "trademe": {
-     "status": "unknown"
-    },
-    "drive-au": {
-     "status": "unknown"
-    },
-    "yallamotor": {
-     "status": "found",
-     "count": 63
-    },
     "mecum": {
      "status": "found"
-    },
-    "autotrader-au": {
-     "status": "blocked"
-    },
-    "ebay-au": {
-     "status": "blocked"
-    },
-    "gumtree-au": {
-     "status": "blocked"
-    },
-    "marktplaats": {
-     "status": "found",
-     "count": 614
     }
    }
   },
@@ -12894,56 +12906,58 @@
    }
   },
   "rolls-royce|": {
-   "checked": "2026-11-12",
+   "checked": "2026-11-16",
    "sources": {
-    "autoscout24": {
-     "status": "found",
-     "count": 643
-    },
-    "classiccars": {
-     "status": "found",
-     "count": 215
-    },
-    "pistonheads": {
-     "status": "found",
-     "count": 321
-    },
     "carsandbids": {
      "status": "found"
     },
-    "mobile-de": {
+    "hemmings": {
      "status": "found",
-     "count": 658
-    },
-    "autotrader-uk": {
-     "status": "found",
-     "count": 322
+     "count": 196
     },
     "ebay-motors": {
-     "status": "blocked"
-    },
-    "leboncoin": {
      "status": "blocked"
     },
     "cars-com": {
      "status": "blocked"
     },
-    "hemmings": {
-     "status": "found"
+    "autotrader-us": {
+     "status": "found",
+     "count": 885
     },
     "bringatrailer": {
      "status": "found",
-     "count": 846
+     "count": 847
     },
-    "autotrader-us": {
-     "status": "blocked"
-    },
-    "autotrader-ca": {
+    "classiccars": {
      "status": "found",
-     "count": 149
+     "count": 217
+    },
+    "autoscout24": {
+     "status": "found",
+     "count": 639
+    },
+    "pistonheads": {
+     "status": "found",
+     "count": 309
+    },
+    "autotrader-uk": {
+     "status": "found",
+     "count": 320
+    },
+    "mobile-de": {
+     "status": "found",
+     "count": 777
+    },
+    "leboncoin": {
+     "status": "blocked"
     },
     "carsensor": {
      "status": "unknown"
+    },
+    "autotrader-ca": {
+     "status": "found",
+     "count": 144
     },
     "goonet-exchange": {
      "status": "blocked"
@@ -12951,14 +12965,10 @@
     "beforward": {
      "status": "found"
     },
-    "dubizzle": {
-     "status": "found",
-     "count": 549
-    },
-    "classicdriver": {
+    "carsales": {
      "status": "blocked"
     },
-    "carsales": {
+    "classicdriver": {
      "status": "blocked"
     },
     "classic-com": {
@@ -12967,8 +12977,12 @@
     "autotempest": {
      "status": "found"
     },
-    "dupontregistry": {
-     "status": "found"
+    "dubizzle": {
+     "status": "found",
+     "count": 536
+    },
+    "carmax": {
+     "status": "blocked"
     },
     "carvana": {
      "status": "zero"
@@ -12976,126 +12990,135 @@
     "truecar": {
      "status": "blocked"
     },
-    "carmax": {
+    "edmunds": {
      "status": "blocked"
+    },
+    "copart": {
+     "status": "found"
+    },
+    "hagerty-marketplace": {
+     "status": "found"
+    },
+    "kijiji-autos": {
+     "status": "found"
     },
     "mercadolibre-mx": {
      "status": "found",
      "count": 7
     },
-    "kijiji-autos": {
-     "status": "found",
-     "count": 32
-    },
-    "copart": {
+    "pcarmarket": {
      "status": "found"
-    },
-    "edmunds": {
-     "status": "blocked"
-    },
-    "mercadolibre-ar": {
-     "status": "unknown"
     },
     "mercadolibre-cl": {
      "status": "unknown"
     },
-    "hagerty-marketplace": {
-     "status": "found"
-    },
-    "pcarmarket": {
-     "status": "found"
-    },
-    "gumtree-uk": {
-     "status": "found",
-     "count": 32
-    },
-    "autoscout24-de": {
-     "status": "found",
-     "count": 290
-    },
-    "carzone": {
-     "status": "found",
-     "count": 8
+    "mercadolibre-ar": {
+     "status": "unknown"
     },
     "webmotors": {
      "status": "blocked"
     },
+    "olx-br": {
+     "status": "found",
+     "count": 11
+    },
     "mercadolibre-co": {
      "status": "blocked"
     },
-    "autoscout24-nl": {
-     "status": "found",
-     "count": 96
+    "dupontregistry": {
+     "status": "found"
     },
-    "olx-br": {
+    "gumtree-uk": {
      "status": "found",
-     "count": 12
+     "count": 33
     },
     "carandclassic": {
      "status": "found",
      "count": 1608
     },
-    "autoscout24-be": {
+    "autoscout24-de": {
      "status": "found",
-     "count": 30
+     "count": 285
+    },
+    "carzone": {
+     "status": "found",
+     "count": 8
+    },
+    "autoscout24-nl": {
+     "status": "found",
+     "count": 94
     },
     "ebay-uk": {
      "status": "blocked"
-    },
-    "autoscout24-at": {
-     "status": "found",
-     "count": 21
     },
     "donedeal": {
      "status": "found",
      "count": 4
     },
-    "autoscout24-it": {
-     "status": "found"
+    "autoscout24-be": {
+     "status": "found",
+     "count": 34
     },
     "classic-trader": {
      "status": "found"
     },
+    "autoscout24-at": {
+     "status": "found",
+     "count": 21
+    },
     "autoscout24-fr": {
+     "status": "found"
+    },
+    "autoscout24-it": {
      "status": "found"
     },
     "2dehands": {
      "status": "found",
      "count": 17
     },
+    "autoscout24-es": {
+     "status": "found"
+    },
     "subito": {
      "status": "found",
      "count": 66
     },
+    "kleinanzeigen": {
+     "status": "found"
+    },
     "coches-net": {
      "status": "found",
-     "count": 42
+     "count": 41
     },
-    "autoscout24-es": {
-     "status": "found"
+    "ebay-de": {
+     "status": "blocked"
+    },
+    "lacentrale": {
+     "status": "blocked"
+    },
+    "marktplaats": {
+     "status": "found",
+     "count": 47
     },
     "finn": {
      "status": "found",
      "count": 21
     },
-    "ebay-de": {
-     "status": "blocked"
-    },
-    "kleinanzeigen": {
-     "status": "found"
-    },
-    "lacentrale": {
-     "status": "blocked"
-    },
-    "otomoto": {
-     "status": "found",
-     "count": 43
-    },
     "milanuncios": {
      "status": "blocked"
     },
+    "standvirtual": {
+     "status": "unknown"
+    },
     "willhaben": {
      "status": "found"
+    },
+    "blocket": {
+     "status": "unknown"
+    },
+    "otomoto": {
+     "status": "found",
+     "count": 47
     },
     "sauto": {
      "status": "found",
@@ -13104,79 +13127,102 @@
     "bilbasen": {
      "status": "unknown"
     },
-    "blocket": {
-     "status": "unknown"
-    },
-    "standvirtual": {
-     "status": "unknown"
-    },
-    "carfromjapan": {
-     "status": "found",
-     "count": 15
-    },
-    "nettiauto": {
-     "status": "found"
-    },
     "tcv": {
-     "status": "found"
+     "status": "found",
+     "count": 6
     },
     "autovit": {
      "status": "found"
     },
+    "nettiauto": {
+     "status": "found"
+    },
+    "carfromjapan": {
+     "status": "found",
+     "count": 17
+    },
     "yahoo-auctions-jp": {
+     "status": "unknown"
+    },
+    "sbt-japan": {
      "status": "unknown"
     },
     "sgcarmart": {
      "status": "blocked"
     },
+    "carousell-sg": {
+     "status": "found"
+    },
     "carlist-my": {
      "status": "blocked"
     },
     "mudah": {
-     "status": "unknown"
-    },
-    "carousell-sg": {
      "status": "found"
     },
-    "sbt-japan": {
+    "goo-net": {
      "status": "unknown"
     },
     "carsome": {
      "status": "blocked"
     },
-    "one2car": {
-     "status": "blocked"
+    "cardekho": {
+     "status": "found",
+     "count": 3
     },
     "carwale": {
      "status": "found",
      "count": 29
     },
-    "cardekho": {
+    "olx-in": {
      "status": "found",
-     "count": 3
+     "count": 29
     },
-    "jamesedition": {
+    "one2car": {
      "status": "found",
-     "count": 378
+     "count": 18
     },
-    "autotrader-za": {
+    "drive-au": {
      "status": "found",
-     "count": 35
+     "count": 19
     },
-    "haraj": {
-     "status": "found"
+    "gumtree-au": {
+     "status": "blocked"
     },
-    "cars-co-za": {
+    "autotrader-au": {
+     "status": "blocked"
+    },
+    "ebay-au": {
+     "status": "blocked"
+    },
+    "trademe": {
+     "status": "found",
+     "count": 23
+    },
+    "yallamotor": {
      "status": "found"
     },
     "opensooq": {
      "status": "unknown"
+    },
+    "haraj": {
+     "status": "found"
+    },
+    "autotrader-za": {
+     "status": "found",
+     "count": 37
+    },
+    "cars-co-za": {
+     "status": "found"
     },
     "jiji-ng": {
      "status": "blocked"
     },
     "jiji-ke": {
      "status": "blocked"
+    },
+    "jamesedition": {
+     "status": "found",
+     "count": 379
     },
     "rm-sothebys": {
      "status": "found",
@@ -13185,43 +13231,12 @@
     "artcurial": {
      "status": "unknown"
     },
-    "olx-in": {
-     "status": "found",
-     "count": 29
-    },
     "catawiki": {
      "status": "found",
-     "count": 21
-    },
-    "drive-au": {
-     "status": "found",
-     "count": 20
-    },
-    "trademe": {
-     "status": "found",
-     "count": 21
-    },
-    "goo-net": {
-     "status": "unknown"
-    },
-    "yallamotor": {
-     "status": "found"
-    },
-    "autotrader-au": {
-     "status": "blocked"
-    },
-    "ebay-au": {
-     "status": "blocked"
-    },
-    "gumtree-au": {
-     "status": "blocked"
+     "count": 6
     },
     "mecum": {
-     "status": "blocked"
-    },
-    "marktplaats": {
-     "status": "found",
-     "count": 45
+     "status": "found"
     }
    }
   },
