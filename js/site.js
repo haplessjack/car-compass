@@ -104,8 +104,10 @@
             <a href="${pathRel("index.html")}" ${active === "home" ? 'aria-current="page"' : ""}>Search</a>
             <a href="${pathRel("sources.html")}" ${active === "sources" ? 'aria-current="page"' : ""}>Sources</a>
             <a href="${pathRel("rare-finds.html")}" ${active === "rare" ? 'aria-current="page"' : ""}>Rare Finds</a>
+            <a href="${pathRel("marketplace.html")}" ${active === "market" ? 'aria-current="page"' : ""}>Marketplace</a>
             <a href="${pathRel("vin.html")}" ${active === "vin" ? 'aria-current="page"' : ""}>VIN decoder</a>
             <a href="${pathRel("about.html")}" ${active === "about" ? 'aria-current="page"' : ""}>About</a>
+            <a class="nav-account" id="nav-account" href="${pathRel("account.html")}" ${active === "account" ? 'aria-current="page"' : ""}>${hasStoredSession() ? "My account" : "Sign in"}</a>
           </nav>
         </div>`;
     }
@@ -120,8 +122,11 @@
           <div class="footer-links">
             <a href="${pathRel("sources.html")}">Sources</a>
             <a href="${pathRel("rare-finds.html")}">Rare Finds</a>
+            <a href="${pathRel("marketplace.html")}">Marketplace</a>
             <a href="${pathRel("vin.html")}">VIN decoder</a>
             <a href="${pathRel("about.html")}">About</a>
+            <a href="${pathRel("privacy.html")}">Privacy</a>
+            <a href="${pathRel("terms.html")}">Terms</a>
             <a href="${pathRel("robots.txt")}">robots.txt</a>
             <a href="${pathRel("sitemap.xml")}">Sitemap</a>
           </div>
@@ -129,6 +134,16 @@
     }
     document.querySelectorAll(".js-site-name").forEach(el => { el.textContent = name; });
     document.querySelectorAll(".js-tagline").forEach(el => { el.textContent = cfg.tagline; });
+  }
+
+  // Cheap check (no library load) for a saved Marketplace sign-in, so the nav can say "My account".
+  function hasStoredSession() {
+    try {
+      const sb = cfg.supabase;
+      if (!sb || !sb.url) return false;
+      const ref = new URL(sb.url).hostname.split(".")[0];
+      return !!localStorage.getItem("sb-" + ref + "-auth-token");
+    } catch (e) { return false; }
   }
 
   function escapeHtml(s) {

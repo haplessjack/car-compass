@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign in or manage your account — Car Compass</title>
+  <meta name="description" content="Sign in to the Car Compass Marketplace with a one-time email link, and manage your profile and listings." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="canonical" href="https://haplessjack.github.io/car-compass/account.html" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <section class="section">
+      <div class="container" id="acct-root">
+        <div id="acct-msg" class="mk-msg" hidden></div>
+        <div id="acct-signedout" class="mk-narrow">
+          <div class="eyebrow">Marketplace account</div>
+          <h1>Sign in</h1>
+          <p class="lead">Enter your email and we'll send a one-time sign-in link. No password needed. New here? The same link creates your free account.</p>
+          <form id="signin-form" class="card mk-form" novalidate>
+            <div class="field"><label for="si-email">Email</label><input id="si-email" name="email" type="email" autocomplete="email" required maxlength="254" /></div>
+            <div class="mk-hp" aria-hidden="true"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+            <label class="mk-check"><input type="checkbox" name="agree" /> <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy policy</a>.</span></label>
+            <button class="btn btn-primary" type="submit">Email me a sign-in link</button>
+            <div id="signin-msg" class="mk-msg" hidden></div>
+            <p class="hint">Your email is used only to sign you in and is never shown to other members.</p>
+          </form>
+        </div>
+        <div id="acct-signedin" hidden>
+          <div class="eyebrow">My account</div>
+          <h1>Your account</h1>
+          <p class="mk-acct-links">Signed in as <strong id="acct-email"></strong> · member since <span id="acct-since"></span><br />
+            <a href="sell.html">Sell a car</a> · <a href="messages.html">Messages<span id="acct-unread"></span></a> · <a id="acct-public" href="profile.html">View public profile</a><span id="acct-admin" hidden> · <a href="admin.html">Admin</a></span></p>
+          <div class="mk-two">
+            <form id="profile-form" class="card mk-form" novalidate>
+              <h2>Public profile</h2>
+              <div class="mk-avatar" id="acct-avatar"></div>
+              <div class="field"><label for="pf-name">Display name</label><input id="pf-name" name="display_name" maxlength="40" required autocomplete="nickname" /></div>
+              <div class="field"><label for="pf-city">City (optional)</label><input id="pf-city" name="city" maxlength="60" autocomplete="address-level2" /></div>
+              <div class="field"><label for="pf-country">Country (optional)</label><input id="pf-country" name="country" maxlength="60" list="dl-countries" autocomplete="country-name" /><datalist id="dl-countries"></datalist></div>
+              <div class="field"><label for="pf-avatar">Profile photo (optional)</label><input id="pf-avatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp" /></div>
+              <button class="btn btn-primary" type="submit">Save profile</button>
+              <div id="profile-msg" class="mk-msg" hidden></div>
+              <p class="hint">Shown publicly: display name, city, country, photo and member-since date. Never your email.</p>
+            </form>
+            <div class="card mk-form">
+              <h2>Account</h2>
+              <p><button type="button" class="btn btn-ghost" id="acct-signout">Sign out</button></p>
+              <h3>Delete account</h3>
+              <p class="hint">Permanently deletes your profile, listings, photos and messages.</p>
+              <button type="button" class="btn btn-ghost mk-danger" id="acct-delete">Delete my account</button>
+            </div>
+          </div>
+          <h2>My listings</h2>
+          <div id="acct-listings"><div class="empty">Loading…</div></div>
+        </div>
+        <noscript><div class="empty">The Marketplace needs JavaScript.</div></noscript>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/config.js"></script>
+  <script src="js/site.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.min.js" integrity="sha384-gnyZit14c5lnGcarmA166QQjjJXpucw25ogZXuwH3HxxY904zHkBqmxVpelsPorb" crossorigin="anonymous"></script>
+  <script src="js/market.js"></script>
+  <script>
+    SiteApp.renderChrome('account');
+    SiteApp.injectSeo({ title: 'Sign in or manage your account' + ' — ' + SiteApp.cfg.siteName, description: 'Sign in to the Car Compass Marketplace with a one-time email link, and manage your profile and listings.', path: 'account.html' });
+    Market.account();
+  </script>
+</body>
+</html>

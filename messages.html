@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Messages — Car Compass</title>
+  <meta name="description" content="Your Car Compass Marketplace conversations." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="canonical" href="https://haplessjack.github.io/car-compass/messages.html" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <div class="eyebrow">Marketplace</div>
+        <h1>Messages</h1>
+        <div id="msg-root"><div class="empty">Loading…</div><noscript><div class="empty">The Marketplace needs JavaScript.</div></noscript></div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/config.js"></script>
+  <script src="js/site.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.min.js" integrity="sha384-gnyZit14c5lnGcarmA166QQjjJXpucw25ogZXuwH3HxxY904zHkBqmxVpelsPorb" crossorigin="anonymous"></script>
+  <script src="js/market.js"></script>
+  <script>
+    SiteApp.renderChrome('account');
+    SiteApp.injectSeo({ title: 'Messages' + ' — ' + SiteApp.cfg.siteName, description: 'Your Car Compass Marketplace conversations.', path: 'messages.html' });
+    Market.messages();
+  </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Car for sale — Car Compass</title>
+  <meta name="description" content="A car listed for sale by a private seller on the Car Compass Marketplace." />
+  <link rel="canonical" href="https://haplessjack.github.io/car-compass/listing.html" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <section class="section">
+      <div class="container" id="ls-root"><div class="empty">Loading listing…</div><noscript><div class="empty">The Marketplace needs JavaScript.</div></noscript></div>
+    </section>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/config.js"></script>
+  <script src="js/site.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.min.js" integrity="sha384-gnyZit14c5lnGcarmA166QQjjJXpucw25ogZXuwH3HxxY904zHkBqmxVpelsPorb" crossorigin="anonymous"></script>
+  <script src="js/market.js"></script>
+  <script>
+    SiteApp.renderChrome('market');
+    SiteApp.injectSeo({ title: 'Car for sale' + ' — ' + SiteApp.cfg.siteName, description: 'A car listed for sale by a private seller on the Car Compass Marketplace.', path: 'listing.html' });
+    Market.listing();
+  </script>
+</body>
+</html>

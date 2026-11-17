@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Marketplace: cars for sale by private sellers — Car Compass</title>
+  <meta name="description" content="Cars for sale listed directly by their owners on the Car Compass Marketplace. Every listing is reviewed before it goes live. Free to browse and free to list." />
+  <link rel="canonical" href="https://haplessjack.github.io/car-compass/marketplace.html" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <section class="hero rf-hero">
+      <div class="container">
+        <div class="eyebrow">Marketplace</div>
+        <h1>Cars for sale, <em>straight from owners</em></h1>
+        <p class="lead">Private sellers list their own cars here. Each listing is checked by a person before it goes live. Free to browse, free to list.</p>
+        <p><a class="btn btn-primary" href="sell.html">Sell a car</a> <a class="btn btn-ghost" href="messages.html">Messages</a></p>
+        <p class="notice rf-disclaimer"><strong>Buy safely:</strong> see the car in person before you pay anything, and never wire a deposit. Car Compass is a listing venue only and isn't a party to any sale. Prices and details come from sellers and aren't verified.</p>
+      </div>
+    </section>
+    <section class="section rf-section">
+      <div class="container">
+        <form class="results-toolbar rf-filters mk-filters" id="mk-filters" role="search" aria-label="Filter Marketplace listings">
+          <div class="field rf-q"><label for="mk-q">Search</label><input id="mk-q" type="search" placeholder="e.g. manual, one owner, Porsche 911" autocomplete="off" maxlength="60" /></div>
+          <div class="field"><label for="mk-make">Make</label><input id="mk-make" list="dl-makes" autocomplete="off" maxlength="40" placeholder="Any make" /><datalist id="dl-makes"></datalist></div>
+          <div class="field"><label for="mk-model">Model</label><input id="mk-model" autocomplete="off" maxlength="60" placeholder="Any model" /></div>
+          <div class="field"><label for="mk-ymin">Year from</label><select id="mk-ymin"><option value="">Any</option></select></div>
+          <div class="field"><label for="mk-ymax">Year to</label><select id="mk-ymax"><option value="">Any</option></select></div>
+          <div class="field"><label for="mk-pmin">Min price</label><input id="mk-pmin" inputmode="numeric" pattern="[0-9]*" placeholder="Any" maxlength="10" /></div>
+          <div class="field"><label for="mk-pmax">Max price</label><input id="mk-pmax" inputmode="numeric" pattern="[0-9]*" placeholder="Any" maxlength="10" /></div>
+          <div class="field"><label for="mk-country">Country</label><select id="mk-country"><option value="">Anywhere</option></select></div>
+          <div class="field"><label for="mk-sort">Sort</label><select id="mk-sort"><option value="newest">Newest first</option><option value="price_asc">Price: low to high</option><option value="price_desc">Price: high to low</option><option value="year_desc">Year: newest</option><option value="year_asc">Year: oldest</option><option value="mileage_asc">Lowest mileage</option></select></div>
+          <div class="rf-filter-actions"><button type="button" class="btn btn-ghost btn-sm" id="mk-reset">Reset filters</button><span class="hint" id="mk-count" aria-live="polite"></span><span class="hint">Prices are in each seller's currency.</span></div>
+        </form>
+        <div class="grid rf-grid" id="mk-grid" aria-live="polite"><div class="empty">Loading cars…</div></div>
+        <noscript><div class="empty">The Marketplace needs JavaScript.</div></noscript>
+        <p class="mk-more-wrap"><button type="button" class="btn btn-ghost" id="mk-more" hidden>Load more</button></p>
+        <div class="prose rf-about">
+          <h2>How the Marketplace works</h2>
+          <p>Sellers sign in with a one-time email link, so there are no passwords. Each new or edited listing waits for a person to review it before it appears here, and listings expire after 60 days. Buyers message sellers through the site, so nobody's email address is shown.</p>
+          <p>See the <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy policy</a> for what's allowed and what we store.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/config.js"></script>
+  <script src="js/site.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.min.js" integrity="sha384-gnyZit14c5lnGcarmA166QQjjJXpucw25ogZXuwH3HxxY904zHkBqmxVpelsPorb" crossorigin="anonymous"></script>
+  <script src="js/market.js"></script>
+  <script>
+    SiteApp.renderChrome('market');
+    SiteApp.injectSeo({ title: 'Marketplace: cars for sale by private sellers' + ' — ' + SiteApp.cfg.siteName, description: 'Cars for sale listed directly by their owners on the Car Compass Marketplace. Every listing is reviewed before it goes live. Free to browse and free to list.', path: 'marketplace.html' });
+    Market.marketplace();
+  </script>
+</body>
+</html>

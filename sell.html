@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sell your car — Car Compass</title>
+  <meta name="description" content="List your car for free on the Car Compass Marketplace. Listings are reviewed before they go live." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="canonical" href="https://haplessjack.github.io/car-compass/sell.html" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <div class="eyebrow">Marketplace</div>
+        <h1 id="sell-h">Sell your car</h1>
+        <div id="sell-root"><div class="empty">Loading…</div><noscript><div class="empty">The Marketplace needs JavaScript.</div></noscript></div>
+        <div id="sell-form-wrap" hidden>
+          <p class="notice" id="sell-edit-note" hidden><strong>Heads up:</strong> changing details or adding photos sends the listing back for review, so it's hidden until an admin approves it again.</p>
+          <div class="mk-two mk-sell">
+            <form id="sell-form" class="card mk-form" novalidate>
+              <div class="mk-grid2">
+                <div class="field"><label for="s-make">Make</label><input id="s-make" name="make" list="dl-makes" maxlength="40" required autocomplete="off" /><datalist id="dl-makes"></datalist></div>
+                <div class="field"><label for="s-model">Model</label><input id="s-model" name="model" maxlength="60" required autocomplete="off" /></div>
+                <div class="field"><label for="s-year">Year</label><select id="s-year" name="year" required><option value="">Choose</option></select></div>
+                <div class="field mk-inline"><label for="s-mileage">Mileage</label><div><input id="s-mileage" name="mileage" inputmode="numeric" maxlength="7" required /><select name="mileage_unit" aria-label="Mileage unit"><option value="km">km</option><option value="mi">mi</option></select></div></div>
+                <div class="field mk-inline"><label for="s-price">Asking price</label><div><input id="s-price" name="price" inputmode="numeric" maxlength="10" required /><select name="currency" aria-label="Currency"><option>USD</option><option>EUR</option><option>GBP</option><option>CAD</option><option>AUD</option><option>NZD</option><option>JPY</option><option>CHF</option><option>SEK</option><option>NOK</option><option>DKK</option><option>PLN</option><option>CZK</option><option>AED</option><option>SAR</option><option>ZAR</option><option>BRL</option><option>MXN</option><option>ARS</option><option>CLP</option><option>INR</option><option>SGD</option><option>HKD</option><option>KRW</option><option>CNY</option><option>THB</option><option>MYR</option><option>PHP</option><option>IDR</option><option>TRY</option><option>ILS</option><option>NGN</option><option>KES</option></select></div></div>
+                <div class="field"><label for="s-vin">VIN (optional)</label><input id="s-vin" name="vin" maxlength="17" autocomplete="off" spellcheck="false" /><span class="mk-help">Only the last 6 characters are saved and shown.</span></div>
+                <div class="field"><label for="s-country">Country</label><input id="s-country" name="country" list="dl-countries" maxlength="60" required /><datalist id="dl-countries"></datalist></div>
+                <div class="field"><label for="s-city">City (optional)</label><input id="s-city" name="city" maxlength="60" /></div>
+              </div>
+              <div class="field"><label for="s-desc">Description</label><textarea id="s-desc" name="description" rows="7" maxlength="5000" placeholder="Condition, history, service records, options, why you're selling…"></textarea></div>
+              <div class="field"><label for="s-photos">Photos (up to 6)</label><input id="s-photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple />
+                <span class="mk-help"><span id="sell-photo-count"></span>. Photos are resized to 1600px and location data (GPS) and camera details are removed in your browser before upload. The first photo is the cover.</span></div>
+              <div id="sell-photo-msg" class="mk-msg" hidden></div>
+              <div class="mk-photos" id="sell-photos"></div>
+              <div class="mk-hp" aria-hidden="true"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+              <label class="mk-check"><input type="checkbox" name="terms" /> <span>I own this car or have the right to sell it, the details are accurate, and I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms</a>.</span></label>
+              <button class="btn btn-primary" type="submit" id="sell-submit">Submit for review</button>
+              <div id="sell-msg" class="mk-msg" hidden></div>
+              <p class="hint">New listings are checked by a person before they go live, usually within a day or two. You can post up to 3 cars per 24 hours. Listings expire after 60 days.</p>
+            </form>
+            <aside class="card mk-safety-card"><h2>Selling safely</h2>
+              <ul class="mk-safety">
+                <li>Don't put your phone number, email or address in the description. Buyers can message you on the site.</li>
+                <li>Watch for overpayment scams: buyers who send "too much" and ask for a refund, or offer to pay by cheque or escrow sites you don't know.</li>
+                <li>Meet buyers in a busy public place and don't hand over keys or papers until payment has fully cleared.</li>
+                <li>Never share codes sent to your phone or email. That's how accounts get stolen.</li>
+                <li>Prohibited: stolen cars, cars you don't have the right to sell, salvage or flood damage you don't disclose, and anything illegal. See the <a href="terms.html">Terms</a>.</li>
+              </ul></aside>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="js/config.js"></script>
+  <script src="js/site.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.min.js" integrity="sha384-gnyZit14c5lnGcarmA166QQjjJXpucw25ogZXuwH3HxxY904zHkBqmxVpelsPorb" crossorigin="anonymous"></script>
+  <script src="js/market.js"></script>
+  <script>
+    SiteApp.renderChrome('market');
+    SiteApp.injectSeo({ title: 'Sell your car' + ' — ' + SiteApp.cfg.siteName, description: 'List your car for free on the Car Compass Marketplace. Listings are reviewed before they go live.', path: 'sell.html' });
+    Market.sell();
+  </script>
+</body>
+</html>
