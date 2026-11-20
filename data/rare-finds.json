@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-19T07:17:14.330Z",
+ "generated": "2026-11-20T07:22:08.231Z",
  "keep_days": 21,
  "note": "Rare and low-production cars found on public auction and classified index pages. Titles, links and prices are as shown by each source at last check; nothing is invented. Always confirm on the source.",
  "sources": [
@@ -9,8 +9,8 @@
    "url": "https://bringatrailer.com/",
    "type": "auction",
    "status": "ok",
-   "checked": "2026-11-19",
-   "items": 31
+   "checked": "2026-11-20",
+   "items": 30
   },
   {
    "id": "cc",
@@ -18,8 +18,8 @@
    "url": "https://collectingcars.com/",
    "type": "auction",
    "status": "ok",
-   "checked": "2026-11-19",
-   "items": 5
+   "checked": "2026-11-20",
+   "items": 8
   },
   {
    "id": "cab",
@@ -27,7 +27,7 @@
    "url": "https://carsandbids.com/",
    "type": "auction",
    "status": "ok",
-   "checked": "2026-11-19",
+   "checked": "2026-11-20",
    "items": 0
   },
   {
@@ -36,7 +36,7 @@
    "url": "https://www.pistonheads.com/buy",
    "type": "classified",
    "status": "ok",
-   "checked": "2026-11-19",
+   "checked": "2026-11-20",
    "items": 13
   },
   {
@@ -45,8 +45,8 @@
    "url": "https://www.carandclassic.com/",
    "type": "classified",
    "status": "ok",
-   "checked": "2026-11-19",
-   "items": 2
+   "checked": "2026-11-20",
+   "items": 4
   },
   {
    "id": "hem",
@@ -54,7 +54,7 @@
    "url": "https://www.hemmings.com/classifieds/cars-for-sale",
    "type": "classified",
    "status": "ok",
-   "checked": "2026-11-19",
+   "checked": "2026-11-20",
    "items": 0
   },
   {
@@ -63,8 +63,8 @@
    "url": "https://www.elferspot.com/en/",
    "type": "dealer",
    "status": "ok",
-   "checked": "2026-11-16",
-   "items": 6
+   "checked": "2026-11-20",
+   "items": 9
   },
   {
    "id": "classic",
@@ -99,7 +99,7 @@
    "url": "https://www.goodingco.com/",
    "type": "auction",
    "status": "ok",
-   "checked": "2026-11-16",
+   "checked": "2026-11-20",
    "items": 23
   },
   {
@@ -132,6 +132,272 @@
  ],
  "items": [
   {
+   "id": "cnc-0e7d6a7f54db",
+   "make": "Audi",
+   "model": "Sport Quattro",
+   "year": 1986,
+   "title": "1986 Audi Sport quattro",
+   "rarity_note": "Road car built in limited numbers so the model could be homologated for racing or rallying",
+   "rarity_tag": "homologation",
+   "model_id": "audi-sport-quattro",
+   "region": "International",
+   "country": null,
+   "source": "Car & Classic",
+   "source_type": "classified",
+   "url": "https://www.carandclassic.com/l/C2238041",
+   "price_text": "€650,000",
+   "ends": null,
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "cc-ebe0bb5ae8c1",
+   "make": "BMW",
+   "model": "M3 CSL (E46)",
+   "year": 2003,
+   "title": "2003 BMW (E46) M3 CSL - 7,855 Miles",
+   "rarity_note": "Limited-production special edition",
+   "rarity_tag": "limited-edition",
+   "model_id": "bmw-m3-csl-e46",
+   "region": "UK & Ireland",
+   "country": "United Kingdom",
+   "source": "Collecting Cars",
+   "source_type": "auction",
+   "url": "https://collectingcars.com/for-sale/2003-bmw-e46-m3-csl-29",
+   "price_text": "Bid £121,500",
+   "ends": "2026-11-22T19:08:00Z",
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "bat-c9867fc200a3",
+   "make": "Dodge",
+   "model": "Challenger SRT Demon",
+   "year": 2018,
+   "title": "2018 Dodge Demon Crate",
+   "rarity_note": "Limited-production special edition",
+   "rarity_tag": "limited-edition",
+   "model_id": "dodge-challenger-srt-demon",
+   "region": "North America",
+   "country": "United States",
+   "source": "Bring a Trailer",
+   "source_type": "auction",
+   "url": "https://bringatrailer.com/listing/demon-crate-11/",
+   "price_text": "Bid USD $1",
+   "ends": "2026-11-27T23:09:00.000Z",
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "cc-30e33e93ca02",
+   "make": "Fiat",
+   "model": "131 Abarth Rally",
+   "year": 1982,
+   "title": "1982 Fiat 131 Abarth Racing Volumetrico",
+   "rarity_note": "Road car built in limited numbers so the model could be homologated for racing or rallying",
+   "rarity_tag": "homologation",
+   "model_id": "fiat-131-abarth-rally",
+   "region": "UK & Ireland",
+   "country": "United Kingdom",
+   "source": "Collecting Cars",
+   "source_type": "auction",
+   "url": "https://collectingcars.com/for-sale/1982-fiat-131-abarth-racing-volumetrico-1",
+   "price_text": "Bid £10,500",
+   "ends": "2026-11-20T19:20:00Z",
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "bat-9a6a331de16e",
+   "make": "Ford",
+   "model": "GT (2005-06 / 2017-22)",
+   "year": 2006,
+   "title": "Whipple-Supercharged 2006 Ford GT",
+   "rarity_note": "Low-volume supercar",
+   "rarity_tag": "supercar",
+   "model_id": "ford-gt-2005-06-2017-22",
+   "region": "North America",
+   "country": "United States",
+   "source": "Bring a Trailer",
+   "source_type": "auction",
+   "url": "https://bringatrailer.com/listing/2006-ford-gt-237/",
+   "price_text": "Bid USD $500,000",
+   "ends": "2026-11-27T18:59:00.000Z",
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "bat-b64f5a0f368b",
+   "make": "GMC",
+   "model": "Syclone",
+   "year": 1991,
+   "title": "13k-Mile 1991 GMC Syclone",
+   "rarity_note": "Low-volume model from a small or specialist maker",
+   "rarity_tag": "low-volume",
+   "model_id": "gmc-syclone",
+   "region": "North America",
+   "country": "United States",
+   "source": "Bring a Trailer",
+   "source_type": "auction",
+   "url": "https://bringatrailer.com/listing/1991-gmc-syclone-137/",
+   "price_text": "Bid USD $30,000",
+   "ends": "2026-11-27T21:27:00.000Z",
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "cnc-b02d0b20dd19",
+   "make": "Lamborghini",
+   "model": "Diablo SV / SE30 / GT / 6.0",
+   "year": 1995,
+   "title": "1995 Lamborghini Diablo SE30",
+   "rarity_note": "Limited-production special edition",
+   "rarity_tag": "limited-edition",
+   "model_id": "lamborghini-diablo-sv-se30-gt-6-0",
+   "region": "International",
+   "country": null,
+   "source": "Car & Classic",
+   "source_type": "classified",
+   "url": "https://www.carandclassic.com/l/C2238259",
+   "price_text": "€1,200,000",
+   "ends": null,
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "bat-c629afd36ee4",
+   "make": "Lamborghini",
+   "model": "350 GT / 400 GT",
+   "year": 1967,
+   "title": "29-Years-Owned 1967 Lamborghini 400 GT 2+2",
+   "rarity_note": "Blue-chip collector car, rarely offered",
+   "rarity_tag": "blue-chip-classic",
+   "model_id": "lamborghini-350-gt-400-gt",
+   "region": "North America",
+   "country": "United States",
+   "source": "Bring a Trailer",
+   "source_type": "auction",
+   "url": "https://bringatrailer.com/listing/1967-lamborghini-400-gt-22-6/",
+   "price_text": "Bid USD $25,000",
+   "ends": "2026-11-30T18:10:00.000Z",
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "bat-b79b17f724a3",
+   "make": "Nash-Healey",
+   "model": "Nash-Healey",
+   "year": 1951,
+   "title": "1951 Nash-Healey Roadster",
+   "rarity_note": "Low-volume model from a small or specialist maker",
+   "rarity_tag": "low-volume",
+   "model_id": "nash-healey-nash-healey",
+   "region": "North America",
+   "country": "United States",
+   "source": "Bring a Trailer",
+   "source_type": "auction",
+   "url": "https://bringatrailer.com/listing/1951-nash-healey-roadster/",
+   "price_text": "Bid USD $11,111",
+   "ends": "2026-11-27T20:09:00.000Z",
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "elf-3c39a7485fc5",
+   "make": "Porsche",
+   "model": "911 Carrera 3.2 Clubsport",
+   "year": 1987,
+   "title": "1987 Porsche 928 S4 Clubsport",
+   "rarity_note": "Limited-production special edition",
+   "rarity_tag": "limited-edition",
+   "model_id": "porsche-911-carrera-3-2-clubsport",
+   "region": "Europe",
+   "country": "Belgium",
+   "source": "Elferspot",
+   "source_type": "dealer",
+   "url": "https://www.elferspot.com/en/car/porsche-928-s4-clubsport-1987-6380371/",
+   "price_text": null,
+   "ends": null,
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "elf-0d4d6873a8e7",
+   "make": "Porsche",
+   "model": "964 Carrera RS / RS America / Turbo S",
+   "year": 1992,
+   "title": "1992 Porsche 964 Carrera RS",
+   "rarity_note": "Limited-production special edition",
+   "rarity_tag": "limited-edition",
+   "model_id": "porsche-964-carrera-rs-rs-america-turbo-s",
+   "region": "Europe",
+   "country": "Belgium",
+   "source": "Elferspot",
+   "source_type": "dealer",
+   "url": "https://www.elferspot.com/en/car/porsche-964-carrera-rs-1992-6380906/",
+   "price_text": null,
+   "ends": null,
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "elf-48b11c3204db",
+   "make": "Porsche",
+   "model": "911 R (2016)",
+   "year": 2016,
+   "title": "2016 Porsche 911 R",
+   "rarity_note": "Limited-production special edition",
+   "rarity_tag": "limited-edition",
+   "model_id": "porsche-911-r-2016",
+   "region": "North America",
+   "country": "United States",
+   "source": "Elferspot",
+   "source_type": "dealer",
+   "url": "https://www.elferspot.com/en/car/porsche-911-r-2016-6380011/",
+   "price_text": null,
+   "ends": null,
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "bat-0e0a280bb994",
+   "make": "Porsche",
+   "model": "911 Sport Classic",
+   "year": 2023,
+   "title": "653-Mile 2023 Porsche 911 Sport Classic",
+   "rarity_note": "Limited-production special edition",
+   "rarity_tag": "limited-edition",
+   "model_id": "porsche-911-sport-classic",
+   "region": "North America",
+   "country": "United States",
+   "source": "Bring a Trailer",
+   "source_type": "auction",
+   "url": "https://bringatrailer.com/listing/2023-porsche-911-sport-classic-38/",
+   "price_text": "Bid USD $1,000",
+   "ends": "2026-11-27T21:56:00.000Z",
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
+   "id": "cc-c8924235b126",
+   "make": "RUF",
+   "model": "RUF (any)",
+   "year": 2022,
+   "title": "2022 RUF SCR",
+   "rarity_note": "Built or re-engineered by RUF Automobile, a small specialist maker",
+   "rarity_tag": "low-volume",
+   "model_id": "ruf-ruf-any",
+   "region": "UK & Ireland",
+   "country": "United Kingdom",
+   "source": "Collecting Cars",
+   "source_type": "auction",
+   "url": "https://collectingcars.com/for-sale/2022-ruf-scr",
+   "price_text": "Bid £700,500",
+   "ends": "2026-11-22T19:00:00Z",
+   "found": "2026-11-20",
+   "last_seen": "2026-11-20"
+  },
+  {
    "id": "bat-2cf7254b3e89",
    "make": "Ford",
    "model": "Mustang Boss 429",
@@ -148,7 +414,7 @@
    "price_text": "Bid USD $120,000",
    "ends": "2026-11-27T18:10:00.000Z",
    "found": "2026-11-19",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "cc-0d41debdc24d",
@@ -164,10 +430,10 @@
    "source": "Collecting Cars",
    "source_type": "auction",
    "url": "https://collectingcars.com/for-sale/1992-ford-escort-rs-cosworth-lux-2",
-   "price_text": "Bid €33,250",
+   "price_text": "Bid €38,250",
    "ends": "2026-11-20T18:32:00Z",
    "found": "2026-11-19",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-20c9400cfde4",
@@ -186,7 +452,7 @@
    "price_text": "Bid USD $888,888",
    "ends": "2026-11-27T18:20:00.000Z",
    "found": "2026-11-19",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "cnc-4846c4defe09",
@@ -221,10 +487,10 @@
    "source": "Collecting Cars",
    "source_type": "auction",
    "url": "https://collectingcars.com/for-sale/2022-mercedes-amg-gt-black-series-6",
-   "price_text": "Bid $350,500",
+   "price_text": "Bid $385,500",
    "ends": "2026-11-20T11:30:00Z",
    "found": "2026-11-19",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-ff3b7c27ca7f",
@@ -243,7 +509,7 @@
    "price_text": "Bid USD $375,000",
    "ends": "2026-11-30T18:05:00.000Z",
    "found": "2026-11-19",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-49cd984a5885",
@@ -262,7 +528,7 @@
    "price_text": "Bid USD $125,000",
    "ends": "2026-11-27T19:14:00.000Z",
    "found": "2026-11-19",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "cc-4ebe172e933d",
@@ -278,10 +544,10 @@
    "source": "Collecting Cars",
    "source_type": "auction",
    "url": "https://collectingcars.com/for-sale/1977-porsche-911-930-turbo-3-0-2",
-   "price_text": "Bid €60,500",
+   "price_text": "Bid €65,000",
    "ends": "2026-11-20T18:20:00Z",
    "found": "2026-11-19",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-bce7315394c1",
@@ -297,10 +563,10 @@
    "source": "Bring a Trailer",
    "source_type": "auction",
    "url": "https://bringatrailer.com/listing/1968-shelby-mustang-gt350-convertible-17/",
-   "price_text": "Bid USD $35,000",
+   "price_text": "Bid USD $51,200",
    "ends": "2026-11-25T21:06:00.000Z",
    "found": "2026-11-19",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "cc-b7383834c534",
@@ -316,10 +582,10 @@
    "source": "Collecting Cars",
    "source_type": "auction",
    "url": "https://collectingcars.com/for-sale/1998-subaru-impreza-sti-22b-20",
-   "price_text": "Bid $120,500",
+   "price_text": "Bid $175,500",
    "ends": "2026-11-20T08:00:00Z",
    "found": "2026-11-19",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-09dedac4a9e9",
@@ -338,7 +604,7 @@
    "price_text": "Bid USD $142,526",
    "ends": "2026-11-24T18:30:00.000Z",
    "found": "2026-11-18",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-ee0352889fe0",
@@ -357,7 +623,7 @@
    "price_text": "Bid EUR €10,555",
    "ends": "2026-11-24T21:52:00.000Z",
    "found": "2026-11-18",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-b3cbf440205f",
@@ -376,7 +642,7 @@
    "price_text": "Bid EUR €20,000",
    "ends": "2026-11-24T22:00:00.000Z",
    "found": "2026-11-18",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "classic-a56e3874b49a",
@@ -414,7 +680,7 @@
    "price_text": "Bid USD $13,351",
    "ends": "2026-11-24T22:34:00.000Z",
    "found": "2026-11-18",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "classic-d7876deee7a3",
@@ -449,10 +715,10 @@
    "source": "Bring a Trailer",
    "source_type": "auction",
    "url": "https://bringatrailer.com/listing/1963-maserati-sebring/",
-   "price_text": "Bid USD $75,000",
+   "price_text": "Bid USD $100,000",
    "ends": "2026-11-24T22:33:00.000Z",
    "found": "2026-11-18",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-e650318a62d6",
@@ -471,7 +737,7 @@
    "price_text": "Bid EUR €30,000",
    "ends": "2026-11-23T19:04:00.000Z",
    "found": "2026-11-18",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "cc-aeedbf235ecb",
@@ -509,7 +775,7 @@
    "price_text": "Bid EUR €50,000",
    "ends": "2026-11-25T18:00:00.000Z",
    "found": "2026-11-18",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-4d9b336e484b",
@@ -525,10 +791,10 @@
    "source": "Bring a Trailer",
    "source_type": "auction",
    "url": "https://bringatrailer.com/listing/1969-shelby-mustang-gt500-32/",
-   "price_text": "Bid USD $50,555",
+   "price_text": "Bid USD $65,000",
    "ends": "2026-11-24T21:46:00.000Z",
    "found": "2026-11-18",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-2c2385d002f6",
@@ -547,7 +813,7 @@
    "price_text": "Bid USD $100,000",
    "ends": "2026-11-24T20:37:00.000Z",
    "found": "2026-11-18",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-df8bbb0df192",
@@ -566,7 +832,7 @@
    "price_text": "Bid USD $55,000",
    "ends": "2026-11-27T18:00:00.000Z",
    "found": "2026-11-18",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "good-06f651ec7382",
@@ -585,7 +851,7 @@
    "price_text": "Estimate $200,000 – $300,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "rm-aa38c63c3f6f",
@@ -661,7 +927,7 @@
    "price_text": "Estimate $200,000 – $300,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "classic-f9a2dad12c68",
@@ -699,26 +965,7 @@
    "price_text": "Estimate $500,000 – $800,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
-  },
-  {
-   "id": "bat-f6bde58c0d92",
-   "make": "BMW",
-   "model": "Z8",
-   "year": 2002,
-   "title": "15k-Mile 2002 BMW Z8",
-   "rarity_note": "Hand-assembled roadster built in limited numbers",
-   "rarity_tag": "low-volume",
-   "model_id": "bmw-z8",
-   "region": "North America",
-   "country": "United States",
-   "source": "Bring a Trailer",
-   "source_type": "auction",
-   "url": "https://bringatrailer.com/listing/2002-bmw-z8-124/",
-   "price_text": "Bid USD $185,000",
-   "ends": "2026-11-19T18:20:00.000Z",
-   "found": "2026-11-16",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "ba-9bc59dc2ed50",
@@ -794,26 +1041,7 @@
    "price_text": "Estimate $3,500,000 – $4,000,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
-  },
-  {
-   "id": "bat-083b309ab789",
-   "make": "Cadillac",
-   "model": "Eldorado Brougham (1957-60)",
-   "year": 1958,
-   "title": "Escalade-Powered 1958 Cadillac Eldorado Brougham",
-   "rarity_note": "Low-volume model from a small or specialist maker",
-   "rarity_tag": "low-volume",
-   "model_id": "cadillac-eldorado-brougham-1957-60",
-   "region": "North America",
-   "country": "United States",
-   "source": "Bring a Trailer",
-   "source_type": "auction",
-   "url": "https://bringatrailer.com/listing/1958-cadillac-eldorado-brougham-8/",
-   "price_text": "Bid USD $42,000",
-   "ends": "2026-11-19T19:07:00.000Z",
-   "found": "2026-11-16",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "rm-8293d7dbdcd6",
@@ -870,7 +1098,7 @@
    "price_text": "Estimate $350,000 – $500,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-951036103841",
@@ -886,10 +1114,10 @@
    "source": "Bring a Trailer",
    "source_type": "auction",
    "url": "https://bringatrailer.com/listing/2017-dodge-viper-srt-acr-coupe-24/",
-   "price_text": "Bid USD $267,000",
+   "price_text": "Bid USD $305,000",
    "ends": "2026-11-21T18:43:00.000Z",
    "found": "2026-11-16",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-24934f31413a",
@@ -905,48 +1133,10 @@
    "source": "Bring a Trailer",
    "source_type": "auction",
    "url": "https://bringatrailer.com/listing/1999-dodge-viper-gts-26/",
-   "price_text": "Bid USD $98,500",
+   "price_text": "Bid USD $100,000",
    "ends": "2026-11-20T18:31:00.000Z",
    "found": "2026-11-16",
-   "last_seen": "2026-11-19"
-  },
-  {
-   "id": "bat-7211e98cf2ba",
-   "make": "Dodge",
-   "model": "Viper ACR / GTS-R",
-   "year": 2010,
-   "title": "12k-Mile 2010 Dodge Viper SRT-10 ACR VoooDoo Edition",
-   "rarity_note": "Limited-production special edition",
-   "rarity_tag": "limited-edition",
-   "model_id": "dodge-viper-acr-gts-r",
-   "region": "North America",
-   "country": "United States",
-   "source": "Bring a Trailer",
-   "source_type": "auction",
-   "url": "https://bringatrailer.com/listing/2010-dodge-viper-srt-10-acr-6/",
-   "price_text": "Bid USD $107,000",
-   "ends": "2026-11-19T20:54:00.000Z",
-   "found": "2026-11-16",
-   "last_seen": "2026-11-19"
-  },
-  {
-   "id": "bat-54cdbdad8c21",
-   "make": "Dodge",
-   "model": "Challenger SRT Demon",
-   "year": 2023,
-   "title": "17-Mile 2023 Dodge Challenger SRT Demon 170",
-   "rarity_note": "Limited-production special edition",
-   "rarity_tag": "limited-edition",
-   "model_id": "dodge-challenger-srt-demon",
-   "region": "North America",
-   "country": "United States",
-   "source": "Bring a Trailer",
-   "source_type": "auction",
-   "url": "https://bringatrailer.com/listing/2023-dodge-challenger-srt-demon-170-280/",
-   "price_text": "Bid USD $105,000",
-   "ends": "2026-11-19T22:55:00.000Z",
-   "found": "2026-11-16",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "classic-1edd342e01ce",
@@ -966,25 +1156,6 @@
    "ends": null,
    "found": "2026-11-16",
    "last_seen": "2026-11-16"
-  },
-  {
-   "id": "bat-bdfeb5a77cc1",
-   "make": "Dodge",
-   "model": "Challenger SRT Demon",
-   "year": 2023,
-   "title": "484-Mile 2023 Dodge Challenger SRT Demon 170",
-   "rarity_note": "Limited-production special edition",
-   "rarity_tag": "limited-edition",
-   "model_id": "dodge-challenger-srt-demon",
-   "region": "North America",
-   "country": "United States",
-   "source": "Bring a Trailer",
-   "source_type": "auction",
-   "url": "https://bringatrailer.com/listing/2023-dodge-challenger-srt-demon-170-277/",
-   "price_text": "Bid USD $70,000",
-   "ends": "2026-11-19T20:59:00.000Z",
-   "found": "2026-11-16",
-   "last_seen": "2026-11-19"
   },
   {
    "id": "ba-2f5e1cbb1c6b",
@@ -1041,7 +1212,7 @@
    "price_text": "Estimate $2,250,000 – $2,500,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "good-07b184365ffc",
@@ -1060,7 +1231,7 @@
    "price_text": "Estimate $15,000,000 – $20,000,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "good-11102d72e50f",
@@ -1079,7 +1250,7 @@
    "price_text": "Estimate $1,750,000 – $2,250,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "good-6001d0705248",
@@ -1098,7 +1269,7 @@
    "price_text": "Estimate $400,000 – $500,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "good-113bf623895e",
@@ -1117,7 +1288,7 @@
    "price_text": "Estimate $550,000 – $650,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-342ce6211e53",
@@ -1136,7 +1307,7 @@
    "price_text": "Bid USD $826,000",
    "ends": "2026-11-20T18:10:00.000Z",
    "found": "2026-11-16",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "ba-b608d41712f0",
@@ -1247,10 +1418,10 @@
    "source": "Bring a Trailer",
    "source_type": "auction",
    "url": "https://bringatrailer.com/listing/1963-ferrari-250-gt-2/",
-   "price_text": "Bid USD $850,000",
+   "price_text": "Bid USD $1,001,963",
    "ends": "2026-11-23T18:20:00.000Z",
    "found": "2026-11-16",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "bat-dcbe002e446b",
@@ -1266,29 +1437,10 @@
    "source": "Bring a Trailer",
    "source_type": "auction",
    "url": "https://bringatrailer.com/listing/2019-ford-gt-61/",
-   "price_text": "Bid USD $900,000",
+   "price_text": "Bid USD $920,000",
    "ends": "2026-11-23T18:25:00.000Z",
    "found": "2026-11-16",
-   "last_seen": "2026-11-19"
-  },
-  {
-   "id": "bat-8d827f22b5cd",
-   "make": "Ford",
-   "model": "GT (2005-06 / 2017-22)",
-   "year": 2005,
-   "title": "9k-Mile 2005 Ford GT",
-   "rarity_note": "Low-volume supercar",
-   "rarity_tag": "supercar",
-   "model_id": "ford-gt-2005-06-2017-22",
-   "region": "North America",
-   "country": "United States",
-   "source": "Bring a Trailer",
-   "source_type": "auction",
-   "url": "https://bringatrailer.com/listing/2005-ford-gt-252/",
-   "price_text": "Bid USD $502,000",
-   "ends": "2026-11-19T18:56:00.000Z",
-   "found": "2026-11-16",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "good-3267a7306cb2",
@@ -1307,7 +1459,7 @@
    "price_text": "Estimate $6,000,000 – $7,000,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "good-a45e64c6f9a0",
@@ -1326,7 +1478,7 @@
    "price_text": "Estimate $400,000 – $500,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "ph-0a6543745490",
@@ -1383,7 +1535,7 @@
    "price_text": "Estimate $750,000 – $900,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "ph-efc7217f5350",
@@ -1649,7 +1801,7 @@
    "price_text": "Estimate $125,000 – $175,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "rm-0ab403bd1a2c",
@@ -1687,7 +1839,7 @@
    "price_text": "Estimate $80,000 – $100,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "good-6d49d5847ee3",
@@ -1706,7 +1858,7 @@
    "price_text": "Estimate $4,000,000 – $6,000,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "good-b7a8ab9a1b52",
@@ -1725,7 +1877,7 @@
    "price_text": "Estimate $1,800,000 – $2,200,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "rm-74198e7b9498",
@@ -1760,10 +1912,10 @@
    "source": "Bring a Trailer",
    "source_type": "auction",
    "url": "https://bringatrailer.com/listing/1954-nash-healey-coupe-2/",
-   "price_text": "Bid USD $2,904",
+   "price_text": "Bid USD $3,454",
    "ends": "2026-11-20T21:52:00.000Z",
    "found": "2026-11-16",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "cnc-0281dc4d7418",
@@ -1820,7 +1972,7 @@
    "price_text": "Bid USD $110,000",
    "ends": "2026-11-24T18:05:00.000Z",
    "found": "2026-11-16",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "good-4108abcde277",
@@ -1839,7 +1991,7 @@
    "price_text": "Estimate $650,000 – $750,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "elf-f0e5b8c28315",
@@ -1893,10 +2045,10 @@
    "source": "Bring a Trailer",
    "source_type": "auction",
    "url": "https://bringatrailer.com/listing/1958-porsche-356a-speedster-30-2/",
-   "price_text": "Bid USD $61,000",
+   "price_text": "Bid USD $65,000",
    "ends": "2026-11-21T18:00:00.000Z",
    "found": "2026-11-16",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "rm-919ee946a30e",
@@ -1934,7 +2086,7 @@
    "price_text": "Estimate $170,000 – $200,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "elf-a84873017b52",
@@ -2067,7 +2219,7 @@
    "price_text": "Estimate $475,000 – $550,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "rm-6f014a5830a4",
@@ -2124,7 +2276,7 @@
    "price_text": "Bid USD $550,000",
    "ends": "2026-11-20T21:31:00.000Z",
    "found": "2026-11-16",
-   "last_seen": "2026-11-19"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "elf-88e9dcd25a45",
@@ -2165,25 +2317,6 @@
    "last_seen": "2026-11-16"
   },
   {
-   "id": "bat-ae205f670afb",
-   "make": "Porsche",
-   "model": "911 Sport Classic",
-   "year": 2023,
-   "title": "80-Mile 2023 Porsche 911 Sport Classic",
-   "rarity_note": "Limited-production special edition",
-   "rarity_tag": "limited-edition",
-   "model_id": "porsche-911-sport-classic",
-   "region": "North America",
-   "country": "United States",
-   "source": "Bring a Trailer",
-   "source_type": "auction",
-   "url": "https://bringatrailer.com/listing/2023-porsche-911-sport-classic-37/",
-   "price_text": "Bid USD $587,000",
-   "ends": "2026-11-19T18:15:00.000Z",
-   "found": "2026-11-16",
-   "last_seen": "2026-11-19"
-  },
-  {
    "id": "good-bcb2c5dc824a",
    "make": "Rolls-Royce",
    "model": "Silver Ghost / pre-war Phantom",
@@ -2200,7 +2333,7 @@
    "price_text": "Estimate $450,000 – $650,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "good-54dc1e0121fe",
@@ -2219,7 +2352,7 @@
    "price_text": "Estimate $450,000 – $650,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "elf-f69dedb00d87",
@@ -2257,7 +2390,7 @@
    "price_text": "Estimate $6,000,000 – $8,000,000",
    "ends": null,
    "found": "2026-11-16",
-   "last_seen": "2026-11-16"
+   "last_seen": "2026-11-20"
   },
   {
    "id": "rm-516bc7df7a2b",
